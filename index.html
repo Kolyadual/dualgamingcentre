@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dual Gaming Centre | Играй в лучшие игры и скачивай их без регистрации!</title>
+    <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --dark: #1a1a2e;
+            --light: #f1f1f1;
+            --accent: #ff6b6b;
+            --dock-width: 80px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rubik', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: var(--light);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            padding-left: var(--dock-width);
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Док платформ */
+        .platform-dock {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: var(--dock-width);
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(5px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem 0;
+            z-index: 90;
+        }
+
+        .platform-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0.5rem 0;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .platform-icon img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            transition: all 0.3s;
+        }
+
+        .platform-icon:hover {
+            background: rgba(110, 69, 226, 0.3);
+        }
+
+        .platform-icon.active {
+            background: var(--primary);
+        }
+
+        .platform-icon .tooltip {
+            position: absolute;
+            left: calc(100% + 15px);
+            background: rgba(26, 26, 46, 0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+            transform: translateX(-10px);
+        }
+
+        .platform-icon:hover .tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        header {
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-left: calc(-1 * var(--dock-width));
+            padding-left: calc(var(--dock-width) + 2rem);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        .search-bar {
+            flex-grow: 1;
+            margin: 0 2rem;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-bar input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(110, 69, 226, 0.5);
+        }
+
+        .search-bar i {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        main {
+            padding: 2rem;
+            margin-left: calc(-1 * var(--dock-width));
+            padding-left: calc(var(--dock-width) + 2rem);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .cta-buttons button {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .browse-games {
+            background: var(--accent);
+            color: white;
+        }
+
+        .browse-games:hover {
+            background: #e05555;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .trending {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .trending:hover {
+            background: rgba(136, 211, 206, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .categories {
+            margin: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title i {
+            margin-right: 1rem;
+            color: var(--primary);
+        }
+
+        .category-buttons {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+
+        .category-buttons::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .category-buttons::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .category-buttons::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        .category-btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: var(--primary);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .game-info {
+            padding: 1.5rem;
+        }
+
+        .game-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-info .genre {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .game-info .description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .game-actions {
+            display: flex;
+            justify-content: center;
+        }
+
+        .details-btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            background: #4285F4;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .details-btn:hover {
+            background: #3367D6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(66, 133, 244, 0.3);
+        }
+
+        .details-btn i {
+            font-size: 0.9rem;
+        }
+
+        .game-page {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-left: calc(-1 * var(--dock-width));
+            padding-left: calc(var(--dock-width) + 2rem);
+        }
+
+        .back-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .game-header {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .game-cover {
+            flex: 0 0 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-cover img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .game-details {
+            flex: 1;
+        }
+
+        .game-details h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .game-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .game-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .game-meta i {
+            color: var(--secondary);
+        }
+
+        .game-description {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .game-actions-page {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .download-btn {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            border: 2px solid var(--secondary);
+            background: transparent;
+            color: var(--secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .download-btn:hover {
+            background: rgba(136, 211, 206, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .fullscreen-btn {
+            padding: 0.8rem;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1/1;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .game-content {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .game-player {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-frame-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 75%;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .game-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .game-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            z-index: 10;
+        }
+
+        .game-loader i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .game-sidebar {
+            flex: 0 0 300px;
+        }
+
+        .similar-games {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        .similar-games h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .similar-game {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+
+        .similar-game:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .similar-game img {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .similar-game-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .similar-game-info .genre {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .confirm-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .confirm-content {
+            background: #1a1a2e;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid #6e45e2;
+        }
+
+        .confirm-content h3 {
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+
+        .confirm-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .confirm-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .confirm-cancel {
+            background: transparent;
+            border: 1px solid #6e45e2;
+            color: #6e45e2;
+        }
+
+        .confirm-proceed {
+            background: #ff6b6b;
+            border: 1px solid #ff6b6b;
+            color: white;
+        }
+
+        footer {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 3rem 2rem 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-left: calc(-1 * var(--dock-width));
+            padding-left: calc(var(--dock-width) + 2rem);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 992px) {
+            .game-header {
+                flex-direction: column;
+            }
+            
+            .game-cover {
+                flex: 1;
+                max-width: 100%;
+            }
+            
+            .game-content {
+                flex-direction: column;
+            }
+            
+            .game-sidebar {
+                flex: 1;
+                margin-top: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-left: 0;
+            }
+            
+            .platform-dock {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            
+            .platform-dock.open {
+                transform: translateX(0);
+            }
+            
+            header, main, footer, .game-page {
+                margin-left: 0;
+                padding-left: 2rem;
+            }
+            
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                left: 10px;
+                top: 10px;
+                z-index: 110;
+                background: rgba(26, 26, 46, 0.8);
+                border: none;
+                color: white;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+            }
+            
+            header {
+                padding-left: 4rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .game-actions-page {
+                flex-direction: column;
+            }
+            
+            .game-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+                padding-left: 4rem;
+            }
+            
+            .search-bar {
+                width: 100%;
+                margin: 1rem 0;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Стили для кнопки меню на мобильных */
+        .menu-toggle {
+            display: none;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Кнопка меню для мобильных -->
+    <button class="menu-toggle" id="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Док платформ -->
+    <div class="platform-dock" id="platform-dock">
+        <div class="platform-icon active" data-platform="all">
+            <img src="https://cdn-icons-png.flaticon.com/512/2965/2965300.png" alt="Все платформы">
+            <span class="tooltip">Все платформы</span>
+        </div>
+        <div class="platform-icon" data-platform="web">
+            <img src="https://cdn-icons-png.flaticon.com/512/841/841364.png" alt="Web">
+            <span class="tooltip">Web-игры</span>
+        </div>
+        <div class="platform-icon" data-platform="ps1">
+            <img src="https://cdn3.iconfinder.com/data/icons/gamepads-1/512/Psx-512.png" alt="PS1">
+            <span class="tooltip">PlayStation 1</span>
+        </div>
+        <div class="platform-icon" data-platform="nes">
+            <img src="https://cdn3.iconfinder.com/data/icons/gamepads-1/512/Nes-512.png" alt="NES">
+            <span class="tooltip">Nintendo NES</span>
+        </div>
+        <div class="platform-icon" data-platform="snes">
+            <img src="https://cdn3.iconfinder.com/data/icons/gamepads-1/512/Snes-512.png" alt="SNES">
+            <span class="tooltip">Super Nintendo</span>
+        </div>
+        <div class="platform-icon" data-platform="gba">
+            <img src="https://cdn3.iconfinder.com/data/icons/gamepads-1/512/GameboyColor-256.png" alt="GBA">
+            <span class="tooltip">Game Boy Advance</span>
+        </div>
+        <div class="platform-icon" data-platform="sega">
+            <img src="https://cdn3.iconfinder.com/data/icons/gamepads-1/512/MegaDrive-256.png" alt="Sega">
+            <span class="tooltip">Sega Genesis</span>
+        </div>
+        <div class="platform-icon" data-platform="pc">
+            <img src="https://cdn3.iconfinder.com/data/icons/vol-2/128/desktop-256.png" alt="PC">
+            <span class="tooltip">PC игры</span>
+        </div>
+    </div>
+
+    <!-- Частицы фона -->
+    <div id="particles-js"></div>
+
+    <!-- Шапка -->
+    <header>
+        <div class="logo">
+            <h1>Dual Gaming Centre</h1>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Поиск игр..." id="search-input">
+            <i class="fas fa-search"></i>
+        </div>
+    </header>
+
+    <!-- Основное содержимое -->
+    <main>
+        <!-- Главная страница -->
+        <div id="home-page">
+            <section class="hero">
+                <h2>Играйте в лучшие игры бесплатно</h2>
+                <p>Откройте для себя огромную коллекцию классических и современных игр. Никаких скачиваний, никаких подписок - просто наслаждайтесь игрой!</p>
+                <div class="cta-buttons">
+                    <button class="browse-games" id="all-games-btn"><i class="fas fa-gamepad"></i> Все игры</button>
+                    <button class="trending" id="trending-btn"><i class="fas fa-fire"></i> Популярное</button>
+                </div>
+            </section>
+
+            <section class="categories">
+                <h2 class="section-title"><i class="fas fa-tags"></i> Категории</h2>
+                <div class="category-buttons" id="category-buttons">
+                    <button class="category-btn active" data-category="all">Все</button>
+                    <button class="category-btn" data-category="shooter">Шутеры</button>
+                    <button class="category-btn" data-category="arcade">Аркады</button>
+                    <button class="category-btn" data-category="racing">Гонки</button>
+                    <button class="category-btn" data-category="puzzle">Головоломки</button>
+                    <button class="category-btn" data-category="platformer">Платформеры</button>
+                    <button class="category-btn" data-category="retro">Ретро</button>
+                    <button class="category-btn" data-category="strategy">Стратегии</button>
+                </div>
+            </section>
+
+            <section class="games">
+                <h2 class="section-title"><i class="fas fa-gamepad"></i> Популярные игры</h2>
+                <div class="games-grid" id="games-container">
+                    <!-- Игры будут добавлены через JavaScript -->
+                </div>
+            </section>
+        </div>
+
+        <!-- Страница игры -->
+        <div class="game-page" id="game-page">
+            <button class="back-btn" id="back-btn"><i class="fas fa-arrow-left"></i> Назад</button>
+            
+            <div class="game-header">
+                <div class="game-cover">
+                    <img id="game-cover-img" src="" alt="Обложка игры">
+                </div>
+                
+                <div class="game-details">
+                    <h1 id="game-title">Название игры</h1>
+                    
+                    <div class="game-meta">
+                        <span><i class="fas fa-tag"></i> <span id="game-genre">Жанр</span></span>
+                        <span><i class="fas fa-calendar-alt"></i> <span id="game-year">Год</span></span>
+                        <span><i class="fas fa-star"></i> <span id="game-rating">Рейтинг</span></span>
+                        <span><i class="fas fa-gamepad"></i> <span id="game-platform">Платформа</span></span>
+                    </div>
+                    
+                    <p class="game-description" id="game-description">
+                        Описание игры будет здесь...
+                    </p>
+                    
+                    <div class="game-actions-page">
+                        <button class="download-btn" id="download-btn"><i class="fas fa-download"></i> Скачать</button>
+                        <button class="fullscreen-btn" id="fullscreen-btn"><i class="fas fa-expand"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="game-content">
+                <div class="game-player" id="game-player">
+                    <div class="game-frame-container">
+                        <div class="game-loader" id="game-loader">
+                            <i class="fas fa-spinner"></i>
+                            <p>Загрузка игры...</p>
+                        </div>
+                        <iframe id="game-frame" class="game-frame" onload="hideLoader()" allowfullscreen></iframe>
+                    </div>
+                </div>
+                
+                <div class="game-sidebar">
+                    <div class="similar-games">
+                        <h3>Похожие игры</h3>
+                        <div id="similar-games-container">
+                            <!-- Похожие игры будут добавлены через JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальное окно подтверждения -->
+    <div class="confirm-modal" id="confirm-modal">
+        <div class="confirm-content">
+            <h3>Внимание!</h3>
+            <p>Вы переходите на внешнюю ссылку. Все несохраненные данные (прогресс игры и другие) будут утеряны.</p>
+            <p>Вы уверены, что хотите продолжить?</p>
+            <div class="confirm-buttons">
+                <button class="confirm-btn confirm-cancel" id="confirm-cancel">Отмена</button>
+                <button class="confirm-btn confirm-proceed" id="confirm-proceed">Продолжить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Dual Gaming Centre</h3>
+                <p style="color: rgba(255, 255, 255, 0.7); margin-top: 1rem; line-height: 1.6;">
+                    Лучшие бесплатные онлайн игры в одном месте. Играйте без скачивания и регистрации.
+                </p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Меню</h3>
+                <ul>
+                    <li><a href="#" id="footer-home">Главная</a></li>
+                    <li><a href="#" id="footer-games">Игры</a></li>
+                    <li><a href="#" id="footer-categories">Категории</a></li>
+                    <li><a href="#" id="footer-popular">Популярное</a></li>
+                    <li><a href="#" id="footer-new">Новое</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Информация</h3>
+                <ul>
+                    <li><a href="#">О нас</a></li>
+                    <li><a href="#">Контакты</a></li>
+                    <li><a href="#">Политика конфиденциальности</a></li>
+                    <li><a href="#">Условия использования</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Поддержка</h3>
+                <ul>
+                    <li><a href="#">Помощь</a></li>
+                    <li><a href="#">Сообщить о проблеме</a></li>
+                    <li><a href="#">Предложить игру</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; Dual Gaming Centre. Этот сайт был сделан Kolyadual в 2025 году. Все права защищены.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // База данных игр
+        const games = [
+            {
+                id: 1,
+                title: "DOOM 2",
+                genre: "Шутер",
+                category: "shooter",
+                year: "1994",
+                rating: "4.9",
+                description: "Легендарный шутер от первого лица, где вы сражаетесь с полчищами демонов из ада. Улучшенная графика, новые враги и оружие по сравнению с первой частью.",
+                cover: "https://avatars.mds.yandex.net/get-entity_search/5503081/1177553001/S600xU_2x",
+                frame: "https://emupedia.net/emupedia-game-doom2/asmjs/",
+                similar: [2, 3, 4],
+                trending: true,
+                aspectRatio: "5:4",
+                downloadUrl: "https://example.com/download/doom2"
+            },
+            {
+                id: 2,
+                title: "Jetpack Joyride",
+                genre: "Аркада",
+                category: "arcade",
+                year: "2011",
+                rating: "4.7",
+                description: "Захватывающая аркада, где вы управляете героем с реактивным ранцем. Уворачивайтесь от лазеров, собирайте монеты и покупайте новые улучшения.",
+                cover: "https://avatars.mds.yandex.net/get-entity_search/5105005/1177591217/SUx182_2x",
+                frame: "https://emupedia.net/emupedia-game-jetpack-joyride/",
+                similar: [1, 5, 6],
+                trending: true,
+                aspectRatio: "16:9",
+                downloadUrl: "https://example.com/download/jetpack"
+            },
+            {
+                id: 3,
+                title: "Super Mario Bros",
+                genre: "Платформер",
+                category: "platformer",
+                platform: "nes",
+                year: "1985",
+                rating: "5.0",
+                description: "Классическая игра про водопроводчика Марио, который спасает принцессу Пич из лап злого Боузера. Преодолевайте уровни, собирайте монеты и находите секреты.",
+                cover: "https://upload.wikimedia.org/wikipedia/en/0/03/Super_Mario_Bros._box.png",
+                frame: "https://www.retrogames.cc/embed/42214-super-mario-bros-europe-rev-1.html",
+                similar: [4, 7, 8],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/mario"
+            },
+            {
+                id: 4,
+                title: "Tetris",
+                genre: "Головоломка",
+                category: "puzzle",
+                year: "1984",
+                rating: "4.8",
+                description: "Самая известная головоломка в мире. Расставляйте падающие фигурки так, чтобы они заполняли ряды без пробелов. Чем дальше, тем быстрее падают фигуры!",
+                cover: "https://1gai.ru/uploads/posts/2022-06/1655811135_28.png",
+                frame: "https://www.retrogames.cc/embed/31596-tetris-usa.html",
+                similar: [3, 9, 10],
+                trending: false,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/tetris"
+            },
+            {
+                id: 5,
+                title: "Minecraft Classic",
+                genre: "Песочница",
+                category: "sandbox",
+                year: "2009",
+                rating: "4.9",
+                description: "Ранняя версия культовой песочницы, где вы можете строить из блоков всё, что придумаете. Исследуйте мир, добывайте ресурсы и создавайте удивительные сооружения.",
+                cover: "https://avatars.mds.yandex.net/i?id=467419ff2f5267342d84765d34b0f9eafc528c20-10385608-images-thumbs&n=13",
+                frame: "https://classic.minecraft.net/",
+                similar: [2, 6, 11],
+                trending: true,
+                aspectRatio: "16:9",
+                downloadUrl: "https://example.com/download/minecraft"
+            },
+            {
+                id: 6,
+                title: "Pac-Man",
+                genre: "Аркада",
+                category: "arcade",
+                year: "1980",
+                rating: "4.6",
+                description: "Легендарная аркада, где вы управляете Пак-Мэном, который должен съесть все точки в лабиринте, избегая призраков. Съешьте энерджайзер, чтобы повернуть таблицы!",
+                cover: "https://1gai.ru/uploads/posts/2022-06/1655811081_1.png",
+                frame: "https://www.retrogames.cc/embed/144-pac-man.html",
+                similar: [2, 4, 12],
+                trending: false,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/pacman"
+            },
+            {
+                id: 7,
+                title: "Street Fighter II",
+                genre: "Файтинг",
+                category: "fighting",
+                year: "1991",
+                rating: "4.7",
+                description: "Культовая игра в жанре файтинг. Выберите своего бойца и сразитесь с противником в эпических битвах.",
+                cover: "https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_67aeae13e51fcf55b15d1aa3_67aeaf37225bc6255a9f9f2a/scale_2400",
+                frame: "https://www.retrogames.cc/embed/40116-street-fighter-ii-champion-edition-world-920513-etc.html",
+                similar: [3, 8, 13],
+                trending: false,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/streetfighter"
+            },
+            {
+                id: 8,
+                title: "Sonic the Hedgehog",
+                genre: "Платформер",
+                category: "platformer",
+                platform: "sega",
+                year: "1991",
+                rating: "4.8",
+                description: "Знаменитый синий ёжик Соник бежит на высокой скорости, собирает кольца и сражается с доктором Роботником.",
+                cover: "https://upload.wikimedia.org/wikipedia/en/b/ba/Sonic_the_Hedgehog_1_Genesis_box_art.jpg",
+                frame: "https://www.retrogames.cc/embed/10042-sonic-the-hedgehog-usa-europe.html",
+                similar: [3, 7, 14],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/sonic"
+            },
+            {
+                id: 9,
+                title: "Crash Bandicoot [PS 1]",
+                genre: "3D Платформер",
+                category: "platformer",
+                year: "1991",
+                rating: "4.5",
+                description: "Игрок управляет Крэшем — генетически модифицированным тасманийским бандикутом, созданным безумным учёным доктором Нео Кортексом. Задача Крэша — пройти 32 уровня, чтобы победить Кортекса и спасти свою девушку Тавну, которая также является созданным Кортексом бандикутом.",
+                cover: "https://i.pinimg.com/originals/c8/09/2c/c8092cef75614edd6b0a8293248eec80.jpg",
+                frame: "https://www.retrogames.cc/embed/40784-crash-bandicoot.html",
+                similar: [3, 7, 14],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/crash"
+            },
+            {
+                id: 10,
+                title: "Pokémon Emerald",
+                genre: "RPG",
+                category: "rpg",
+                platform: "gba",
+                year: "2004",
+                rating: "4.8",
+                description: "Классическая RPG игра из серии Pokémon, где вы ловите покемонов, сражаетесь с другими тренерами и становитесь чемпионом лиги.",
+                cover: "https://upload.wikimedia.org/wikipedia/en/6/6a/Pok%C3%A9mon_Emerald_box_art.jpg",
+                frame: "https://www.retrogames.cc/embed/43996-pokemon-emerald-version-usa-europe.html",
+                similar: [3, 5, 8],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/pokemon"
+            }
+        ];
+
+        // DOM элементы
+        const gamesContainer = document.getElementById('games-container');
+        const homePage = document.getElementById('home-page');
+        const gamePage = document.getElementById('game-page');
+        const backBtn = document.getElementById('back-btn');
+        const gameTitle = document.getElementById('game-title');
+        const gameGenre = document.getElementById('game-genre');
+        const gameYear = document.getElementById('game-year');
+        const gameRating = document.getElementById('game-rating');
+        const gamePlatform = document.getElementById('game-platform');
+        const gameDescription = document.getElementById('game-description');
+        const gameCoverImg = document.getElementById('game-cover-img');
+        const gameFrame = document.getElementById('game-frame');
+        const gameLoader = document.getElementById('game-loader');
+        const downloadBtn = document.getElementById('download-btn');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const similarGamesContainer = document.getElementById('similar-games-container');
+        const searchInput = document.getElementById('search-input');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const allGamesBtn = document.getElementById('all-games-btn');
+        const trendingBtn = document.getElementById('trending-btn');
+        const confirmModal = document.getElementById('confirm-modal');
+        const confirmCancel = document.getElementById('confirm-cancel');
+        const confirmProceed = document.getElementById('confirm-proceed');
+        const platformIcons = document.querySelectorAll('.platform-icon');
+        const menuToggle = document.getElementById('menu-toggle');
+        const platformDock = document.getElementById('platform-dock');
+
+        // Текущая игра для скачивания
+        let currentGameForDownload = null;
+        let currentPlatformFilter = "all";
+
+        // Отображение игр на главной странице
+        function displayGames(filteredGames = games) {
+            gamesContainer.innerHTML = '';
+            
+            // Фильтрация по платформе
+            let gamesToShow = filteredGames;
+            if (currentPlatformFilter !== "all") {
+                gamesToShow = filteredGames.filter(game => game.platform === currentPlatformFilter);
+            }
+            
+            if (gamesToShow.length === 0) {
+                gamesContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: rgba(255,255,255,0.7);">Игры не найдены. Попробуйте изменить фильтры.</p>';
+                return;
+            }
+            
+            gamesToShow.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.innerHTML = `
+                    <img src="${game.cover}" alt="${game.title}">
+                    <div class="game-info">
+                        <h3>${game.title}</h3>
+                        <span class="genre">${game.genre}</span>
+                        <p class="description">${game.description}</p>
+                        <div class="game-actions">
+                            <button class="details-btn" data-id="${game.id}">
+                                <i class="fas fa-info-circle"></i> Подробнее
+                            </button>
+                        </div>
+                    </div>
+                `;
+                gamesContainer.appendChild(gameCard);
+            });
+
+            // Обработчики для кнопки "Подробнее"
+            document.querySelectorAll('.details-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const gameId = parseInt(e.target.closest('.details-btn').getAttribute('data-id'));
+                    showGameDetails(gameId);
+                });
+            });
+        }
+
+        // Показать детали игры
+        function showGameDetails(gameId) {
+            const game = games.find(g => g.id === gameId);
+            if (!game) return;
+
+            // Заполнение информации об игре
+            gameTitle.textContent = game.title;
+            gameGenre.textContent = game.genre;
+            gameYear.textContent = game.year;
+            gameRating.textContent = game.rating;
+            gamePlatform.textContent = getPlatformName(game.platform);
+            gameDescription.textContent = game.description;
+            gameCoverImg.src = game.cover;
+            gameFrame.src = '';
+            gameLoader.style.display = 'flex';
+            currentGameForDownload = game;
+
+            // Установка соотношения сторон
+            const aspect = game.aspectRatio || "4:3";
+            const [w, h] = aspect.split(':').map(Number);
+            const paddingPercent = (h / w) * 100;
+            document.querySelector('.game-frame-container').style.paddingBottom = `${paddingPercent}%`;
+
+            // Очистка и заполнение похожих игр
+            similarGamesContainer.innerHTML = '';
+            game.similar.forEach(similarId => {
+                const similarGame = games.find(g => g.id === similarId);
+                if (similarGame) {
+                    const similarGameEl = document.createElement('div');
+                    similarGameEl.className = 'similar-game';
+                    similarGameEl.innerHTML = `
+                        <img src="${similarGame.cover}" alt="${similarGame.title}">
+                        <div class="similar-game-info">
+                            <h4>${similarGame.title}</h4>
+                            <span class="genre">${similarGame.genre}</span>
+                        </div>
+                    `;
+                    similarGameEl.addEventListener('click', () => showGameDetails(similarGame.id));
+                    similarGamesContainer.appendChild(similarGameEl);
+                }
+            });
+
+            // Обновление обработчика кнопки скачивания
+            downloadBtn.onclick = () => downloadGame(game);
+
+            // Автоматически запускаем игру
+            playGame(gameId);
+
+            // Переключение на страницу игры
+            homePage.style.display = 'none';
+            gamePage.style.display = 'block';
+        }
+
+        // Получить название платформы по ключу
+        function getPlatformName(platformKey) {
+            const platforms = {
+                "web": "Web",
+                "ps1": "PlayStation 1",
+                "nes": "Nintendo NES",
+                "snes": "Super Nintendo",
+                "gba": "Game Boy Advance",
+                "sega": "Sega Genesis",
+                "pc": "PC",
+                "arcade": "Аркадный автомат"
+            };
+            return platforms[platformKey] || platformKey;
+        }
+
+        // Скрыть лоадер
+        function hideLoader() {
+            gameLoader.style.display = 'none';
+        }
+
+        // Запуск игры
+        function playGame(gameId) {
+            const game = games.find(g => g.id === gameId);
+            if (!game) return;
+
+            gameLoader.style.display = 'flex';
+            gameFrame.src = game.frame;
+            
+            // Для некоторых игр добавляем масштабирование
+            if (gameId === 1 || gameId === 3 || gameId === 4) {
+                gameFrame.style.transform = 'scale(1.2)';
+                gameFrame.style.transformOrigin = 'top left';
+            } else {
+                gameFrame.style.transform = 'none';
+            }
+        }
+
+        // Скачивание игры с подтверждением
+        function downloadGame(game) {
+            if (!game || !game.downloadUrl) return;
+            
+            // Показываем модальное окно подтверждения
+            confirmModal.style.display = 'flex';
+        }
+
+        // Обработчики для модального окна подтверждения
+        confirmCancel.addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+        });
+
+        confirmProceed.addEventListener('click', () => {
+            if (currentGameForDownload && currentGameForDownload.downloadUrl) {
+                window.location.href = currentGameForDownload.downloadUrl;
+            }
+            confirmModal.style.display = 'none';
+        });
+
+        // Закрытие модального окна при клике вне его области
+        confirmModal.addEventListener('click', (e) => {
+            if (e.target === confirmModal) {
+                confirmModal.style.display = 'none';
+            }
+        });
+
+        // Полноэкранный режим
+        function toggleFullscreen() {
+            const elem = document.querySelector('.game-frame-container');
+            if (!document.fullscreenElement) {
+                elem.requestFullscreen().catch(err => {
+                    alert(`Ошибка при переходе в полноэкранный режим: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Назад к списку игр
+        backBtn.addEventListener('click', () => {
+            gamePage.style.display = 'none';
+            homePage.style.display = 'block';
+            gameFrame.src = '';
+            currentGameForDownload = null;
+        });
+
+        // Поиск игр
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            if (searchTerm.length < 2) {
+                displayGames();
+                return;
+            }
+
+            const filteredGames = games.filter(game => 
+                game.title.toLowerCase().includes(searchTerm) || 
+                game.description.toLowerCase().includes(searchTerm) ||
+                game.genre.toLowerCase().includes(searchTerm)
+            );
+            
+            displayGames(filteredGames);
+        });
+
+        // Фильтрация по категориям
+        categoryButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categoryButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const category = btn.getAttribute('data-category');
+                if (category === 'all') {
+                    displayGames();
+                } else {
+                    const filteredGames = games.filter(game => game.category === category);
+                    displayGames(filteredGames);
+                }
+            });
+        });
+
+        // Фильтрация по платформам
+        platformIcons.forEach(icon => {
+            icon.addEventListener('click', () => {
+                platformIcons.forEach(i => i.classList.remove('active'));
+                icon.classList.add('active');
+                
+                currentPlatformFilter = icon.getAttribute('data-platform');
+                displayGames();
+            });
+        });
+
+        // Показать все игры
+        allGamesBtn.addEventListener('click', () => {
+            categoryButtons.forEach(b => b.classList.remove('active'));
+            categoryButtons[0].classList.add('active');
+            displayGames();
+        });
+
+        // Показать популярные игры
+        trendingBtn.addEventListener('click', () => {
+            categoryButtons.forEach(b => b.classList.remove('active'));
+            const filteredGames = games.filter(game => game.trending);
+            displayGames(filteredGames);
+        });
+
+        // Полноэкранный режим
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+        // Переключение меню на мобильных
+        menuToggle.addEventListener('click', () => {
+            platformDock.classList.toggle('open');
+        });
+
+        // Инициализация
+        displayGames();
+
+        // Инициализация частиц
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#6e45e2"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#6e45e2",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+</body>
+</html>
