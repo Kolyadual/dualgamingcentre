@@ -6,3 +6,9 @@
 
 
 <a href="https://t.me/fffbnx">Телеграм канал тестировщика (Некоторые новости там тоже будут)</a>
+
+# Другие проекты от Kolyadual
+
+<a href="https://github.com/Kolyadual/Runget-next_generating_operating_system?ysclid=mdr9zpvc7i263586957">Операционная система Runget</a>
+
+<a href="https://github.com/Kolyadual/Andryemu">Andryemu - эмулятор Android</a>
