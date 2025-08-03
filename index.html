@@ -12,6 +12,7 @@
             --light: #f1f1f1;
             --accent: #ff6b6b;
             --dock-width: 80px;
+            --top-dock-height: 70px;
         }
 
         * {
@@ -28,6 +29,7 @@
             position: relative;
             overflow-x: hidden;
             padding-left: var(--dock-width);
+            padding-top: var(--top-dock-height);
         }
 
         #particles-js {
@@ -37,11 +39,28 @@
             z-index: -1;
         }
 
+        /* Верхний док */
+        .top-dock {
+            position: fixed;
+            top: 0;
+            left: var(--dock-width);
+            right: 0;
+            height: var(--top-dock-height);
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 90;
+            gap: 2rem;
+        }
+
         /* Док платформ */
         .platform-dock {
             position: fixed;
             left: 0;
-            top: 0;
+            top: var(--top-dock-height);
             bottom: 0;
             width: var(--dock-width);
             background: rgba(26, 26, 46, 0.9);
@@ -100,21 +119,6 @@
             transform: translateX(0);
         }
 
-        header {
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-left: calc(-1 * var(--dock-width));
-            padding-left: calc(var(--dock-width) + 2rem);
-        }
-
         .logo {
             display: flex;
             align-items: center;
@@ -136,7 +140,6 @@
 
         .search-bar {
             flex-grow: 1;
-            margin: 0 2rem;
             position: relative;
         }
 
@@ -169,6 +172,8 @@
             padding: 2rem;
             margin-left: calc(-1 * var(--dock-width));
             padding-left: calc(var(--dock-width) + 2rem);
+            margin-top: calc(-1 * var(--top-dock-height));
+            padding-top: calc(var(--top-dock-height) + 2rem);
         }
 
         .hero {
@@ -374,6 +379,8 @@
             margin: 0 auto;
             margin-left: calc(-1 * var(--dock-width));
             padding-left: calc(var(--dock-width) + 2rem);
+            margin-top: calc(-1 * var(--top-dock-height));
+            padding-top: calc(var(--top-dock-height) + 2rem);
         }
 
         .back-btn {
@@ -754,20 +761,29 @@
         @media (max-width: 768px) {
             body {
                 padding-left: 0;
+                padding-top: 0;
+            }
+            
+            .top-dock {
+                left: 0;
+                padding-left: 4rem;
             }
             
             .platform-dock {
                 transform: translateX(-100%);
                 transition: transform 0.3s;
+                top: 0;
             }
             
             .platform-dock.open {
                 transform: translateX(0);
             }
             
-            header, main, footer, .game-page {
+            main, footer, .game-page {
                 margin-left: 0;
                 padding-left: 2rem;
+                margin-top: 0;
+                padding-top: 2rem;
             }
             
             .menu-toggle {
@@ -787,10 +803,6 @@
                 align-items: center;
                 cursor: pointer;
             }
-            
-            header {
-                padding-left: 4rem;
-            }
         }
 
         @media (max-width: 576px) {
@@ -803,16 +815,16 @@
                 gap: 0.5rem;
             }
             
-            header {
+            .top-dock {
                 flex-direction: column;
-                gap: 1rem;
+                height: auto;
                 padding: 1rem;
                 padding-left: 4rem;
+                gap: 1rem;
             }
             
             .search-bar {
                 width: 100%;
-                margin: 1rem 0;
             }
             
             .hero h2 {
@@ -852,6 +864,18 @@
         <i class="fas fa-bars"></i>
     </button>
 
+    <!-- Верхний док -->
+    <div class="top-dock">
+        <div class="logo">
+            <h1>Dual Gaming Centre</h1>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Поиск игр..." id="search-input">
+            <i class="fas fa-search"></i>
+        </div>
+    </div>
+
     <!-- Док платформ -->
     <div class="platform-dock" id="platform-dock">
         <div class="platform-icon active" data-platform="all">
@@ -863,7 +887,7 @@
             <span class="tooltip">Web-игры</span>
         </div>
         <div class="platform-icon" data-platform="ps1">
-            <img src="https://cdn3.iconfinder.com/data/icons/gamepads-1/512/Psx-512.png" alt="PS1">
+            <img src="https://cdn3.iconfinder.com/data/icons/gamepads-1/512/Psx-512.png" alt="Play Station">
             <span class="tooltip">PlayStation 1</span>
         </div>
         <div class="platform-icon" data-platform="nes">
@@ -886,22 +910,18 @@
             <img src="https://cdn3.iconfinder.com/data/icons/vol-2/128/desktop-256.png" alt="PC">
             <span class="tooltip">PC игры</span>
         </div>
+        <div class="platform-icon" data-platform="n64">
+            <img src="https://cdn3.iconfinder.com/data/icons/gamepads-1/512/N64-256.png" alt="N64">
+            <span class="tooltip">Nintendo 64</span>
+        </div>
+        <div class="platform-icon" data-platform="ps2">
+            <img src="https://avatars.mds.yandex.net/i?id=4c83a995fd0bd562579ce0839b826e2a_l-5287703-images-thumbs&n=13" alt="Play Station 2">
+            <span class="tooltip">PlayStation 2</span>
+        </div>
     </div>
 
     <!-- Частицы фона -->
     <div id="particles-js"></div>
-
-    <!-- Шапка -->
-    <header>
-        <div class="logo">
-            <h1>Dual Gaming Centre</h1>
-        </div>
-        
-        <div class="search-bar">
-            <input type="text" placeholder="Поиск игр..." id="search-input">
-            <i class="fas fa-search"></i>
-        </div>
-    </header>
 
     <!-- Основное содержимое -->
     <main>
@@ -927,6 +947,10 @@
                     <button class="category-btn" data-category="platformer">Платформеры</button>
                     <button class="category-btn" data-category="retro">Ретро</button>
                     <button class="category-btn" data-category="strategy">Стратегии</button>
+                    <button class="category-btn" data-category="fighting">Файтинги</button>
+                    <button class="category-btn" data-category="rpg">RPG</button>
+                    <button class="category-btn" data-category="adventure">Приключения</button>
+                    <button class="category-btn" data-category="sports">Спортивные</button>
                 </div>
             </section>
 
@@ -1244,8 +1268,215 @@
                 trending: true,
                 aspectRatio: "4:3",
                 downloadUrl: "https://example.com/download/tekken"
+            },
+            {
+                id: 13,
+                title: "Super Mario 64",
+                genre: "3D Платформер",
+                category: "platformer",
+                platform: "n64",
+                year: "1996",
+                rating: "4.9",
+                description: "Революционная 3D игра про Марио, которая задала стандарты для 3D платформеров.",
+                cover: "https://i.pinimg.com/736x/73/4f/bb/734fbb8441377a3ecc387387e9b7b54c.jpg",
+                frame: "https://www.retrogames.cc/embed/42101-sonic-adventure-64.html",
+                similar: [3, 9, 14],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/mario64"
+            },
+            {
+                id: 14,
+                title: "The Legend of Zelda: Ocarina of Time",
+                genre: "Приключение",
+                category: "adventure",
+                platform: "n64",
+                year: "1998",
+                rating: "5.0",
+                description: "Легендарная приключенческая игра, где вы играете за Линка и спасаете принцессу Зельду.",
+                cover: "https://upload.wikimedia.org/wikipedia/en/5/57/The_Legend_of_Zelda_Ocarina_of_Time.jpg",
+                frame: "https://www.retrogames.cc/embed/40611-the-legend-of-zelda-ocarina-of-time.html",
+                similar: [10, 13, 15],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/zelda"
+            },
+            {
+                id: 15,
+                title: "Final Fantasy VII",
+                genre: "RPG",
+                category: "rpg",
+                platform: "ps1",
+                year: "1997",
+                rating: "4.9",
+                description: "Культовая RPG игра с глубоким сюжетом и запоминающимися персонажами.",
+                cover: "https://upload.wikimedia.org/wikipedia/en/c/c2/Final_Fantasy_VII_Box_Art.jpg",
+                frame: "https://www.retrogames.cc/embed/40610-final-fantasy-vii.html",
+                similar: [10, 14, 16],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/ff7"
+            },
+            {
+                id: 16,
+                title: "Metal Gear Solid",
+                genre: "Стелс-экшен",
+                category: "adventure",
+                platform: "ps1",
+                year: "1998",
+                rating: "4.8",
+                description: "Революционная стелс-игра с кинематографичным повествованием.",
+                cover: "https://i.pinimg.com/originals/9e/1c/32/9e1c327e55a43445f141f0acd8fa59ca.jpg",
+                frame: "https://www.retrogames.cc/embed/43266-metal-gear-solid-disc-1.html",
+                similar: [15, 17, 18],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/mgs"
+            },
+            {
+                id: 17,
+                title: "Gran Turismo 2",
+                genre: "Гонки",
+                category: "racing",
+                platform: "ps1",
+                year: "1999",
+                rating: "4.7",
+                description: "Реалистичный симулятор гонок с огромным количеством автомобилей.",
+                cover: "https://avatars.mds.yandex.net/i?id=a0ac714e76fa63f74524c5890ed952ad_l-5352698-images-thumbs&n=13",
+                frame: "https://www.retrogames.cc/embed/43709-gran-turismo-2-usa-arcade-mode.html",
+                similar: [19, 20, 21],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/gt2"
+            },
+            {
+                id: 18,
+                title: "Resident Evil 2",
+                genre: "Survival Horror",
+                category: "adventure",
+                platform: "ps1",
+                year: "1998",
+                rating: "4.8",
+                description: "Классическая игра в жанре survival horror с зомби и ужасами.",
+                cover: "https://fanatical.imgix.net/product/original/6623a6b1-5f22-4f59-ac72-e251761a2ddb.jpeg?auto=compress",
+                frame: "https://www.retrogames.cc/embed/42943-resident-evil-2-dual-shock-ver-disc-1-leon.html",
+                similar: [16, 19, 22],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/re2"
+            },
+            {
+                id: 19,
+                title: "Castlevania: Symphony of the Night",
+                genre: "Метроидвания",
+                category: "platformer",
+                platform: "ps1",
+                year: "1997",
+                rating: "4.9",
+                description: "Культовая игра, задавшая стандарты жанра метроидвания.",
+                cover: "https://play-lh.googleusercontent.com/COFFcle3Dy0a4tjLOfQ1yrLJIq-4FElB-06ha1e0Yv93vvK7IDPz0H73M03JFFUCE2ac=w832-h470",
+                frame: "https://www.retrogames.cc/embed/41504-castlevania-symphony-of-the-night.html",
+                similar: [9, 14, 23],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/castlevania"
+            },
+            {
+                id: 20,
+                title: "Tony Hawk's Pro Skater 2",
+                genre: "Спортивный симулятор",
+                category: "sports",
+                platform: "ps1",
+                year: "2000",
+                rating: "4.8",
+                description: "Лучший скейтбординг симулятор всех времен.",
+                cover: "https://avatars.mds.yandex.net/i?id=ea432dfdb9f515c6e47b569f6011d52e_l-5313814-images-thumbs&n=13",
+                frame: "https://www.retrogames.cc/embed/42153-tony-hawks-pro-skater-2.html",
+                similar: [17, 24, 25],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/thps2"
+            },
+            {
+                id: 21,
+                title: "Grand Theft Auto: Vice City",
+                genre: "Экшен-приключение",
+                category: "adventure",
+                platform: "ps2",
+                year: "2002",
+                rating: "4.9",
+                description: "Культовая игра в стиле 80-х с открытым миром.",
+                cover: "https://upload.wikimedia.org/wikipedia/en/0/0f/Vice-city-cover.jpg",
+                frame: "https://www.retrogames.cc/embed/40604-grand-theft-auto-vice-city.html",
+                similar: [16, 22, 26],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/gta-vc"
+            },
+            {
+                id: 22,
+                title: "God of War",
+                genre: "Экшен",
+                category: "adventure",
+                platform: "ps2",
+                year: "2005",
+                rating: "4.8",
+                description: "Эпичная игра про Кратоса и его месть богам.",
+                cover: "https://upload.wikimedia.org/wikipedia/en/a/a7/God_of_War_cover.jpg",
+                frame: "https://www.retrogames.cc/embed/40603-god-of-war.html",
+                similar: [16, 21, 27],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/gow"
+            },
+            {
+                id: 23,
+                title: "Shadow of the Colossus",
+                genre: "Экшен-приключение",
+                category: "adventure",
+                platform: "ps2",
+                year: "2005",
+                rating: "4.9",
+                description: "Уникальная игра про сражения с колоссами в прекрасном, но пустынном мире.",
+                cover: "https://upload.wikimedia.org/wikipedia/en/d/da/Shadow_of_the_Colossus.jpg",
+                frame: "https://www.retrogames.cc/embed/40602-shadow-of-the-colossus.html",
+                similar: [14, 22, 28],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/sotc"
+            },
+            {
+                id: 24,
+                title: "Kingdom Hearts",
+                genre: "Action RPG",
+                category: "rpg",
+                platform: "ps2",
+                year: "2002",
+                rating: "4.7",
+                description: "Уникальное сочетание Disney и Final Fantasy в одном приключении.",
+                cover: "https://upload.wikimedia.org/wikipedia/en/3/35/Kingdom_Hearts_Cover.jpg",
+                frame: "https://www.retrogames.cc/embed/40601-kingdom-hearts.html",
+                similar: [10, 15, 29],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/kh"
+            },
+            {
+                id: 25,
+                title: "Need for Speed: Undercover",
+                genre: "Гонки",
+                category: "racing",
+                platform: "ps2",
+                year: "2005",
+                rating: "4.8",
+                description: "Need for Speed: Undercover возвращается в Dual Gaming Centre прямиком с Xbox 360 и PS2! Бешенные погони от копов и другое!",
+                cover: "https://i.pinimg.com/736x/32/70/06/327006e30bae624bb64710245360f3a8.jpg",
+                frame: "https://www.retrogames.cc/embed/38154-need-for-speed-undercover-usa-en-fr-de-es-it-nl.html",
+                similar: [17, 20, 30],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/nfs-uc"
             }
-
         ];
 
         // DOM элементы
@@ -1386,6 +1617,8 @@
                 "gba": "Game Boy Advance",
                 "sega": "Sega Genesis",
                 "pc": "PC",
+                "n64": "Nintendo 64",
+                "ps2": "PlayStation 2",
                 "arcade": "Аркадный автомат"
             };
             return platforms[platformKey] || platformKey;
@@ -1487,7 +1720,7 @@
                 if (category === 'all') {
                     displayGames();
                 } else {
-                    const filteredGames = games.filter(game => game.category === category);
+                    const filteredGames = games.filter(game => game.category.includes(category));
                     displayGames(filteredGames);
                 }
             });
