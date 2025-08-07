@@ -7,6 +7,8 @@
 
 <a href="https://t.me/fffbnx">Телеграм канал тестировщика (Некоторые новости там тоже будут)</a>
 
+ВНИМАНИЕ!!!! ВСЕ ИГРЫ, КОТОРЫЕ ДОСТУПНЫ В Dual Gaming Centre НЕ ЯВЛЯЮТСЯ РАЗРАБОТКОЙ Kolyadual. ПРАВА НА ИГРЫ, ПРЕДСТАВЛЕННЫЕ НА САЙТЕ ДОСТУПНЫ ТОЛЬКО РАЗРАБОТЧИКАМ ТОЙ ИЛИ ИНОЙ ИГРЫ. Спасибо за внимание!
+
 # Другие проекты от Kolyadual
 
 <a href="https://github.com/Kolyadual/Runget-next_generating_operating_system?ysclid=mdr9zpvc7i263586957">Операционная система Runget</a>
