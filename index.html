@@ -738,6 +738,22 @@
             font-size: 0.9rem;
         }
 
+        /* Стили для рекламного блока */
+        .yandex-ads {
+            margin: 20px auto;
+            max-width: 1200px;
+            padding: 0 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            display: none; /* По умолчанию скрываем */
+        }
+
+        .yandex-ads.show {
+            display: block; /* Показываем только на странице игры */
+        }
+
         @media (max-width: 992px) {
             .game-header {
                 flex-direction: column;
@@ -1014,6 +1030,20 @@
             </div>
         </div>
     </main>
+    <!-- Блок рекламы Яндекс -->
+    <div class="yandex-ads" id="yandex-ads">
+        <!-- Яндекс.Реклама -->
+        <div id="yandex_rtb_R-A-1234567-1"></div>
+        <script>
+            window.yaContextCb = window.yaContextCb || [];
+            window.yaContextCb.push(() => {
+                Ya.Context.AdvManager.render({
+                    renderTo: 'yandex_rtb_R-A-1234567-1',
+                    blockId: 'R-A-1234567-1'
+                });
+            });
+        </script>
+    </div>
 
     <!-- Модальное окно подтверждения -->
     <div class="confirm-modal" id="confirm-modal">
