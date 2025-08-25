@@ -2,6 +2,15 @@
 
 В Dual Gaming Centre каждый найдет свою любимую игру, у нас широкий спектр игр - от DOOM до Minecraft и Jetpack Joyride! Ну а если игра понравилась - то можно легко скачать на такие операционные системы как Runget, Windows и Android!
 
+# Некоторые игры в которые можно поиграть как на телефоне или планшете, так и на ПК:
+
+DOOM 2
+Jetpack Joyride
+Super Mario bros
+FNaF 2
+
+и многие другие игры...
+
 <a href="https://kolyadual.github.io/dualgamingcentre/">Перейти на Dual Gaming Centre</a>
 
 
