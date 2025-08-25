@@ -28,6 +28,8 @@ FNaF 2
 
 <a href="https://kolyadual.github.io/dualgamingcentre/">Перейти на Dual Gaming Centre</a>
 
+<a href="https://t.me/DGC_off">Перейти на оффициальный Телеграм канал Dual Gaming Centre</a>
+
 
 <a href="https://t.me/fffbnx">Телеграм канал тестировщика (Некоторые новости там тоже будут)</a>
 
