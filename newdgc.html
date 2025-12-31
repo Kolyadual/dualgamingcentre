@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script async src="https://yandex.ru/ads/system/context.js"></script>
     <title>Dual Gaming Centre | Играй в лучшие игры и скачивай их без регистрации! | Dual Gaming Centre - сайт лучше VK Play и Яндекс Игры!</title>
-    <link rel="icon" href="./favicon.png" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="icon" href="./favicon.png" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon" />
     <link rel="apple-touch-icon" href="img/icon.png" />
+    <meta property="og:title" content="Dual Gaming Centre — Играйте или загружайте лучшие игры бесплатно и без регистрации!" />
+    <meta property="og:description" content="Откройте для себя огромную коллекцию классических и современных игр. Никаких скачиваний, никаких подписок — просто наслаждайтесь игрой! Телеграм: https://t.me/DGC_off" />
+    <meta property="og:image" content="https://kolyadual.github.io/dualgamingcentre/image.png" />
+    <meta property="og:url" content="https://kolyadual.github.io/dualgamingcentre/" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
         :root {
             --primary: #6e45e2;
@@ -14,121 +22,40 @@
             --dark: #1a1a2e;
             --light: #f1f1f1;
             --accent: #ff6b6b;
-            --dock-width: 80px;
             --top-dock-height: 70px;
-            --theme-name: 'default';
         }
-
-        /* Новая брутальная черная тема */
         :root[data-theme="brutal-dark"] {
             --primary: #ff0000;
             --secondary: #990000;
             --dark: #0a0a0a;
             --light: #cccccc;
             --accent: #ff3300;
-            --theme-name: 'brutal-dark';
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Rubik', sans-serif;
         }
-
         body {
             background: linear-gradient(135deg, var(--dark), #16213e);
             color: var(--light);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
-            padding-left: var(--dock-width);
             padding-top: var(--top-dock-height);
             transition: background 0.5s ease;
         }
-
-        /* Стили для верхней навигации */
-        .top-navigation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 30px; /* Уменьшил высоту в 1.5 раза */
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            padding: 0 1rem;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-btn {
-            padding: 0.3rem 0.8rem; /* Уменьшил размер в 1.5 раза */
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--light);
-            border: none;
-            border-radius: 4px;
-            margin-right: 0.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.8rem; /* Уменьшил шрифт */
-        }
-
-        .nav-btn:hover {
-            background: var(--primary);
-        }
-
-        .theme-switcher {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-        }
-
-        .theme-label {
-            margin-right: 0.5rem;
-            font-size: 0.7rem; /* Уменьшил шрифт */
-            color: var(--light);
-        }
-
-        .theme-toggle {
-            position: relative;
-            width: 50px; /* Уменьшил размер */
-            height: 20px; /* Уменьшил размер */
-            background: rgba(110, 69, 226, 0.5);
-            border-radius: 10px; /* Уменьшил радиус */
-            cursor: pointer;
-        }
-
-        .theme-toggle::before {
-            content: '';
-            position: absolute;
-            width: 16px; /* Уменьшил размер */
-            height: 16px; /* Уменьшил размер */
-            background: var(--primary);
-            border-radius: 50%;
-            top: 2px;
-            left: 2px;
-            transition: all 0.3s;
-        }
-
-        .theme-toggle.brutal::before {
-            left: 32px; /* Подправил позицию */
-            background: #ff0000;
-        }
-
         #particles-js {
             position: fixed;
             width: 100%;
             height: 100%;
             z-index: -1;
         }
-
-        /* Верхний док */
         .top-dock {
             position: fixed;
-            top: 30px; /* Смещаем вниз из-за уменьшенной навигации */
-            left: var(--dock-width);
+            top: 0;
+            left: 0;
             right: 0;
             height: var(--top-dock-height);
             background: rgba(26, 26, 46, 0.9);
@@ -136,305 +63,160 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
-            padding: 0 2rem;
+            padding: 0 1.5rem;
             z-index: 90;
-            gap: 2rem;
+            gap: 1.5rem;
         }
-
-        /* Док платформ */
-        .platform-dock {
-            position: fixed;
-            left: 0;
-            top: calc(30px + var(--top-dock-height)); /* Смещаем вниз из-за уменьшенной навигации */
-            bottom: 0;
-            width: var(--dock-width);
-            background: rgba(26, 26, 46, 0.9);
-            backdrop-filter: blur(5px);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 1rem 0;
-            z-index: 90;
-        }
-
-        .platform-icon {
-            width: 50px;
-            height: 50px;
-            margin: 0.5rem 0;
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.6rem;
             cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
+            z-index: 100;
         }
-
-        .platform-icon img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            transition: all 0.3s;
-        }
-
-        .platform-icon:hover {
-            background: rgba(110, 69, 226, 0.3);
-        }
-
-        .platform-icon.active {
-            background: var(--primary);
-        }
-
-        .platform-icon .tooltip {
-            position: absolute;
-            left: calc(100% + 15px);
-            background: rgba(26, 26, 46, 0.9);
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s;
-            transform: translateX(-10px);
-        }
-
-        .platform-icon:hover .tooltip {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .logo img {
-            height: 40px;
-        }
-
         .logo h1 {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             background: linear-gradient(to right, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             font-weight: 700;
         }
-
         .search-bar {
             flex-grow: 1;
             position: relative;
         }
-
         .search-bar input {
             width: 100%;
-            padding: 0.8rem 1.5rem;
+            padding: 0.7rem 1.2rem;
             border-radius: 50px;
             border: none;
             background: rgba(255, 255, 255, 0.1);
             color: white;
-            font-size: 1rem;
+            font-size: 0.95rem;
             outline: none;
             transition: all 0.3s;
         }
-
         .search-bar input:focus {
             background: rgba(255, 255, 255, 0.2);
             box-shadow: 0 0 10px rgba(110, 69, 226, 0.5);
         }
-
         .search-bar i {
             position: absolute;
-            right: 1.5rem;
+            right: 1.2rem;
             top: 50%;
             transform: translateY(-50%);
             color: rgba(255, 255, 255, 0.7);
         }
-
         main {
-            padding: 2rem;
-            margin-left: calc(-1 * var(--dock-width));
-            padding-left: calc(var(--dock-width) + 2rem);
-            margin-top: calc(-1 * var(--top-dock-height) - 30px); /* Учитываем уменьшенную навигацию */
-            padding-top: calc(var(--top-dock-height) + 30px + 2rem); /* Учитываем уменьшенную навигацию */
+            padding: 1.5rem;
+            padding-top: calc(var(--top-dock-height) + 1.5rem);
         }
-
         .hero {
             text-align: center;
-            padding: 3rem 0;
+            padding: 2rem 0;
             margin-bottom: 2rem;
         }
-
         .hero h2 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 1rem;
             background: linear-gradient(to right, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1rem;
             max-width: 800px;
-            margin: 0 auto 2rem;
+            margin: 0 auto 1.5rem;
             color: rgba(255, 255, 255, 0.8);
         }
-
         .cta-buttons {
             display: flex;
             justify-content: center;
             gap: 1rem;
+            flex-wrap: wrap;
         }
-
         .cta-buttons button {
-            padding: 0.8rem 2rem;
+            padding: 0.7rem 1.5rem;
             border-radius: 50px;
             border: none;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
-
         .browse-games {
             background: var(--accent);
             color: white;
         }
-
         .browse-games:hover {
             background: #e05555;
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
         }
-
         .trending {
             background: transparent;
             color: var(--light);
             border: 2px solid var(--secondary);
         }
-
         .trending:hover {
             background: rgba(136, 211, 206, 0.1);
             transform: translateY(-3px);
         }
-
-        .categories {
-            margin: 3rem 0;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .section-title i {
-            margin-right: 1rem;
-            color: var(--primary);
-        }
-
-        .category-buttons {
-            display: flex;
-            gap: 1rem;
-            overflow-x: auto;
-            padding-bottom: 1rem;
-        }
-
-        .category-buttons::-webkit-scrollbar {
-            height: 5px;
-        }
-
-        .category-buttons::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-
-        .category-buttons::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 10px;
-        }
-
-        .category-btn {
-            padding: 0.6rem 1.5rem;
-            border-radius: 50px;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--light);
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            white-space: nowrap;
-        }
-
-        .category-btn:hover, .category-btn.active {
-            background: var(--primary);
-        }
-
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
-
         .game-card {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
             transition: all 0.3s;
             position: relative;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             border-color: var(--primary);
         }
-
         .game-card img {
             width: 100%;
-            height: 180px;
+            height: 160px;
             object-fit: cover;
         }
-
         .game-info {
-            padding: 1.5rem;
+            padding: 1.2rem;
         }
-
         .game-info h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            margin-bottom: 0.4rem;
         }
-
         .game-info .genre {
             color: var(--secondary);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
             display: block;
         }
-
         .game-info .description {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-
         .game-actions {
             display: flex;
             justify-content: center;
         }
-
         .details-btn {
-            padding: 0.6rem 1.5rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 50px;
             border: none;
             background: #4285F4;
@@ -444,30 +226,147 @@
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
+            font-size: 0.9rem;
         }
-
         .details-btn:hover {
             background: #3367D6;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(66, 133, 244, 0.3);
         }
-
-        .details-btn i {
-            font-size: 0.9rem;
+        /* === Mobile Sidebar === */
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 260px;
+            height: 100vh;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+            padding: 1rem;
         }
-
+        .mobile-sidebar.open {
+            left: 0;
+        }
+        .sidebar-content {
+            padding-top: var(--top-dock-height);
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .sidebar-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .sidebar-title {
+            color: var(--secondary);
+            font-size: 1.1rem;
+            margin: 0;
+        }
+        .sidebar-link, .sidebar-btn {
+            padding: 0.6rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: var(--light);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .sidebar-link i, .sidebar-btn i {
+            width: 20px;
+            text-align: center;
+        }
+        .sidebar-link:hover, .sidebar-btn:hover {
+            background: var(--primary);
+        }
+        .sidebar-platforms {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+        .platform-icon-small {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.2s;
+        }
+        .platform-icon-small:hover {
+            background: var(--primary);
+        }
+        .platform-icon-small img {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+        }
+        .theme-switcher {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        .theme-label {
+            font-size: 0.9rem;
+            color: var(--light);
+        }
+        .theme-toggle {
+            position: relative;
+            width: 56px;
+            height: 22px;
+            background: rgba(110, 69, 226, 0.5);
+            border-radius: 11px;
+            cursor: pointer;
+        }
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s;
+        }
+        .theme-toggle.brutal::before {
+            left: 36px;
+            background: #ff0000;
+        }
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+        .sidebar-overlay.active {
+            display: block;
+        }
+        /* === Страница игры === */
         .game-page {
             display: none;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            margin-left: calc(-1 * var(--dock-width));
-            padding-left: calc(var(--dock-width) + 2rem);
-            margin-top: calc(-1 * var(--top-dock-height) - 30px);
-            padding-top: calc(var(--top-dock-height) + 30px + 2rem);
+            padding: 0 1.5rem;
+            padding-top: calc(var(--top-dock-height) + 1.5rem);
         }
-
         .back-btn {
             padding: 0.5rem 1rem;
             border-radius: 50px;
@@ -482,73 +381,65 @@
             align-items: center;
             gap: 0.5rem;
         }
-
         .back-btn:hover {
             background: rgba(255, 255, 255, 0.2);
         }
-
         .game-header {
             display: flex;
-            gap: 2rem;
-            margin-bottom: 2rem;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
-
         .game-cover {
-            flex: 0 0 300px;
-            border-radius: 15px;
+            flex: 0 0 250px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
-
         .game-cover img {
             width: 100%;
             height: auto;
             display: block;
         }
-
         .game-details {
             flex: 1;
+            min-width: 300px;
         }
-
         .game-details h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
             background: linear-gradient(to right, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-
         .game-meta {
             display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
             color: rgba(255, 255, 255, 0.7);
         }
-
         .game-meta span {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
-
         .game-meta i {
             color: var(--secondary);
         }
-
         .game-description {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             line-height: 1.6;
         }
-
         .game-actions-page {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
-
         .download-btn {
-            padding: 0.8rem 2rem;
+            padding: 0.7rem 1.5rem;
             border-radius: 50px;
             border: 2px solid var(--secondary);
             background: transparent;
@@ -560,14 +451,12 @@
             align-items: center;
             gap: 0.5rem;
         }
-
         .download-btn:hover {
             background: rgba(136, 211, 206, 0.1);
             transform: translateY(-2px);
         }
-
         .fullscreen-btn {
-            padding: 0.8rem;
+            padding: 0.7rem;
             border-radius: 50px;
             border: 2px solid rgba(255, 255, 255, 0.3);
             background: transparent;
@@ -579,37 +468,34 @@
             justify-content: center;
             aspect-ratio: 1/1;
         }
-
         .fullscreen-btn:hover {
             background: rgba(255, 255, 255, 0.1);
         }
-
         .game-content {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
+            flex-wrap: wrap;
         }
-
         .game-player {
             flex: 1;
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            padding: 1.5rem;
+            border-radius: 12px;
+            padding: 1rem;
             display: flex;
             flex-direction: column;
             position: relative;
             overflow: hidden;
+            min-width: 300px;
         }
-
         .game-frame-container {
             position: relative;
             width: 100%;
             height: 0;
-            padding-bottom: 75%;
+            padding-bottom: 25%; /* Уменьшил размер игры в 3 раза */
             background: #000;
-            border-radius: 10px;
+            border-radius: 8px;
             overflow: hidden;
         }
-
         .game-frame {
             position: absolute;
             top: 0;
@@ -618,7 +504,6 @@
             height: 100%;
             border: none;
         }
-
         .game-loader {
             position: absolute;
             top: 0;
@@ -633,66 +518,384 @@
             color: white;
             z-index: 10;
         }
-
         .game-loader i {
-            font-size: 2rem;
-            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
             animation: spin 1s linear infinite;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         .game-sidebar {
-            flex: 0 0 300px;
+            flex: 0 0 280px;
+            min-width: 280px;
         }
-
         .similar-games {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 1.5rem;
+            border-radius: 12px;
+            padding: 1.2rem;
         }
-
         .similar-games h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
             color: var(--secondary);
         }
-
         .similar-game {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
         }
-
         .similar-game:last-child {
             margin-bottom: 0;
             padding-bottom: 0;
             border-bottom: none;
         }
-
         .similar-game img {
-            width: 80px;
-            height: 60px;
+            width: 70px;
+            height: 50px;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 6px;
         }
-
         .similar-game-info h4 {
             font-size: 0.9rem;
             margin-bottom: 0.3rem;
         }
-
         .similar-game-info .genre {
             font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.6);
         }
-
+        /* === Страница событий === */
+        .events-page {
+            display: none;
+            padding: 0 1.5rem;
+            padding-top: calc(var(--top-dock-height) + 1.5rem);
+        }
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .event-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+        .event-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        .event-info {
+            padding: 1.2rem;
+        }
+        .event-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .event-date {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+        .event-info .description {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .event-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .participate-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            border: none;
+            background: var(--accent);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.9rem;
+        }
+        .participate-btn:hover {
+            background: #e05555;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+        .participants-count {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        /* === Страница флипсов === */
+        .flipsters-page {
+            display: none;
+            padding: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 1000;
+            flex-direction: column;
+        }
+        .flipster-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .flipster-frame {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .flipster-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.8rem;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.8rem;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+        }
+        .flipster-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        .flipster-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .flipster-actions {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            z-index: 10;
+        }
+        .flipster-action-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        .flipster-action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .flipster-info {
+            position: absolute;
+            left: 20px;
+            bottom: 100px;
+            color: white;
+            z-index: 10;
+            max-width: 70%;
+        }
+        .flipster-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 0.4rem;
+        }
+        .flipster-genre {
+            color: var(--secondary);
+            font-size: 0.95rem;
+        }
+        .flipster-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            color: white;
+            z-index: 20;
+        }
+        .flipster-loader i {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            animation: spin 1s linear infinite;
+        }
+        /* === Retro Corner === */
+        .retro-corner-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            z-index: 1000;
+        }
+        .retro-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #0a0a0a;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 20;
+            border-bottom: 2px solid #00ff00;
+        }
+        .retro-title {
+            color: #00ff00;
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+        .retro-controls {
+            display: flex;
+            gap: 15px;
+        }
+        .retro-btn {
+            background: #333;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .retro-btn:hover {
+            background: #00ff00;
+            color: #000;
+        }
+        .retro-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin-top: 50px; /* Отступ для заголовка */
+        }
+        .retro-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        /* === Virtual Emulator === */
+        .virtual-emulator {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 1000;
+        }
+        .emulator-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .emulator-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .emulator-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #0a0a0a;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 20;
+            border-bottom: 2px solid #4285F4;
+        }
+        .emulator-title {
+            color: #4285F4;
+            font-family: 'Courier New', monospace;
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+        .emulator-controls {
+            display: flex;
+            gap: 15px;
+        }
+        .emulator-btn {
+            background: #333;
+            color: #4285F4;
+            border: 1px solid #4285F4;
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .emulator-btn:hover {
+            background: #4285F4;
+            color: #000;
+        }
+        /* === Модальное окно подтверждения === */
         .confirm-modal {
             display: none;
             position: fixed;
@@ -705,604 +908,186 @@
             justify-content: center;
             align-items: center;
         }
-
         .confirm-content {
             background: #1a1a2e;
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 10px;
             max-width: 500px;
             width: 90%;
             border: 1px solid #6e45e2;
         }
-
         .confirm-content h3 {
             color: #ff6b6b;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
-
         .confirm-content p {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
             line-height: 1.5;
+            color: var(--light);
         }
-
         .confirm-buttons {
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
             justify-content: flex-end;
         }
-
         .confirm-btn {
-            padding: 0.5rem 1.5rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 5px;
             cursor: pointer;
             font-weight: 600;
+            border: none;
         }
-
         .confirm-cancel {
             background: transparent;
             border: 1px solid #6e45e2;
             color: #6e45e2;
         }
-
         .confirm-proceed {
             background: #ff6b6b;
-            border: 1px solid #ff6b6b;
             color: white;
         }
-
+        /* === Footer === */
         footer {
             background: rgba(26, 26, 46, 0.8);
-            padding: 3rem 2rem 2rem;
-            margin-top: 3rem;
+            padding: 2rem 1.5rem 1.5rem;
+            margin-top: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-left: calc(-1 * var(--dock-width));
-            padding-left: calc(var(--dock-width) + 2rem);
         }
-
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
             margin: 0 auto;
         }
-
         .footer-column h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
             color: var(--secondary);
         }
-
         .footer-column ul {
             list-style: none;
         }
-
         .footer-column li {
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
         }
-
         .footer-column a {
             color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             transition: all 0.3s;
         }
-
         .footer-column a:hover {
             color: var(--primary);
         }
-
         .social-links {
             display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
+            gap: 0.8rem;
+            margin-top: 0.8rem;
         }
-
         .social-links a {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
             color: white;
             transition: all 0.3s;
         }
-
         .social-links a:hover {
             background: var(--primary);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
-
         .copyright {
             text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.5);
             font-size: 0.9rem;
         }
-
-        .yandex-ads {
-            margin: 20px auto;
-            max-width: 1200px;
-            padding: 0 20px;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 15px;
-        }
-
-        .yandex-ads.show {
-            display: block;
-        }
-
-        /* Специфические стили для брутальной темы */
+        /* === Brutal-theme overrides === */
         :root[data-theme="brutal-dark"] body {
             background: linear-gradient(135deg, #000000, #0a0a0a);
         }
-
         :root[data-theme="brutal-dark"] .top-dock,
-        :root[data-theme="brutal-dark"] .platform-dock,
-        :root[data-theme="brutal-dark"] .top-navigation {
+        :root[data-theme="brutal-dark"] .mobile-sidebar {
             background: rgba(10, 10, 10, 0.95);
             border-color: #ff0000;
         }
-
+        :root[data-theme="brutal-dark"] .theme-toggle::before {
+            background: #ff0000;
+        }
+        :root[data-theme="brutal-dark"] .game-card:hover {
+            border-color: #ff3300;
+            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.3);
+        }
+        :root[data-theme="brutal-dark"] .browse-games {
+            background: #ff3300;
+        }
+        :root[data-theme="brutal-dark"] .browse-games:hover {
+            background: #cc2200;
+        }
         :root[data-theme="brutal-dark"] .game-card,
         :root[data-theme="brutal-dark"] .similar-games,
         :root[data-theme="brutal-dark"] .confirm-content {
             background: rgba(0, 0, 0, 0.7);
             border: 1px solid #ff0000;
         }
-
-        :root[data-theme="brutal-dark"] .game-card:hover {
-            box-shadow: 0 15px 30px rgba(255, 0, 0, 0.3);
-            border-color: #ff3300;
-        }
-
-        :root[data-theme="brutal-dark"] .category-btn:hover,
-        :root[data-theme="brutal-dark"] .category-btn.active {
-            background: #ff0000;
-        }
-
-        :root[data-theme="brutal-dark"] .nav-btn:hover {
-            background: #ff0000;
-        }
-
-        :root[data-theme="brutal-dark"] .platform-icon.active {
-            background: #ff0000;
-        }
-
-        :root[data-theme="brutal-dark"] .platform-icon:hover {
-            background: rgba(255, 0, 0, 0.3);
-        }
-
-        :root[data-theme="brutal-dark"] .browse-games {
-            background: #ff3300;
-        }
-
-        :root[data-theme="brutal-dark"] .browse-games:hover {
-            background: #cc2200;
-        }
-
-        :root[data-theme="brutal-dark"] .details-btn {
-            background: #990000;
-        }
-
-        :root[data-theme="brutal-dark"] .details-btn:hover {
-            background: #770000;
-        }
-
-        :root[data-theme="brutal-dark"] .search-bar input {
-            background: rgba(255, 0, 0, 0.1);
-        }
-
-        :root[data-theme="brutal-dark"] .search-bar input:focus {
-            background: rgba(255, 0, 0, 0.2);
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        }
-
-        /* Анимация для брутальной темы */
-        @keyframes brutal-pulse {
-            0% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.7); }
-            50% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.9); }
-            100% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.7); }
-        }
-
-        :root[data-theme="brutal-dark"] .game-card:hover {
-            animation: brutal-pulse 2s infinite;
-        }
-
-        /* Стили для страницы событий */
-        .events-page {
-            display: none;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            margin-left: calc(-1 * var(--dock-width));
-            padding-left: calc(var(--dock-width) + 2rem);
-            margin-top: calc(-1 * var(--top-dock-height) - 30px);
-            padding-top: calc(var(--top-dock-height) + 30px + 2rem);
-        }
-
-        .events-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .event-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s;
-            position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .event-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            border-color: var(--primary);
-        }
-
-        .event-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .event-info {
-            padding: 1.5rem;
-        }
-
-        .event-info h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .event-date {
-            color: var(--secondary);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .event-info .description {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 1.5rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .event-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .participate-btn {
-            padding: 0.6rem 1.5rem;
-            border-radius: 50px;
-            border: none;
-            background: var(--accent);
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .participate-btn:hover {
-            background: #e05555;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
-        }
-
-        .participants-count {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        /* Стили для брутальной темы на событиях */
         :root[data-theme="brutal-dark"] .event-card {
             background: rgba(0, 0, 0, 0.7);
             border: 1px solid #ff0000;
         }
-
         :root[data-theme="brutal-dark"] .event-card:hover {
-            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
+            box-shadow: 0 8px 16px rgba(255, 0, 0, 0.3);
             border-color: #ff3300;
         }
-
         :root[data-theme="brutal-dark"] .participate-btn {
             background: #ff3300;
         }
-
         :root[data-theme="brutal-dark"] .participate-btn:hover {
             background: #cc2200;
         }
-
-        /* Стили для страницы Флипсы */
-        .flipsy-page {
-            display: none;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            margin-left: calc(-1 * var(--dock-width));
-            padding-left: calc(var(--dock-width) + 2rem);
-            margin-top: calc(-1 * var(--top-dock-height) - 30px);
-            padding-top: calc(var(--top-dock-height) + 30px + 2rem);
+        :root[data-theme="brutal-dark"] .retro-header {
+            border-bottom-color: #ff0000;
         }
-
-        .flipsy-container {
-            width: 100%;
+        :root[data-theme="brutal-dark"] .retro-games-list {
+            border-left-color: #ff0000;
         }
-
-        .flipsy-header {
-            text-align: center;
-            margin-bottom: 2rem;
+        :root[data-theme="brutal-dark"] .retro-title,
+        :root[data-theme="brutal-dark"] .retro-game-title {
+            color: #ff6b6b;
         }
-
-        .flipsy-content {
-            display: flex;
-            gap: 2rem;
-            align-items: flex-start;
+        :root[data-theme="brutal-dark"] .retro-btn {
+            border-color: #ff6b6b;
+            color: #ff6b6b;
         }
-
-        .flipsy-games-list {
-            width: 250px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 1rem;
+        :root[data-theme="brutal-dark"] .retro-games-toggle {
+            border-color: #ff6b6b;
+            color: #ff6b6b;
         }
-
-        .flipsy-game-item {
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        :root[data-theme="brutal-dark"] .retro-game-item:hover {
+            background: rgba(255, 107, 107, 0.1);
         }
-
-        .flipsy-game-item:hover {
-            background: rgba(255, 255, 255, 0.1);
+        :root[data-theme="brutal-dark"] .retro-game-item.active {
+            border-left-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.2);
         }
-
-        .flipsy-game-item.active {
-            background: var(--primary);
-            border-color: var(--primary);
+        :root[data-theme="brutal-dark"] .emulator-header {
+            border-bottom-color: #ff0000;
         }
-
-        .flipsy-game-view {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 2rem;
-            min-height: 600px;
+        :root[data-theme="brutal-dark"] .emulator-title {
+            color: #ff6b6b;
         }
-
-        .flipsy-game-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            text-align: center;
-            color: var(--secondary);
+        :root[data-theme="brutal-dark"] .emulator-btn {
+            border-color: #ff6b6b;
+            color: #ff6b6b;
         }
-
-        .flipsy-game-frame-container {
-            position: relative;
-            width: 100%;
-            height: 500px;
-            background: #000;
-            border-radius: 10px;
-            overflow: hidden;
+        :root[data-theme="brutal-dark"] .emulator-btn:hover {
+            background: #ff6b6b;
         }
-
-        .flipsy-game-frame {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .flipsy-nav {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .flipsy-nav-btn {
-            padding: 0.5rem 1rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .flipsy-nav-btn:hover {
-            background: var(--secondary);
-        }
-
-        .flipsy-nav-btn:disabled {
-            background: rgba(255, 255, 255, 0.1);
-            cursor: not-allowed;
-        }
-
-        @media (max-width: 992px) {
-            .game-header {
-                flex-direction: column;
-            }
-            
-            .game-cover {
-                flex: 1;
-                max-width: 100%;
-            }
-            
-            .game-content {
-                flex-direction: column;
-            }
-            
-            .game-sidebar {
-                flex: 1;
-                margin-top: 2rem;
-            }
-
-            .events-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            }
-
-            .flipsy-content {
-                flex-direction: column;
-            }
-            
-            .flipsy-games-list {
-                width: 100%;
-                order: 2;
-            }
-            
-            .flipsy-game-view {
-                order: 1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding-left: 0;
-                padding-top: 30px; /* Учитываем уменьшенную навигацию */
-            }
-            
-            .top-dock {
-                left: 0;
-                padding-left: 4rem;
-                top: 30px; /* Учитываем уменьшенную навигацию */
-            }
-            
-            .platform-dock {
-                transform: translateX(-100%);
-                transition: transform 0.3s;
-                top: calc(30px + var(--top-dock-height)); /* Учитываем уменьшенную навигацию */
-            }
-            
-            .platform-dock.open {
-                transform: translateX(0);
-            }
-            
-            main, footer, .game-page, .events-page, .flipsy-page {
-                margin-left: 0;
-                padding-left: 2rem;
-                margin-top: 0;
-                padding-top: calc(30px + var(--top-dock-height) + 2rem); /* Учитываем уменьшенную навигацию */
-            }
-            
-            .menu-toggle {
-                display: block;
-                position: fixed;
-                left: 10px;
-                top: 35px; /* Учитываем уменьшенную навигацию */
-                z-index: 110;
-                background: rgba(26, 26, 46, 0.8);
-                border: none;
-                color: white;
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .game-actions-page {
-                flex-direction: column;
-            }
-            
-            .game-meta {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .top-dock {
-                flex-direction: column;
-                height: auto;
-                padding: 1rem;
-                padding-left: 4rem;
-                gap: 1rem;
-            }
-            
-            .search-bar {
-                width: 100%;
-            }
-            
-            .hero h2 {
-                font-size: 2rem;
-            }
-            
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .top-navigation {
-                flex-wrap: wrap;
-                height: auto;
-                padding: 0.5rem;
-            }
-            
-            .theme-switcher {
-                margin: 0.5rem 0 0 auto;
-            }
-
-            .events-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .event-actions {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
-            }
-
-            .flipsy-game-frame-container {
-                height: 300px;
-            }
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        .floating {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        /* Стили для кнопки меню на мобильных */
-        .menu-toggle {
-            display: none;
-        }
-
-        /* Стили для приветственного экрана */
+        /* === Приветственный экран === */
         .welcome-screen {
             position: fixed;
             top: 0;
@@ -1317,27 +1102,24 @@
             z-index: 200;
             transition: opacity 0.5s ease;
         }
-
         .welcome-logo {
-            font-size: 3rem;
-            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
             background: linear-gradient(to right, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             text-align: center;
         }
-
         .welcome-text {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             max-width: 600px;
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             color: var(--light);
         }
-
         .enter-btn {
-            padding: 1rem 2rem;
+            padding: 0.9rem 2rem;
             border-radius: 50px;
             border: none;
             background: var(--accent);
@@ -1347,27 +1129,79 @@
             transition: all 0.3s;
             font-size: 1rem;
         }
-
         .enter-btn:hover {
             background: #e05555;
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
         }
-
         :root[data-theme="brutal-dark"] .welcome-screen {
             background: linear-gradient(135deg, #000000, #0a0a0a);
         }
-
         :root[data-theme="brutal-dark"] .enter-btn {
             background: #ff3300;
         }
-
         :root[data-theme="brutal-dark"] .enter-btn:hover {
             background: #cc2200;
         }
+        /* === Настройки в боковом меню === */
+        .settings-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            margin-bottom: 0.6rem;
+        }
+        .setting-label {
+            font-size: 0.95rem;
+            color: var(--light);
+        }
+        .setting-toggle {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: rgba(110, 69, 226, 0.5);
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        .setting-toggle::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s;
+        }
+        .setting-toggle.active::before {
+            left: 29px;
+        }
+        :root[data-theme="brutal-dark"] .setting-toggle::before {
+            background: #ff0000;
+        }
+        :root[data-theme="brutal-dark"] .setting-toggle.active::before {
+            background: #ff3300;
+        }
+        /* === Fullscreen fixes === */
+        .fullscreen-fix {
+            height: 100vh !important;
+            width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+        }
+        .game-frame-container.fullscreen {
+            padding-bottom: 75% !important;
+        }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <!-- Приветственный экран -->
@@ -1376,154 +1210,56 @@
         <p class="welcome-text">Добро пожаловать в лучший игровой центр! Играйте в классические и современные игры бесплатно и без регистрации.</p>
         <button class="enter-btn" id="enter-btn">Войти в игровой центр</button>
     </div>
-
-    <!-- Верхняя навигация -->
-    <div class="top-navigation">
-        <button class="nav-btn" id="home-btn">Главная</button>
-        <button class="nav-btn" id="events-btn">Эвенты</button>
-        <button class="nav-btn" id="flipsy-btn">Флипсы</button>
-        
-        <div class="theme-switcher">
-            <span class="theme-label">Тема:</span>
-            <div class="theme-toggle" id="theme-toggle"></div>
-        </div>
-    </div>
-
-    <!-- Кнопка меню для мобильных -->
-    <button class="menu-toggle" id="menu-toggle">
-        <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Верхний док -->
+    <!-- Верхняя панель -->
     <div class="top-dock">
+        <button class="menu-toggle" id="menu-toggle">☰</button>
         <div class="logo">
             <h1>Dual Gaming Centre</h1>
         </div>
-        
         <div class="search-bar">
-            <input type="text" placeholder="Поиск игр..." id="search-input">
+            <input type="text" placeholder="Поиск игр..." id="search-input" />
             <i class="fas fa-search"></i>
         </div>
     </div>
-
-    <!-- Док платформ -->
-    <div class="platform-dock" id="platform-dock">
-        <div class="platform-icon active" data-platform="all">
-            <img src="https://cdn-icons-png.flaticon.com/512/2965/2965300.png" alt="Все платформы">
-            <span class="tooltip">Все платформы</span>
-        </div>
-        <div class="platform-icon" data-platform="web">
-            <img src="https://cdn-icons-png.flaticon.com/512/841/841364.png" alt="Web">
-            <span class="tooltip">Web-игры</span>
-        </div>
-        <div class="platform-icon" data-platform="ps1">
-            <img src="https://cdn3.iconfinder.com/data/icons/gamepads-1/512/Psx-512.png" alt="Play Station">
-            <span class="tooltip">PlayStation 1</span>
-        </div>
-        <div class="platform-icon" data-platform="nes">
-            <img src="https://cdn3.iconfinder.com/data/icons/gamepads-1/512/Nes-512.png" alt="NES">
-            <span class="tooltip">Nintendo NES</span>
-        </div>
-        <div class="platform-icon" data-platform="snes">
-            <img src="https://cdn3.iconfinder.com/data/icons/gamepads-1/512/Snes-512.png" alt="SNES">
-            <span class="tooltip">Super Nintendo</span>
-        </div>
-        <div class="platform-icon" data-platform="gba">
-            <img src="https://cdn3.iconfinder.com/data/icons/gamepads-1/512/GameboyColor-256.png" alt="GBA">
-            <span class="tooltip">Game Boy Advance</span>
-        </div>
-        <div class="platform-icon" data-platform="sega">
-            <img src="https://cdn3.iconfinder.com/data/icons/gamepads-1/512/MegaDrive-256.png" alt="Sega">
-            <span class="tooltip">Sega Genesis</span>
-        </div>
-        <div class="platform-icon" data-platform="pc">
-            <img src="https://cdn3.iconfinder.com/data/icons/vol-2/128/desktop-256.png" alt="PC">
-            <span class="tooltip">PC игры</span>
-        </div>
-        <div class="platform-icon" data-platform="n64">
-            <img src="https://cdn3.iconfinder.com/data/icons/gamepads-1/512/N64-256.png" alt="N64">
-            <span class="tooltip">Nintendo 64</span>
-        </div>
-        <div class="platform-icon" data-platform="ps2">
-            <img src="https://avatars.mds.yandex.net/i?id=4c83a995fd0bd562579ce0839b826e2a_l-5287703-images-thumbs&n=13" alt="Play Station 2">
-            <span class="tooltip">PlayStation 2</span>
-        </div>
-    </div>
-
-    <!-- Частицы фона -->
-    <div id="particles-js"></div>
-
-    <!-- Основное содержимое -->
+    <!-- Основной контент -->
     <main>
-        <!-- Главная страница -->
         <div id="home-page">
             <section class="hero">
                 <h2>Играйте в лучшие игры бесплатно</h2>
-                <p>Откройте для себя огромную коллекцию классических и современных игр. Никаких скачиваний, никаких подписок - просто наслаждайтесь игрой!</p>
-                <p></p>
+                <p>Откройте для себя огромную коллекцию классических и современных игр. Никаких скачиваний, никаких подписок — просто наслаждайтесь игрой!</p>
                 <p>Dual Gaming Centre - сервис для бесплатной игры в онлайн игры или скачивания их. Пожалуй, Dual Gaming Centre - сервис лучше чем VK Play, Яндекс игры и Drova.io!</p>
                 <div class="cta-buttons">
                     <button class="browse-games" id="all-games-btn"><i class="fas fa-gamepad"></i> Все игры</button>
                     <button class="trending" id="trending-btn"><i class="fas fa-fire"></i> Популярное</button>
                 </div>
             </section>
-
-            <section class="categories">
-                <h2 class="section-title"><i class="fas fa-tags"></i> Категории</h2>
-                <div class="category-buttons" id="category-buttons">
-                    <button class="category-btn active" data-category="all">Все</button>
-                    <button class="category-btn" data-category="shooter">Шутеры</button>
-                    <button class="category-btn" data-category="arcade">Аркады</button>
-                    <button class="category-btn" data-category="racing">Гонки</button>
-                    <button class="category-btn" data-category="puzzle">Головоломки</button>
-                    <button class="category-btn" data-category="platformer">Платформеры</button>
-                    <button class="category-btn" data-category="retro">Ретро</button>
-                    <button class="category-btn" data-category="strategy">Стратегии</button>
-                    <button class="category-btn" data-category="fighting">Файтинги</button>
-                    <button class="category-btn" data-category="rpg">RPG</button>
-                    <button class="category-btn" data-category="adventure">Приключения</button>
-                    <button class="category-btn" data-category="sports">Спортивные</button>
-                </div>
-            </section>
-
             <section class="games">
-                <h2 class="section-title"><i class="fas fa-gamepad"></i> Популярные игры</h2>
-                <div class="games-grid" id="games-container">
-                    <!-- Игры будут добавлены через JavaScript -->
-                </div>
+                <h2 class="section-title" style="font-size:1.6rem;margin:1.5rem 0;display:flex;align-items:center;"><i class="fas fa-gamepad" style="margin-right:0.8rem;color:var(--primary);"></i> Популярные игры</h2>
+                <div class="games-grid" id="games-container"></div>
             </section>
         </div>
-
         <!-- Страница игры -->
         <div class="game-page" id="game-page">
             <button class="back-btn" id="back-btn"><i class="fas fa-arrow-left"></i> Назад</button>
-            
             <div class="game-header">
                 <div class="game-cover">
                     <img id="game-cover-img" src="" alt="Обложка игры">
                 </div>
-                
                 <div class="game-details">
                     <h1 id="game-title">Название игры</h1>
-                    
                     <div class="game-meta">
                         <span><i class="fas fa-tag"></i> <span id="game-genre">Жанр</span></span>
                         <span><i class="fas fa-calendar-alt"></i> <span id="game-year">Год</span></span>
                         <span><i class="fas fa-star"></i> <span id="game-rating">Рейтинг</span></span>
                         <span><i class="fas fa-gamepad"></i> <span id="game-platform">Платформа</span></span>
                     </div>
-                    
-                    <p class="game-description" id="game-description">
-                        Описание игры будет здесь...
-                    </p>
-                    
+                    <p class="game-description" id="game-description">Описание игры будет здесь...</p>
                     <div class="game-actions-page">
                         <button class="download-btn" id="download-btn"><i class="fas fa-download"></i> Скачать</button>
                         <button class="fullscreen-btn" id="fullscreen-btn"><i class="fas fa-expand"></i></button>
                     </div>
                 </div>
             </div>
-            
             <div class="game-content">
                 <div class="game-player" id="game-player">
                     <div class="game-frame-container">
@@ -1534,89 +1270,207 @@
                         <iframe id="game-frame" class="game-frame" onload="hideLoader()" allowfullscreen></iframe>
                     </div>
                 </div>
-                
                 <div class="game-sidebar">
                     <div class="similar-games">
                         <h3>Похожие игры</h3>
-                        <div id="similar-games-container">
-                            <!-- Похожие игры будут добавлены через JavaScript -->
-                        </div>
+                        <div id="similar-games-container"></div>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- Страница событий -->
         <div class="events-page" id="events-page">
             <section class="hero">
                 <h2>Игровые события и турниры</h2>
                 <p>Участвуйте в захватывающих событиях, турнирах и соревнованиях. Выигрывайте призы и получайте уникальный игровой опыт!</p>
             </section>
-
             <section class="events">
-                <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Текущие события</h2>
-                <div class="events-grid" id="events-container">
-                    <!-- События будут добавлены через JavaScript -->
-                </div>
+                <h2 class="section-title" style="font-size:1.6rem;margin:1.5rem 0;display:flex;align-items:center;"><i class="fas fa-calendar-alt" style="margin-right:0.8rem;color:var(--primary);"></i> Текущие события</h2>
+                <div class="events-grid" id="events-container"></div>
             </section>
-
             <section class="events">
-                <h2 class="section-title"><i class="fas fa-trophy"></i> Предстоящие турниры</h2>
-                <div class="events-grid" id="tournaments-container">
-                    <!-- Турниры будут добавлены через JavaScript -->
-                </div>
+                <h2 class="section-title" style="font-size:1.6rem;margin:1.5rem 0;display:flex;align-items:center;"><i class="fas fa-trophy" style="margin-right:0.8rem;color:var(--primary);"></i> Предстоящие турниры</h2>
+                <div class="events-grid" id="tournaments-container"></div>
             </section>
         </div>
-
-        <!-- Страница Флипсы -->
-        <div class="flipsy-page" id="flipsy-page">
-            <section class="hero">
-                <h2>🎮 Флипсы - Эксклюзивные Android игры</h2>
-                <p>Играйте в Android игры без переворота экрана! Эксклюзивная функция Dual Gaming Centre</p>
-            </section>
-
-            <div class="flipsy-container">
-                <div class="flipsy-content">
-                    <div class="flipsy-games-list">
-                        <div class="flipsy-game-item active" data-game="0">Hill Climb Racing</div>
-                        <div class="flipsy-game-item" data-game="1">Subway Surfers</div>
-                        <div class="flipsy-game-item" data-game="2">Temple Run 2</div>
-                        <div class="flipsy-game-item" data-game="3">Angry Birds</div>
-                        <div class="flipsy-game-item" data-game="4">Pou</div>
-                    </div>
-                    
-                    <div class="flipsy-game-view">
-                        <h3 class="flipsy-game-title" id="flipsy-game-title">Hill Climb Racing</h3>
-                        <div class="flipsy-game-frame-container">
-                            <iframe class="flipsy-game-frame" id="flipsy-game-frame" 
-                                    src="https://nativedev.b-cdn.net/hill-climb-racing/index.html"
-                                    allowfullscreen></iframe>
-                        </div>
-                        
-                        <div class="flipsy-nav">
-                            <button class="flipsy-nav-btn" id="flipsy-prev-btn">◀ Предыдущая</button>
-                            <button class="flipsy-nav-btn" id="flipsy-next-btn">Следующая ▶</button>
-                        </div>
-                    </div>
+        <!-- Страница флипсов -->
+        <div class="flipsters-page" id="flipsters-page">
+            <div class="flipster-container">
+                <div class="flipster-loader" id="flipster-loader">
+                    <i class="fas fa-spinner"></i>
+                    <p>Загрузка Флипсов...</p>
+                </div>
+                <iframe id="flipster-frame" class="flipster-frame" allowfullscreen></iframe>
+                <div class="flipster-info">
+                    <h3 class="flipster-title" id="flipster-title">Заголовок Флипсы</h3>
+                    <p class="flipster-genre" id="flipster-genre">Жанр</p>
+                </div>
+                <div class="flipster-actions">
+                    <button class="flipster-action-btn" id="like-btn"><i class="fas fa-heart"></i></button>
+                    <button class="flipster-action-btn" id="comment-btn"><i class="fas fa-comment"></i></button>
+                </div>
+                <div class="flipster-controls">
+                    <button class="flipster-btn" id="prev-flipster"><i class="fas fa-arrow-up"></i></button>
+                    <button class="flipster-btn" id="next-flipster"><i class="fas fa-arrow-down"></i></button>
                 </div>
             </div>
         </div>
+        <!-- Retro Corner -->
+        <div class="retro-corner-page" id="retro-corner-page">
+            <div class="retro-header">
+                <div class="retro-title">Retro Corner - DOS/Win95 Games</div>
+                <div class="retro-controls">
+                    <button class="retro-btn" id="retro-back-btn"><i class="fas fa-arrow-left"></i> Назад</button>
+                    <button class="retro-btn" id="virtual-emulator-btn">Virtual Emulator</button>
+                </div>
+            </div>
+            <div class="retro-container">
+                <iframe id="retro-frame" class="retro-frame" allowfullscreen></iframe>
+            </div>
+        </div>
+        <!-- Virtual Emulator -->
+        <div class="virtual-emulator" id="virtual-emulator">
+            <div class="emulator-container">
+                <div class="emulator-header">
+                    <div class="emulator-title">Virtual Emulator</div>
+                    <div class="emulator-controls">
+                        <button class="emulator-btn" id="emulator-back-btn"><i class="fas fa-arrow-left"></i> Назад</button>
+                        <button class="emulator-btn" id="emulator-fullscreen-btn"><i class="fas fa-expand"></i></button>
+                    </div>
+                </div>
+                <iframe id="emulator-frame" class="emulator-frame" src="https://kolyadual.github.io/dualgamingcentre/home.html" allowfullscreen></iframe>
+            </div>
+        </div>
     </main>
-    <!-- Блок рекламы Яндекс -->
-    <div class="yandex-ads" id="yandex-ads">
-        <!-- Яндекс.Реклама -->
-        <div id="yandex_rtb_R-A-1234567-1"></div>
-        <script>
-            window.yaContextCb = window.yaContextCb || [];
-            window.yaContextCb.push(() => {
-                Ya.Context.AdvManager.render({
-                    renderTo: 'yandex_rtb_trkxiwqx7ycfhdis',
-                    blockId: 'trkxiwqx7ycfhdis'
-                });
-            });
-        </script>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Dual Gaming Centre</h3>
+                <p style="color: rgba(255, 255, 255, 0.7); margin-top: 1rem; line-height: 1.6;">
+                    Лучшие бесплатные онлайн игры в одном месте. Играйте без скачивания и регистрации.
+                </p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Информация</h3>
+                <ul>
+                    <li><a href="#">Контакты</a></li>
+                    <li><a href="#">Политика конфиденциальности</a></li>
+                    <li><a href="#">Условия использования</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Поддержка</h3>
+                <ul>
+                    <li><a href="#">Помощь</a></li>
+                    <li><a href="mailto:dualgamingcentre@mail.ru">Сообщить о проблеме</a></li>
+                    <li><a href="mailto:dualgamingcentre@mail.ru">Предложить игру</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; Dual Gaming Centre. Этот сайт был сделан Kolyadual в 2025 году. Все права защищены.
+        </div>
+    </footer>
+    <!-- Мобильное меню -->
+    <div class="mobile-sidebar" id="mobile-sidebar">
+        <div class="sidebar-content">
+            <!-- Тема -->
+            <div class="sidebar-section">
+                <div class="theme-switcher">
+                    <span class="theme-label">Тема:</span>
+                    <div class="theme-toggle" id="mobile-theme-toggle"></div>
+                </div>
+            </div>
+            <!-- Навигация -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Навигация</h3>
+                <button class="sidebar-link" id="mobile-home-btn"><i class="fas fa-home"></i> Главная</button>
+                <button class="sidebar-link" id="mobile-events-btn"><i class="fas fa-calendar-alt"></i> Эвенты</button>
+                <button class="sidebar-link" id="mobile-flipsters-btn"><i class="fas fa-mobile-alt"></i> Флипсы</button>
+                <button class="sidebar-link" id="mobile-retro-btn"><i class="fas fa-history"></i> Retro Corner</button>
+                <button class="sidebar-link" id="mobile-emulator-btn"><i class="fas fa-microchip"></i> Virtual Emulator</button>
+            </div>
+            <!-- Категории -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Категории</h3>
+                <div class="sidebar-categories" id="mobile-categories">
+                    <button class="sidebar-btn" data-category="all"><i class="fas fa-th-large"></i> Все</button>
+                    <button class="sidebar-btn" data-category="shooter"><i class="fas fa-crosshairs"></i> Шутеры</button>
+                    <button class="sidebar-btn" data-category="arcade"><i class="fas fa-gamepad"></i> Аркады</button>
+                    <button class="sidebar-btn" data-category="racing"><i class="fas fa-car"></i> Гонки</button>
+                    <button class="sidebar-btn" data-category="puzzle"><i class="fas fa-puzzle-piece"></i> Головоломки</button>
+                    <button class="sidebar-btn" data-category="platformer"><i class="fas fa-running"></i> Платформеры</button>
+                    <button class="sidebar-btn" data-category="retro"><i class="fas fa-history"></i> Ретро</button>
+                    <button class="sidebar-btn" data-category="strategy"><i class="fas fa-chess"></i> Стратегии</button>
+                    <button class="sidebar-btn" data-category="fighting"><i class="fas fa-fist-raised"></i> Файтинги</button>
+                    <button class="sidebar-btn" data-category="rpg"><i class="fas fa-sword"></i> RPG</button>
+                    <button class="sidebar-btn" data-category="adventure"><i class="fas fa-globe"></i> Приключения</button>
+                    <button class="sidebar-btn" data-category="sports"><i class="fas fa-basketball"></i> Спортивные</button>
+                </div>
+            </div>
+            <!-- Платформы -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Платформы</h3>
+                <div class="sidebar-platforms" id="mobile-platforms">
+                    <div class="platform-icon-small" data-platform="all" title="Все платформы">
+                        <img src="./img/all.png" alt="Все">
+                    </div>
+                    <div class="platform-icon-small" data-platform="web" title="Web">
+                        <img src="./img/web.png" alt="Web">
+                    </div>
+                    <div class="platform-icon-small" data-platform="ps1" title="PlayStation 1">
+                        <img src="./img/ps1.jpeg" alt="PS1">
+                    </div>
+                    <div class="platform-icon-small" data-platform="nes" title="NES">
+                        <img src="./img/nes.png" alt="NES">
+                    </div>
+                    <div class="platform-icon-small" data-platform="snes" title="SNES">
+                        <img src="./img/snes.jpeg" alt="SNES">
+                    </div>
+                    <div class="platform-icon-small" data-platform="gba" title="GBA">
+                        <img src="./img/gba.jpeg" alt="GBA">
+                    </div>
+                    <div class="platform-icon-small" data-platform="sega" title="Sega">
+                        <img src="./img/sega.jpeg" alt="Sega">
+                    </div>
+                    <div class="platform-icon-small" data-platform="pc" title="PC">
+                        <img src="./img/pc.png" alt="PC">
+                    </div>
+                    <div class="platform-icon-small" data-platform="n64" title="N64">
+                        <img src="./img/n64.png" alt="N64">
+                    </div>
+                    <div class="platform-icon-small" data-platform="ps2" title="PS2">
+                        <img src="https://avatars.mds.yandex.net/i?id=4c83a995fd0bd562579ce0839b826e2a_l-5287703-images-thumbs&n=13" alt="PS2">
+                    </div>
+                </div>
+            </div>
+            <!-- Настройки -->
+            <div class="sidebar-section settings-section">
+                <h3 class="sidebar-title">Настройки</h3>
+                <div class="setting-item">
+                    <span class="setting-label">Переливающийся фон</span>
+                    <div class="setting-toggle active" id="particles-toggle"></div>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Звуковые эффекты</span>
+                    <div class="setting-toggle active" id="sound-toggle"></div>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Анимация частиц</span>
+                    <div class="setting-toggle active" id="animation-toggle"></div>
+                </div>
+            </div>
+        </div>
     </div>
-
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
     <!-- Модальное окно подтверждения -->
     <div class="confirm-modal" id="confirm-modal">
         <div class="confirm-content">
@@ -1629,78 +1483,12 @@
             </div>
         </div>
     </div>
-
-    <!-- Футер -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>Dual Gaming Centre</h3>
-                <p style="color: rgba(255, 255, 255, 0.7; margin-top: 1rem; line-height: 1.6;">
-                    Лучшие бесплатные онлайн игры в одном месте. Играйте без скачивания и регистрации.
-                </p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Меню</h3>
-                <ul>
-                    <li><a href="#" id="footer-home">Главная</a></li>
-                    <li><a href="#" id="footer-games">Игры</a></li>
-                    <li><a href="#" id="footer-events">Эвенты</a></li>
-                    <li><a href="#" id="footer-flipsy">Флипсы</a></li>
-                    <li><a href="#" id="footer-popular">Популярное</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Информация</h3>
-                <ul>
-                    <li><a href="https://github.com/Kolyadual">О Kolyadual</a></li>
-                    <li><a href="#">Контакты</a></li>
-                    <li><a href="#">Политика конфиденциальности</a></li>
-                    <li><a href="#">Условия использования</a></li>
-                    <li><a href="#">FAQ</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h3>Огромное спасибо</h3>
-                <ul>
-                    <li><a href="https://github.com/kirilldual">Kirilldual</a></li>
-                    <li><a href="https://t.me/fffbnx">Ivan pro Games</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Другие проекты</h3>
-                <ul>
-                    <li><a href="https://github.com/Kolyadual/Runget-next_generating_operating_system?ysclid=mdwr9rsgs9223766028">Runget (Операционная система)</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Поддержка</h3>
-                <ul>
-                    <li><a href="#">Помощь</a></li>
-                    <li><a href="mailto:dualgamingcentre@mail.ru">Сообщить о проблеме</a></li>
-                    <li><a href="mailto:dualgamingcentre@mail.ru">Предложить игру</a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="copyright">
-            &copy; Dual Gaming Centre. Этот сайт был сделан Kolyadual в 2025 году. Все права защищены.
-        </div>
-    </footer>
-
+    <!-- Particles.js -->
+    <div id="particles-js"></div>
+    <!-- Скрипты -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // База данных игр
+        // Массивы данных
         const games = [
             {
                 id: 1,
@@ -1715,13 +1503,165 @@
                 similar: [2, 3, 4],
                 trending: true,
                 aspectRatio: "4:3",
-                downloadUrl: "https://example.com/download/doom2"
+                downloadUrl: "https://example.com/download/doom2",
+                platform: "pc"
             },
-            // ... ВСЕ ВАШИ ОРИГИНАЛЬНЫЕ ИГРЫ ОСТАЮТСЯ ЗДЕСЬ БЕЗ ИЗМЕНЕНИЙ ...
-            // (полный список ваших 33 игр)
+            {
+                id: 2,
+                title: "Jetpack Joyride",
+                genre: "Аркада",
+                category: "arcade, mobile",
+                platform: "web",
+                year: "2011",
+                rating: "4.7",
+                description: "Захватывающая аркада, где вы управляете героем с реактивным ранцем. Уворачивайтесь от лазеров, собирайте монеты и покупайте новые улучшения.",
+                cover: "https://avatars.mds.yandex.net/get-entity_search/5105005/1177591217/SUx182_2x",
+                frame: "https://abinbins.github.io/a7/jetpack-joyride",
+                similar: [1, 5, 6],
+                trending: true,
+                aspectRatio: "16:9",
+                downloadUrl: "https://example.com/download/jetpack"
+            },
+            {
+                id: 3,
+                title: "Super Mario Bros",
+                genre: "Платформер",
+                category: "platformer",
+                platform: "nes",
+                year: "1985",
+                rating: "5.0",
+                description: "Классическая игра про водопроводчика Марио, который спасает принцессу Пич из лап злого Боузера. Преодолевайте уровни, собирайте монеты и находите секреты.",
+                cover: "https://upload.wikimedia.org/wikipedia/en/0/03/Super_Mario_Bros._box.png",
+                frame: "https://www.retrogames.cc/embed/42214-super-mario-bros-europe-rev-1.html",
+                similar: [4, 7, 8],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/mario"
+            },
+            {
+                id: 4,
+                title: "Tetris",
+                genre: "Головоломка",
+                category: "puzzle",
+                year: "1984",
+                rating: "4.8",
+                description: "Самая известная головоломка в мире. Расставляйте падающие фигурки так, чтобы они заполняли ряды без пробелов. Чем дальше, тем быстрее падают фигуры!",
+                cover: "https://1gai.ru/uploads/posts/2022-06/1655811135_28.png",
+                frame: "https://www.retrogames.cc/embed/31596-tetris-usa.html",
+                similar: [3, 9, 10],
+                trending: false,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/tetris",
+                platform: "nes"
+            },
+            {
+                id: 5,
+                title: "Minecraft",
+                genre: "Песочница",
+                category: "sandbox",
+                year: "2009",
+                rating: "4.9",
+                description: "Игра, покорившая мир, последняя версия Майнкрафта уже доступна в Dual Gaming Centre!",
+                cover: "https://avatars.mds.yandex.net/i?id=467419ff2f5267342d84765d34b0f9eafc528c20-10385608-images-thumbs&n=13",
+                frame: "https://minecraftforfree.org/play/?v=1.12.2-wasm",
+                similar: [2, 6, 11],
+                trending: true,
+                aspectRatio: "16:9",
+                downloadUrl: "https://example.com/download/minecraft",
+                platform: "pc"
+            },
+            {
+                id: 6,
+                title: "Pac-Man",
+                genre: "Аркада",
+                category: "arcade",
+                year: "1980",
+                rating: "4.6",
+                description: "Легендарная аркада, где вы управляете Пак-Мэном, который должен съесть все точки в лабиринте, избегая призраков. Съешьте энерджайзер, чтобы повернуть таблицы!",
+                cover: "https://1gai.ru/uploads/posts/2022-06/1655811081_1.png",
+                frame: "https://www.retrogames.cc/embed/144-pac-man.html",
+                similar: [2, 4, 12],
+                trending: false,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/pacman",
+                platform: "arcade"
+            },
+            {
+                id: 7,
+                title: "Street Fighter II",
+                genre: "Файтинг",
+                category: "fighting",
+                year: "1991",
+                rating: "4.7",
+                description: "Культовая игра в жанре файтинг. Выберите своего бойца и сразитесь с противником в эпических битвах.",
+                cover: "https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_67aeae13e51fcf55b15d1aa3_67aeaf37225bc6255a9f9f2a/scale_2400",
+                frame: "https://www.retrogames.cc/embed/40116-street-fighter-ii-champion-edition-world-920513-etc.html",
+                similar: [3, 8, 13],
+                trending: false,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/streetfighter",
+                platform: "arcade"
+            },
+            {
+                id: 8,
+                title: "Sonic the Hedgehog",
+                genre: "Платформер",
+                category: "platformer",
+                platform: "sega",
+                year: "1991",
+                rating: "4.8",
+                description: "Знаменитый синий ёжик Соник бежит на высокой скорости, собирает кольца и сражается с доктором Роботником.",
+                cover: "https://upload.wikimedia.org/wikipedia/en/b/ba/Sonic_the_Hedgehog_1_Genesis_box_art.jpg",
+                frame: "https://www.retrogames.cc/embed/10042-sonic-the-hedgehog-usa-europe.html",
+                similar: [3, 7, 14],
+                trending: true,
+                aspectRatio: "4:3",
+                downloadUrl: "https://example.com/download/sonic"
+            }
         ];
 
-        // База данных событий
+        const flipsters = [
+            {
+                id: 1,
+                title: "Astray",
+                genre: "Аркада",
+                category: "mobile",
+                year: "2012",
+                rating: "4.8",
+                description: "Игра про мячик",
+                cover: "https://play-lh.googleusercontent.com/0I67x436Zh9A4WJ73YD5jIh2T3fY5b8N6J5Z6J5Z6J5Z6J5Z6J5Z6J5Z6J5Z6J5Z6J5Z",
+                frame: "https://wwwtyro.github.io/Astray/",
+                trending: true,
+                aspectRatio: "9:16"
+            },
+            {
+                id: 2,
+                title: "Temple Run 2",
+                genre: "Приключения",
+                category: "mobile",
+                year: "2013",
+                rating: "4.7",
+                description: "Продолжение легендарной игры. Бегите по храму, избегая ловушек и собирая монеты.",
+                cover: "https://play-lh.googleusercontent.com/7sJLHE4qNH4D1Vf4KZQq9JHfZQ5Z6J5Z6J5Z6J5Z6J5Z6J5Z6J5Z6J5Z6J5Z6J5Z6J5Z",
+                frame: "https://emupedia.net/emupedia-game-temple-run2/",
+                trending: true,
+                aspectRatio: "9:16"
+            },
+            {
+                id: 3,
+                title: "Flappy Bird",
+                genre: "Аркада",
+                category: "mobile",
+                year: "2013",
+                rating: "4.5",
+                description: "Простая, но увлекательная игра. Пролетайте между трубами, не задевая их.",
+                cover: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Flappy_Bird_Logo.svg/1200px-Flappy_Bird_Logo.svg.png",
+                frame: "https://emupedia.net/emupedia-game-flappy-bird/",
+                trending: false,
+                aspectRatio: "9:16"
+            }
+        ];
+
         const events = [
             {
                 id: 1,
@@ -1733,30 +1673,95 @@
                 maxParticipants: 32,
                 type: "tournament"
             },
-            // ... ВСЕ ВАШИ ОРИГИНАЛЬНЫЕ СОБЫТИЯ ОСТАЮТСЯ ЗДЕСЬ ...
+            {
+                id: 2,
+                title: "Забег в Need for Speed: Undercover",
+                date: "20 декабря 2025",
+                description: "Соревнование на лучший результат в гоночном заезде. Победитель получит эксклюзивный скин для автомобиля.",
+                image: "https://www.giantbomb.com/a/uploads/scale_super/0/27/585117-aq_master_000019.jpg",
+                participants: 56,
+                maxParticipants: 100,
+                type: "event"
+            },
+            {
+                id: 3,
+                title: "Фестиваль ретро-игр",
+                date: "25-27 декабря 2025",
+                description: "Трехдневный марафон классических игр 80-х и 90-х. Ностальгируйте и соревнуйтесь с другими игроками!",
+                image: "https://media.istockphoto.com/id/458259491/ru/%D1%84%D0%BE%D1%82%D0%BE/%D1%81%D1%82%D0%B0%D1%80%D1%8B%D0%B9-%D0%B8-%D0%BD%D0%BE%D0%B2%D1%8B%D0%B9-%D0%B2-%D0%B8%D0%B3%D1%80%D0%BE%D0%B2%D1%8B%D0%B5-%D0%BA%D0%BE%D0%BD%D1%81%D0%BE%D0%BB%D0%B8.jpg?s=612x612&w=0&k=20&c=VBQAU9agm_hYSPpi9zkdsrO9acqx_yrYD6NfRIjyAag=",
+                participants: 120,
+                maxParticipants: 200,
+                type: "festival"
+            },
+            {
+                id: 4,
+                title: "Киберспортивный чемпионат",
+                date: "5-7 января 2024",
+                description: "Крупный киберспортивный эвент с участием профессиональных команд. Регистрируйтесь и покажите свои навыки!",
+                image: "https://www.esports.net/wp-content/uploads/2021/02/cs-go-tournaments.jpg",
+                participants: 78,
+                maxParticipants: 128,
+                type: "championship"
+            }
         ];
 
-        // База данных Флипсов (Android игр)
-        const flipsyGames = [
+        // Игры для Retro Corner
+        const retroGames = [
             {
-                title: "Hill Climb Racing",
-                url: "https://nativedev.b-cdn.net/hill-climb-racing/index.html"
+                id: 1,
+                title: "Doom",
+                year: "1993",
+                description: "Легендарный шутер от первого лица для DOS",
+                frame: "https://js-dos.com/6.22/current/play/?url=https://js-dos.com/games/doom-ultimate.zip"
             },
             {
-                title: "Subway Surfers", 
-                url: "https://nativebridge.io/app/frQI"
+                id: 2,
+                title: "Prince of Persia",
+                year: "1989",
+                description: "Классический платформер-головоломка для DOS",
+                frame: "https://js-dos.com/6.22/current/play/?url=https://js-dos.com/cdn/Prince%20of%20Persia.zip"
             },
             {
-                title: "Temple Run 2",
-                url: "https://nativedev.b-cdn.net/temple-run-2/index.html"
+                id: 3,
+                title: "Duke Nukem 3D",
+                year: "1996",
+                description: "Культовый шутер в духе 90-х годов",
+                frame: "https://js-dos.com/6.22/current/play/?url=https://js-dos.com/games/duke-nukem-3d-shareware.zip"
             },
             {
-                title: "Angry Birds",
-                url: "https://nativedev.b-cdn.net/angry-birds/index.html"
+                id: 4,
+                title: "Wolfenstein 3D",
+                year: "1992",
+                description: "Один из первых 3D шутеров для DOS",
+                frame: "https://js-dos.com/6.22/current/play/?url=https://js-dos.com/games/wolfenstein-3d.zip"
             },
             {
-                title: "Pou",
-                url: "https://nativedev.b-cdn.net/pou/index.html"
+                id: 5,
+                title: "SimCity 2000",
+                year: "1994",
+                description: "Строительство и управление городом в DOS версии",
+                frame: "https://js-dos.com/6.22/current/play/?url=https://js-dos.com/games/simcity2000.zip"
+            },
+            {
+                id: 6,
+                title: "Commander Keen",
+                year: "1990",
+                description: "Приключенческая игра для DOS от id Software",
+                frame: "https://js-dos.com/6.22/current/play/?url=https://js-dos.com/games/commander-keen-in-goodbye-galaxy.zip"
+            },
+            {
+                id: 7,
+                title: "Alone in the Dark",
+                year: "1992",
+                description: "Первая игра в жанре survival horror для DOS",
+                frame: "https://js-dos.com/6.22/current/play/?url=https://js-dos.com/games/alone-in-the-dark.zip"
+            },
+            {
+                id: 8,
+                title: "Heroes of Might and Magic",
+                year: "1995",
+                description: "Стратегия в фэнтезийном мире для DOS",
+                frame: "https://js-dos.com/6.22/current/play/?url=https://js-dos.com/games/heroes-of-might-and-magic.zip"
             }
         ];
 
@@ -1767,7 +1772,9 @@
         const homePage = document.getElementById('home-page');
         const gamePage = document.getElementById('game-page');
         const eventsPage = document.getElementById('events-page');
-        const flipsyPage = document.getElementById('flipsy-page');
+        const flipstersPage = document.getElementById('flipsters-page');
+        const retroCornerPage = document.getElementById('retro-corner-page');
+        const virtualEmulator = document.getElementById('virtual-emulator');
         const backBtn = document.getElementById('back-btn');
         const gameTitle = document.getElementById('game-title');
         const gameGenre = document.getElementById('game-genre');
@@ -1782,48 +1789,67 @@
         const fullscreenBtn = document.getElementById('fullscreen-btn');
         const similarGamesContainer = document.getElementById('similar-games-container');
         const searchInput = document.getElementById('search-input');
-        const categoryButtons = document.querySelectorAll('.category-btn');
         const allGamesBtn = document.getElementById('all-games-btn');
         const trendingBtn = document.getElementById('trending-btn');
         const confirmModal = document.getElementById('confirm-modal');
         const confirmCancel = document.getElementById('confirm-cancel');
         const confirmProceed = document.getElementById('confirm-proceed');
-        const platformIcons = document.querySelectorAll('.platform-icon');
         const menuToggle = document.getElementById('menu-toggle');
-        const platformDock = document.getElementById('platform-dock');
+        const mobileSidebar = document.getElementById('mobile-sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
         const welcomeScreen = document.getElementById('welcome-screen');
         const enterBtn = document.getElementById('enter-btn');
-        const homeBtn = document.getElementById('home-btn');
-        const eventsBtn = document.getElementById('events-btn');
-        const flipsyBtn = document.getElementById('flipsy-btn');
-        const themeToggle = document.getElementById('theme-toggle');
-        
-        // Элементы Флипсов
-        const flipsyGameItems = document.querySelectorAll('.flipsy-game-item');
-        const flipsyGameTitle = document.getElementById('flipsy-game-title');
-        const flipsyGameFrame = document.getElementById('flipsy-game-frame');
-        const flipsyPrevBtn = document.getElementById('flipsy-prev-btn');
-        const flipsyNextBtn = document.getElementById('flipsy-next-btn');
-
-        // Текущая игра для скачивания
+        const mobileHomeBtn = document.getElementById('mobile-home-btn');
+        const mobileEventsBtn = document.getElementById('mobile-events-btn');
+        const mobileFlipstersBtn = document.getElementById('mobile-flipsters-btn');
+        const mobileRetroBtn = document.getElementById('mobile-retro-btn');
+        const mobileEmulatorBtn = document.getElementById('mobile-emulator-btn');
+        const flipsterFrame = document.getElementById('flipster-frame');
+        const flipsterLoader = document.getElementById('flipster-loader');
+        const flipsterTitle = document.getElementById('flipster-title');
+        const flipsterGenre = document.getElementById('flipster-genre');
+        const prevFlipsterBtn = document.getElementById('prev-flipster');
+        const nextFlipsterBtn = document.getElementById('next-flipster');
+        const likeBtn = document.getElementById('like-btn');
+        const commentBtn = document.getElementById('comment-btn');
+        const retroFrame = document.getElementById('retro-frame');
+        const retroBackBtn = document.getElementById('retro-back-btn');
+        const virtualEmulatorBtn = document.getElementById('virtual-emulator-btn');
+        const emulatorFrame = document.getElementById('emulator-frame');
+        const emulatorBackBtn = document.getElementById('emulator-back-btn');
+        const emulatorFullscreenBtn = document.getElementById('emulator-fullscreen-btn');
+        const particlesToggle = document.getElementById('particles-toggle');
         let currentGameForDownload = null;
+        let currentFlipsterIndex = 0;
+        let currentRetroGameIndex = 0;
         let currentPlatformFilter = "all";
-        let currentFlipsyGame = 0;
+        let currentCategoryFilter = "all";
+        let particlesEnabled = true;
 
-        // Оригинальные функции вашего сайта (без изменений)
+        // Функции
         function displayGames(filteredGames = games) {
             gamesContainer.innerHTML = '';
+            let gamesToShow = filteredGames;
             
+            // Фильтрация по платформе
             if (currentPlatformFilter !== "all") {
-                filteredGames = filteredGames.filter(game => game.platform === currentPlatformFilter);
+                gamesToShow = gamesToShow.filter(game => game.platform === currentPlatformFilter);
             }
             
-            if (filteredGames.length === 0) {
+            // Фильтрация по категории
+            if (currentCategoryFilter !== "all") {
+                gamesToShow = gamesToShow.filter(game => 
+                    game.category.split(',').map(c => c.trim()).includes(currentCategoryFilter)
+                );
+            }
+
+            if (gamesToShow.length === 0) {
                 gamesContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: rgba(255,255,255,0.7);">Игры не найдены. Попробуйте изменить фильтры.</p>';
                 return;
             }
-            
-            filteredGames.forEach(game => {
+
+            gamesToShow.forEach(game => {
                 const gameCard = document.createElement('div');
                 gameCard.className = 'game-card';
                 gameCard.innerHTML = `
@@ -1873,14 +1899,13 @@
                         </div>
                     </div>
                 `;
-                
                 if (event.type === "tournament" || event.type === "championship") {
                     tournamentsContainer.appendChild(eventCard);
                 } else {
                     eventsContainer.appendChild(eventCard);
                 }
             });
-
+            
             document.querySelectorAll('.participate-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const eventId = parseInt(e.target.closest('.participate-btn').getAttribute('data-id'));
@@ -1894,7 +1919,9 @@
             if (!event) return;
             
             if (event.participants < event.maxParticipants) {
-                alert(`Чтобы зарегестрироваться на событие  ${event.title} , вам надо подписаться на наш Телеграм канал https://t.me/DGC_off а потом выбрать событие и прокомментировать его добавив свой ник и то, что вы готовы участвовать.`);
+                alert(`Чтобы зарегестрироваться на событие "${event.title}", вам надо подписаться на наш Телеграм канал https://t.me/DGC_off а потом выбрать событие и прокомментировать его добавив свой ник и то, что вы готовы участвовать.`);
+                event.participants++;
+                displayEvents();
             } else {
                 alert(`К сожалению, все места на событие "${event.title}" уже заняты.`);
             }
@@ -1903,7 +1930,8 @@
         function showGameDetails(gameId) {
             const game = games.find(g => g.id === gameId);
             if (!game) return;
-
+            
+            // Обновляем данные игры
             gameTitle.textContent = game.title;
             gameGenre.textContent = game.genre;
             gameYear.textContent = game.year;
@@ -1911,15 +1939,19 @@
             gamePlatform.textContent = getPlatformName(game.platform);
             gameDescription.textContent = game.description;
             gameCoverImg.src = game.cover;
+            
+            // Сбрасываем фрейм и показываем лоадер
             gameFrame.src = '';
             gameLoader.style.display = 'flex';
             currentGameForDownload = game;
-
+            
+            // Устанавливаем соотношение сторон
             const aspect = game.aspectRatio || "4:3";
             const [w, h] = aspect.split(':').map(Number);
             const paddingPercent = (h / w) * 100;
             document.querySelector('.game-frame-container').style.paddingBottom = `${paddingPercent}%`;
-
+            
+            // Загружаем похожие игры
             similarGamesContainer.innerHTML = '';
             game.similar.forEach(similarId => {
                 const similarGame = games.find(g => g.id === similarId);
@@ -1937,14 +1969,22 @@
                     similarGamesContainer.appendChild(similarGameEl);
                 }
             });
-
+            
+            // Настраиваем обработчики кнопок
             downloadBtn.onclick = () => downloadGame(game);
             playGame(gameId);
-
+            
+            // Переключаемся на страницу игры
             homePage.style.display = 'none';
             gamePage.style.display = 'block';
             eventsPage.style.display = 'none';
-            flipsyPage.style.display = 'none';
+            flipstersPage.style.display = 'none';
+            retroCornerPage.style.display = 'none';
+            virtualEmulator.style.display = 'none';
+            // Закрываем сайдбар при переходе к игре
+            if (mobileSidebar.classList.contains('open')) {
+                toggleMenu();
+            }
         }
 
         function getPlatformName(platformKey) {
@@ -1960,7 +2000,7 @@
                 "ps2": "PlayStation 2",
                 "arcade": "Аркадный автомат"
             };
-            return platforms[platformKey] || platformKey;
+            return platforms[platformKey] || platformKey || "Неизвестно";
         }
 
         function hideLoader() {
@@ -1970,10 +2010,11 @@
         function playGame(gameId) {
             const game = games.find(g => g.id === gameId);
             if (!game) return;
-
+            
             gameLoader.style.display = 'flex';
             gameFrame.src = game.frame;
             
+            // Особое масштабирование для некоторых игр
             if (gameId === 1 || gameId === 3 || gameId === 4) {
                 gameFrame.style.transform = 'scale(1.2)';
                 gameFrame.style.transformOrigin = 'top left';
@@ -1988,241 +2029,351 @@
         }
 
         function toggleFullscreen() {
-            const elem = document.querySelector('.game-frame-container');
+            const elem = document.querySelector('.game-player');
             if (!document.fullscreenElement) {
                 elem.requestFullscreen().catch(err => {
-                    alert(`Ошибка при переходе в полноэкранный режим: ${err.message}`);
+                    console.error(`Ошибка при переходе в полноэкранный режим: ${err.message}`);
                 });
+                document.querySelector('.game-frame-container').classList.add('fullscreen');
             } else {
                 document.exitFullscreen();
+                document.querySelector('.game-frame-container').classList.remove('fullscreen');
             }
         }
 
-        // Функции для Флипсов
-        function showFlipsyGame(index) {
-            currentFlipsyGame = index;
-            const game = flipsyGames[index];
-            
-            flipsyGameTitle.textContent = game.title;
-            flipsyGameFrame.src = game.url;
-            
-            flipsyGameItems.forEach((item, i) => {
-                item.classList.toggle('active', i === index);
-            });
-            
-            updateFlipsyNavButtons();
-        }
-
-        function nextFlipsyGame() {
-            if (currentFlipsyGame < flipsyGames.length - 1) {
-                showFlipsyGame(currentFlipsyGame + 1);
-            }
-        }
-
-        function prevFlipsyGame() {
-            if (currentFlipsyGame > 0) {
-                showFlipsyGame(currentFlipsyGame - 1);
-            }
-        }
-
-        function updateFlipsyNavButtons() {
-            flipsyPrevBtn.disabled = currentFlipsyGame === 0;
-            flipsyNextBtn.disabled = currentFlipsyGame === flipsyGames.length - 1;
-        }
-
-        // Навигация по страницам
-        function showPage(page) {
+        function showFlipstersPage() {
             homePage.style.display = 'none';
             gamePage.style.display = 'none';
             eventsPage.style.display = 'none';
-            flipsyPage.style.display = 'none';
-            
-            if (page === 'home') homePage.style.display = 'block';
-            else if (page === 'game') gamePage.style.display = 'block';
-            else if (page === 'events') eventsPage.style.display = 'block';
-            else if (page === 'flipsy') flipsyPage.style.display = 'block';
+            retroCornerPage.style.display = 'none';
+            virtualEmulator.style.display = 'none';
+            flipstersPage.style.display = 'flex';
+            showRandomFlipster();
+            // Закрываем сайдбар
+            if (mobileSidebar.classList.contains('open')) {
+                toggleMenu();
+            }
         }
 
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', function() {
-            // Оригинальная инициализация
-            displayGames();
-            loadTheme();
-            
-            // Инициализация Флипсов
-            showFlipsyGame(0);
-            
-            // Навигация
-            homeBtn.addEventListener('click', () => {
-                welcomeScreen.style.opacity = '0';
-                setTimeout(() => { welcomeScreen.style.display = 'none'; }, 500);
-                showPage('home');
-            });
-            
-            eventsBtn.addEventListener('click', () => {
-                welcomeScreen.style.opacity = '0';
-                setTimeout(() => { welcomeScreen.style.display = 'none'; }, 500);
-                showPage('events');
-                displayEvents();
-            });
-            
-            flipsyBtn.addEventListener('click', () => {
-                welcomeScreen.style.opacity = '0';
-                setTimeout(() => { welcomeScreen.style.display = 'none'; }, 500);
-                showPage('flipsy');
-            });
+        function showEventsPage() {
+            homePage.style.display = 'none';
+            gamePage.style.display = 'none';
+            flipstersPage.style.display = 'none';
+            retroCornerPage.style.display = 'none';
+            virtualEmulator.style.display = 'none';
+            eventsPage.style.display = 'block';
+            displayEvents();
+            // Закрываем сайдбар
+            if (mobileSidebar.classList.contains('open')) {
+                toggleMenu();
+            }
+        }
 
-            // Остальные обработчики событий...
-            backBtn.addEventListener('click', () => {
-                showPage('home');
-                gameFrame.src = '';
-                currentGameForDownload = null;
-            });
+        function showRetroCornerPage() {
+            homePage.style.display = 'none';
+            gamePage.style.display = 'none';
+            eventsPage.style.display = 'none';
+            flipstersPage.style.display = 'none';
+            virtualEmulator.style.display = 'none';
+            retroCornerPage.style.display = 'block';
+            loadRetroGame(0);
+            // Закрываем сайдбар
+            if (mobileSidebar.classList.contains('open')) {
+                toggleMenu();
+            }
+        }
 
-            searchInput.addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase();
-                if (searchTerm.length < 2) {
-                    displayGames();
-                    return;
-                }
-                const filteredGames = games.filter(game => 
-                    game.title.toLowerCase().includes(searchTerm) || 
-                    game.description.toLowerCase().includes(searchTerm) ||
-                    game.genre.toLowerCase().includes(searchTerm)
-                );
-                displayGames(filteredGames);
-            });
+        function showVirtualEmulator() {
+            homePage.style.display = 'none';
+            gamePage.style.display = 'none';
+            eventsPage.style.display = 'none';
+            flipstersPage.style.display = 'none';
+            retroCornerPage.style.display = 'none';
+            virtualEmulator.style.display = 'block';
+            // Закрываем сайдбар
+            if (mobileSidebar.classList.contains('open')) {
+                toggleMenu();
+            }
+        }
 
-            categoryButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    categoryButtons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    const category = btn.getAttribute('data-category');
-                    if (category === 'all') {
-                        displayGames();
-                    } else {
-                        const filteredGames = games.filter(game => game.category.includes(category));
-                        displayGames(filteredGames);
-                    }
+        function showHomePage() {
+            homePage.style.display = 'block';
+            gamePage.style.display = 'none';
+            eventsPage.style.display = 'none';
+            flipstersPage.style.display = 'none';
+            retroCornerPage.style.display = 'none';
+            virtualEmulator.style.display = 'none';
+            // Закрываем сайдбар
+            if (mobileSidebar.classList.contains('open')) {
+                toggleMenu();
+            }
+        }
+
+        function showRandomFlipster() {
+            if (flipsters.length === 0) return;
+            currentFlipsterIndex = Math.floor(Math.random() * flipsters.length);
+            showFlipster(currentFlipsterIndex);
+        }
+
+        function showFlipster(index) {
+            if (index < 0 || index >= flipsters.length) return;
+            const flipster = flipsters[index];
+            flipsterTitle.textContent = flipster.title;
+            flipsterGenre.textContent = flipster.genre;
+            flipsterFrame.src = '';
+            flipsterLoader.style.display = 'flex';
+            
+            // Имитируем загрузку
+            setTimeout(() => {
+                flipsterFrame.src = flipster.frame;
+                flipsterLoader.style.display = 'none';
+            }, 1000);
+        }
+
+        function nextFlipster() {
+            currentFlipsterIndex = (currentFlipsterIndex + 1) % flipsters.length;
+            showFlipster(currentFlipsterIndex);
+        }
+
+        function prevFlipster() {
+            currentFlipsterIndex = (currentFlipsterIndex - 1 + flipsters.length) % flipsters.length;
+            showFlipster(currentFlipsterIndex);
+        }
+
+        function loadRetroGame(index) {
+            if (index < 0 || index >= retroGames.length) return;
+            const game = retroGames[index];
+            retroFrame.src = '';
+            // Закрываем сайдбар
+            if (mobileSidebar.classList.contains('open')) {
+                toggleMenu();
+            }
+            
+            setTimeout(() => {
+                retroFrame.src = game.frame;
+            }, 500);
+        }
+
+        function toggleMenu() {
+            mobileSidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('active');
+        }
+
+        function toggleParticles() {
+            particlesEnabled = !particlesEnabled;
+            particlesToggle.classList.toggle('active', particlesEnabled);
+            document.body.classList.toggle('particles-enabled', particlesEnabled);
+            document.body.classList.toggle('particles-disabled', !particlesEnabled);
+            localStorage.setItem('particlesEnabled', particlesEnabled);
+        }
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            const isBrutal = theme === 'brutal-dark';
+            mobileThemeToggle.classList.toggle('brutal', isBrutal);
+        }
+
+        function loadTheme() {
+            const saved = localStorage.getItem('theme') || 'default';
+            setTheme(saved);
+        }
+
+        function loadParticlesSettings() {
+            const saved = localStorage.getItem('particlesEnabled');
+            if (saved !== null) {
+                particlesEnabled = JSON.parse(saved);
+                particlesToggle.classList.toggle('active', particlesEnabled);
+            }
+        }
+
+        function toggleEmulatorFullscreen() {
+            const elem = document.querySelector('.emulator-container');
+            if (!document.fullscreenElement) {
+                elem.requestFullscreen().catch(err => {
+                    console.error(`Ошибка при переходе в полноэкранный режим: ${err.message}`);
                 });
-            });
+                document.body.classList.add('fullscreen-fix');
+            } else {
+                document.exitFullscreen();
+                document.body.classList.remove('fullscreen-fix');
+            }
+        }
 
-            platformIcons.forEach(icon => {
-                icon.addEventListener('click', () => {
-                    platformIcons.forEach(i => i.classList.remove('active'));
-                    icon.classList.add('active');
-                    currentPlatformFilter = icon.getAttribute('data-platform');
-                    displayGames();
-                });
-            });
+        // Обработчики событий
+        confirmCancel.addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+        });
 
-            allGamesBtn.addEventListener('click', () => {
-                categoryButtons.forEach(b => b.classList.remove('active'));
-                categoryButtons[0].classList.add('active');
+        confirmProceed.addEventListener('click', () => {
+            if (currentGameForDownload && currentGameForDownload.downloadUrl) {
+                window.location.href = currentGameForDownload.downloadUrl;
+            }
+            confirmModal.style.display = 'none';
+        });
+
+        confirmModal.addEventListener('click', (e) => {
+            if (e.target === confirmModal) {
+                confirmModal.style.display = 'none';
+            }
+        });
+
+        backBtn.addEventListener('click', () => {
+            showHomePage();
+            gameFrame.src = '';
+            currentGameForDownload = null;
+        });
+
+        retroBackBtn.addEventListener('click', () => {
+            showHomePage();
+            retroFrame.src = '';
+        });
+
+        emulatorBackBtn.addEventListener('click', () => {
+            showRetroCornerPage();
+        });
+
+        virtualEmulatorBtn.addEventListener('click', () => {
+            showVirtualEmulator();
+        });
+
+        emulatorFullscreenBtn.addEventListener('click', toggleEmulatorFullscreen);
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            if (searchTerm.length < 2) {
                 displayGames();
+                return;
+            }
+            const filteredGames = games.filter(game => 
+                game.title.toLowerCase().includes(searchTerm) || 
+                game.description.toLowerCase().includes(searchTerm) ||
+                game.genre.toLowerCase().includes(searchTerm)
+            );
+            displayGames(filteredGames);
+        });
+
+        allGamesBtn.addEventListener('click', () => {
+            currentCategoryFilter = "all";
+            displayGames();
+        });
+
+        trendingBtn.addEventListener('click', () => {
+            const filteredGames = games.filter(game => game.trending);
+            displayGames(filteredGames);
+        });
+
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+        enterBtn.addEventListener('click', () => {
+            welcomeScreen.style.opacity = '0';
+            setTimeout(() => {
+                welcomeScreen.style.display = 'none';
+            }, 500);
+        });
+
+        menuToggle.addEventListener('click', toggleMenu);
+        sidebarOverlay.addEventListener('click', toggleMenu);
+
+        // Мобильная навигация
+        mobileHomeBtn.addEventListener('click', showHomePage);
+        mobileEventsBtn.addEventListener('click', showEventsPage);
+        mobileFlipstersBtn.addEventListener('click', showFlipstersPage);
+        mobileRetroBtn.addEventListener('click', showRetroCornerPage);
+        mobileEmulatorBtn.addEventListener('click', showVirtualEmulator);
+
+        // Обработчики для флипсов
+        prevFlipsterBtn.addEventListener('click', prevFlipster);
+        nextFlipsterBtn.addEventListener('click', nextFlipster);
+
+        likeBtn.addEventListener('click', () => {
+            likeBtn.innerHTML = '<i class="fas fa-heart" style="color: var(--accent);"></i>';
+            setTimeout(() => {
+                likeBtn.innerHTML = '<i class="fas fa-heart"></i>';
+            }, 1000);
+        });
+
+        commentBtn.addEventListener('click', () => {
+            alert('Комментирование временно недоступно');
+        });
+
+        // Переключение частиц
+        particlesToggle.addEventListener('click', toggleParticles);
+
+        // Обработчики для мобильного меню
+        document.querySelectorAll('.sidebar-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentCategoryFilter = btn.getAttribute('data-category');
+                displayGames();
+                toggleMenu();
             });
+        });
 
-            trendingBtn.addEventListener('click', () => {
-                categoryButtons.forEach(b => b.classList.remove('active'));
-                const filteredGames = games.filter(game => game.trending);
-                displayGames(filteredGames);
+        document.querySelectorAll('.platform-icon-small').forEach(icon => {
+            icon.addEventListener('click', () => {
+                currentPlatformFilter = icon.getAttribute('data-platform');
+                displayGames();
+                toggleMenu();
             });
+        });
 
-            fullscreenBtn.addEventListener('click', toggleFullscreen);
+        mobileThemeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            setTheme(current === 'brutal-dark' ? 'default' : 'brutal-dark');
+        });
 
-            menuToggle.addEventListener('click', () => {
-                platformDock.classList.toggle('open');
-            });
-
-            enterBtn.addEventListener('click', () => {
-                welcomeScreen.style.opacity = '0';
-                setTimeout(() => {
-                    welcomeScreen.style.display = 'none';
-                }, 500);
-            });
-
-            // Флипсы навигация
-            flipsyGameItems.forEach((item, index) => {
-                item.addEventListener('click', () => showFlipsyGame(index));
-            });
-
-            flipsyPrevBtn.addEventListener('click', prevFlipsyGame);
-            flipsyNextBtn.addEventListener('click', nextFlipsyGame);
-
-            confirmCancel.addEventListener('click', () => {
-                confirmModal.style.display = 'none';
-            });
-
-            confirmProceed.addEventListener('click', () => {
-                if (currentGameForDownload && currentGameForDownload.downloadUrl) {
-                    window.location.href = currentGameForDownload.downloadUrl;
-                }
-                confirmModal.style.display = 'none';
-            });
-
-            confirmModal.addEventListener('click', (e) => {
-                if (e.target === confirmModal) {
-                    confirmModal.style.display = 'none';
-                }
-            });
-
-            themeToggle.addEventListener('click', () => {
-                const isBrutal = document.documentElement.getAttribute('data-theme') === 'brutal-dark';
-                if (isBrutal) {
-                    document.documentElement.setAttribute('data-theme', 'default');
-                    themeToggle.classList.remove('brutal');
-                    localStorage.setItem('theme', 'default');
-                } else {
-                    document.documentElement.setAttribute('data-theme', 'brutal-dark');
-                    themeToggle.classList.add('brutal');
-                    localStorage.setItem('theme', 'brutal-dark');
-                }
-            });
-
-            function loadTheme() {
-                const savedTheme = localStorage.getItem('theme') || 'default';
-                if (savedTheme === 'brutal-dark') {
-                    document.documentElement.setAttribute('data-theme', 'brutal-dark');
-                    themeToggle.classList.add('brutal');
-                } else {
-                    document.documentElement.setAttribute('data-theme', 'default');
-                    themeToggle.classList.remove('brutal');
+        // Клавиатурная навигация для флипсов
+        document.addEventListener('keydown', (e) => {
+            if (flipstersPage.style.display === 'flex') {
+                if (e.key === 'ArrowUp') {
+                    prevFlipster();
+                } else if (e.key === 'ArrowDown') {
+                    nextFlipster();
                 }
             }
+        });
 
-            // Инициализация частиц
+        // Полноэкранный режим
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                document.body.classList.remove('fullscreen-fix');
+                document.querySelector('.game-frame-container')?.classList.remove('fullscreen');
+            }
+        });
+
+        // Инициализация
+        loadTheme();
+        loadParticlesSettings();
+        displayGames();
+        
+        // Инициализация частиц только если particles.js загружен
+        if (typeof particlesJS === 'function') {
             particlesJS("particles-js", {
                 "particles": {
-                    "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-                    "color": { "value": "#6e45e2" },
-                    "shape": { "type": "circle" },
-                    "opacity": { "value": 0.5, "random": false },
-                    "size": { "value": 3, "random": true },
-                    "line_linked": {
-                        "enable": true, "distance": 150, "color": "#6e45e2", "opacity": 0.4, "width": 1
-                    },
-                    "move": {
-                        "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false
-                    }
+                    "number": {"value":80,"density":{"enable":true,"value_area":800}},
+                    "color": {"value":"#6e45e2"},
+                    "shape": {"type":"circle"},
+                    "opacity": {"value":0.5,"random":false,"anim":{"enable":false}},
+                    "size": {"value":3,"random":true,"anim":{"enable":false}},
+                    "line_linked": {"enable":true,"distance":150,"color":"#6e45e2","opacity":0.4,"width":1},
+                    "move": {"enable":true,"speed":2,"direction":"none","random":false,"straight":false,"out_mode":"out","bounce":false}
                 },
                 "interactivity": {
-                    "detect_on": "canvas",
-                    "events": {
-                        "onhover": { "enable": true, "mode": "grab" },
-                        "onclick": { "enable": true, "mode": "push" },
-                        "resize": true
-                    },
+                    "detect_on":"canvas",
+                    "events":{"onhover":{"enable":true,"mode":"grab"},"onclick":{"enable":true,"mode":"push"},"resize":true},
                     "modes": {
-                        "grab": { "distance": 140, "line_linked": { "opacity": 1 } },
-                        "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 },
-                        "repulse": { "distance": 200, "duration": 0.4 },
-                        "push": { "particles_nb": 4 },
-                        "remove": { "particles_nb": 2 }
+                        "grab":{"distance":140,"line_linked":{"opacity":1}},
+                        "bubble":{"distance":400,"size":40,"duration":2,"opacity":8,"speed":3},
+                        "repulse":{"distance":200,"duration":0.4},
+                        "push":{"particles_nb":4},
+                        "remove":{"particles_nb":2}
                     }
                 },
                 "retina_detect": true
             });
-        });
+        } else {
+            console.warn('Библиотека particles.js не загружена. Фон без частиц.');
+        }
     </script>
 </body>
 </html>

@@ -1,0 +1,37 @@
+Full page source
+ {...}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dual Gaming Centre RetroCorner Emulator</title>
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        #dos {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+    <!-- js-dos style sheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- js-dos -->
+    <script src="emulator.js"></script>
+</head>
+<body>
+
+    <div id="dos" style="width: 100%; height: 100%"></div>
+
+    <script>
+        Dos(document.getElementById("dos"), {
+            url: "digger.jsdos",
+        });
+    </script>
+</body>
+</html>
