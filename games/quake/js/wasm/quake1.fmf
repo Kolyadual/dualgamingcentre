@@ -1,0 +1,16 @@
+game Quake
+name "Quake 1"
+basegame id1
+
+bind w +forward
+bind s +back
+bind a +moveleft
+bind d +moveright
+bind mouse2 +jump
+bind mouse3 +forward
+bind mwheelup impulse 10
+bind mwheelup impulse 12
+
+package id1/pak0.pak - "/emupedia-data-quake1/id1/pak0.pak"
+package id1/pak1.pak - "/emupedia-data-quake1/id1/pak1.pak"
+package id1/pak2.pak - "/emupedia-data-quake1/id1/pak2.pak"
