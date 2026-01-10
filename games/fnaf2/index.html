@@ -134,7 +134,7 @@
         <div class="loader">
             <h1 id="percentage">0%</h1>
             <hr id="bar">
-            <h2 id="stage">STARTING UP...</h2>
+            <h2 id="stage">STARTING UP DGC GAME LOADER...</h2>
         </div>
         <a href="https://discord.gg/xuu8TnSY4b">
             <div class="launcher-text"><img src="resources/launcher-text.png" style="width: 45vw;"></div>
@@ -240,7 +240,7 @@
                 if (done) break;
                 chunks.push(value);
                 loaded += value.length;
-                updateProgress('RETURNING GEARS...', Math.floor((loaded / total / 2) * 100));
+                updateProgress('RETURNING GEARS... CONTINUE', Math.floor((loaded / total / 2) * 100));
             }
 
             const arrayBuffer = await new Blob(chunks).arrayBuffer();
@@ -253,7 +253,7 @@
                 const blob = await file.async("blob");
                 const url = URL.createObjectURL(blob);
                 map.set(files[i], url);
-                updateProgress('BOOTING UP ARCHIVE...', Math.floor(((i + 1) / totalFiles / 2) * 100 + 50));
+                updateProgress('BOOTING UP DGC GAME ARCHIVE...', Math.floor(((i + 1) / totalFiles / 2) * 100 + 50));
             }
         }
 
@@ -302,7 +302,7 @@
                         }).then((data) => {
                             buffers.push(data);
                             loadedSize += data.byteLength;
-                            updateProgress('LOCATING ARCHIVE...', Math.floor((loadedSize / totalSize / 2) * 100));
+                            updateProgress('LOCATING DGC GAME ARCHIVE...', Math.floor((loadedSize / totalSize / 2) * 100));
                             fetchPart(index + 1);
                         }).catch(reject);
                     }
