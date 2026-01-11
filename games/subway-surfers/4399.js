@@ -4,230 +4,13 @@ var my4399UnityModule = (function() {
         UnityModule = UnityModule || {};
         var Module = typeof UnityModule !== "undefined" ? UnityModule : {};
         if (typeof ENVIRONMENT_IS_PTHREAD === "undefined" || !ENVIRONMENT_IS_PTHREAD) {
-            function CachedXMLHttpRequest() {
-                var self = this,
-                    xhr = new CachedXMLHttpRequest.XMLHttpRequest,
-                    cache = {};
-
-                function send() {
-                    var onload = xhr.onload;
-                    xhr.onload = (function(e) {
-                        var meta = {
-                            requestURL: cache.requestURL,
-                            responseURL: xhr.responseURL,
-                            responseType: xhr.responseType,
-                            lastModified: xhr.getResponseHeader("Last-Modified"),
-                            eTag: xhr.getResponseHeader("ETag")
-                        };
-                        if (xhr.status == 200 && (meta.lastModified || meta.eTag)) {
-                            meta.size = xhr.response.byteLength;
-                            CachedXMLHttpRequest.cache.put(cache.requestURL, meta, xhr.response, (function(err) {
-                                CachedXMLHttpRequest.log("'" + cache.requestURL + "' downloaded successfully (" + xhr.response.byteLength + " bytes) " + (err ? "but not stored in indexedDB cache due to error." : "and stored in indexedDB cache."));
-                                if (onload) onload(e)
-                            }))
-                        } else {
-                            if (xhr.status == 304) {
-                                cache.override = true;
-                                CachedXMLHttpRequest.log("'" + cache.requestURL + "' served from indexedDB cache (" + cache.response.byteLength + " bytes).")
-                            }
-                            if (onload) onload(e)
-                        }
-                    });
-                    return xhr.send.apply(xhr, arguments)
-                }
-
-                function revalidateCrossOriginRequest(meta, self, sendArguments) {
-                    var headXHR = new CachedXMLHttpRequest.XMLHttpRequest;
-                    headXHR.open("HEAD", meta.requestURL, false);
-                    headXHR.send();
-                    cache.override = meta.lastModified ? meta.lastModified == headXHR.getResponseHeader("Last-Modified") : meta.eTag && meta.eTag == headXHR.getResponseHeader("ETag");
-                    if (!cache.override) return send.apply(self, sendArguments);
-                    CachedXMLHttpRequest.log("'" + cache.requestURL + "' served from indexedDB cache (" + cache.response.byteLength + " bytes).");
-                    if (xhr.onload) xhr.onload()
-                }
-                Object.defineProperty(self, "open", {
-                    value: (function(method, url, async) {
-                        cache = {
-                            method: method,
-                            requestURL: CachedXMLHttpRequest.cache.requestURL(url),
-                            async: async
-                        };
-                        return xhr.open.apply(xhr, arguments)
-                    })
-                });
-                Object.defineProperty(self, "setRequestHeader", {
-                    value: (function() {
-                        cache.customHeaders = true;
-                        return xhr.setRequestHeader.apply(xhr, arguments)
-                    })
-                });
-                Object.defineProperty(self, "send", {
-                    value: (function(data) {
-                        var sendArguments = arguments;
-                        var absoluteUrlMatch = cache.requestURL.match("^https?://[^/]+/");
-                        if (!absoluteUrlMatch || cache.customHeaders || data || cache.method != "GET" || !cache.async || xhr.responseType != "arraybuffer") return xhr.send.apply(xhr, sendArguments);
-                        CachedXMLHttpRequest.cache.get(cache.requestURL, (function(err, result) {
-                            if (err || !result || !result.meta || result.meta.responseType != xhr.responseType) return send.apply(self, sendArguments);
-                            cache.status = 200;
-                            cache.statusText = "OK";
-                            cache.response = result.response;
-                            cache.responseURL = result.meta.responseURL;
-                            if (window.location.href.lastIndexOf(absoluteUrlMatch[0], 0)) return revalidateCrossOriginRequest(result.meta, self, sendArguments);
-                            if (result.meta.lastModified) xhr.setRequestHeader("If-Modified-Since", result.meta.lastModified);
-                            else if (result.meta.eTag) xhr.setRequestHeader("If-None-Match", result.meta.eTag);
-                            xhr.setRequestHeader("Cache-Control", "no-cache");
-                            return send.apply(self, sendArguments)
-                        }))
-                    })
-                });
-                ["abort", "getAllResponseHeaders", "getResponseHeader", "overrideMimeType", "addEventListener"].forEach((function(method) {
-                    Object.defineProperty(self, method, {
-                        value: (function() {
-                            return xhr[method].apply(xhr, arguments)
-                        })
-                    })
-                }));
-                ["readyState", "response", "responseText", "responseType", "responseURL", "responseXML", "status", "statusText", "timeout", "upload", "withCredentials", "onloadstart", "onprogress", "onabort", "onerror", "onload", "ontimeout", "onloadend", "onreadystatechange"].forEach((function(property) {
-                    Object.defineProperty(self, property, {
-                        get: (function() {
-                            return cache.override && cache[property] ? cache[property] : xhr[property]
-                        }),
-                        set: (function(value) {
-                            xhr[property] = value
-                        })
-                    })
-                }))
-            }
-            CachedXMLHttpRequest.XMLHttpRequest = window.XMLHttpRequest;
-            CachedXMLHttpRequest.log = (function(message) {
-                if (Module.CachedXMLHttpRequestSilent !== true) console.log("[CachedXMLHttpRequest] " + message)
-            });
-            CachedXMLHttpRequest.cache = {
-                database: "CachedXMLHttpRequest",
-                version: 1,
-                store: "cache",
-                indexedDB: window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB,
-                link: document.createElement("a"),
-                requestURL: (function(url) {
-                    this.link.href = url;
-                    return this.link.href
-                }),
-                id: (function(requestURL) {
-                    return encodeURIComponent(requestURL)
-                }),
-                queue: [],
-                processQueue: (function() {
-                    var self = this;
-                    self.queue.forEach((function(queued) {
-                        self[queued.action].apply(self, queued.arguments)
-                    }));
-                    self.queue = []
-                }),
-                init: (function() {
-                    var self = this;
-                    if (!self.indexedDB) return CachedXMLHttpRequest.log("indexedDB is not available");
-                    var openDB;
-                    try {
-                        openDB = indexedDB.open(self.database, self.version)
-                    } catch (e) {
-                        return CachedXMLHttpRequest.log("indexedDB access denied")
-                    }
-                    openDB.onupgradeneeded = (function(e) {
-                        var db = e.target.result;
-                        var transaction = e.target.transaction;
-                        var objectStore;
-                        if (db.objectStoreNames.contains(self.store)) {
-                            objectStore = transaction.objectStore(self.store)
-                        } else {
-                            objectStore = db.createObjectStore(self.store, {
-                                keyPath: "id"
-                            });
-                            objectStore.createIndex("meta", "meta", {
-                                unique: false
-                            })
-                        }
-                        objectStore.clear()
-                    });
-                    openDB.onerror = (function(e) {
-                        CachedXMLHttpRequest.log("can not open indexedDB database");
-                        self.indexedDB = null;
-                        self.processQueue()
-                    });
-                    openDB.onsuccess = (function(e) {
-                        self.db = e.target.result;
-                        self.processQueue()
-                    })
-                }),
-                put: (function(requestURL, meta, response, callback) {
-                    var self = this;
-                    if (!self.indexedDB) return callback(new Error("indexedDB is not available"));
-                    if (!self.db) return self.queue.push({
-                        action: "put",
-                        arguments: arguments
-                    });
-                    meta.version = self.version;
-                    var putDB = self.db.transaction([self.store], "readwrite").objectStore(self.store).put({
-                        id: self.id(requestURL),
-                        meta: meta,
-                        response: response
-                    });
-                    putDB.onerror = (function(e) {
-                        callback(new Error("failed to put request into indexedDB cache"))
-                    });
-                    putDB.onsuccess = (function(e) {
-                        callback(null)
-                    })
-                }),
-                get: (function(requestURL, callback) {
-                    var self = this;
-                    if (!self.indexedDB) return callback(new Error("indexedDB is not available"));
-                    if (!self.db) return self.queue.push({
-                        action: "get",
-                        arguments: arguments
-                    });
-                    var getDB = self.db.transaction([self.store], "readonly").objectStore(self.store).get(self.id(requestURL));
-                    getDB.onerror = (function(e) {
-                        callback(new Error("failed to get request from indexedDB cache"))
-                    });
-                    getDB.onsuccess = (function(e) {
-                        callback(null, e.target.result)
-                    })
-                })
-            };
-            CachedXMLHttpRequest.cache.init();
-            CachedXMLHttpRequest.wrap = (function(func) {
-                return (function() {
-                    var realXMLHttpRequest = XMLHttpRequest;
-                    XMLHttpRequest = CachedXMLHttpRequest;
-                    try {
-                        var result = func.apply(this, arguments)
-                    } catch (e) {
-                        XMLHttpRequest = realXMLHttpRequest;
-                        throw e
-                    }
-                    XMLHttpRequest = realXMLHttpRequest;
-                    return result
-                })
-            });
-            if (Module.CachedXMLHttpRequestDisable !== true) {
-                Object.defineProperty(Module, "asmLibraryArg", {
-                    get: (function() {
-                        return Module.realAsmLibraryArg
-                    }),
-                    set: (function(value) {
-                        if (typeof value == "object" && typeof value._JS_WebRequest_Create == "function") value._JS_WebRequest_Create = CachedXMLHttpRequest.wrap(value._JS_WebRequest_Create);
-                        Module.realAsmLibraryArg = value
-                    })
-                })
-            }
-        }
-        if (typeof ENVIRONMENT_IS_PTHREAD === "undefined" || !ENVIRONMENT_IS_PTHREAD) {
             Module["preRun"].push((function() {
                 var unityFileSystemInit = Module["unityFileSystemInit"] || (function() {
                     if (!Module.indexedDB) {
                         console.log("IndexedDB is not available. Data will not persist in cache and PlayerPrefs will not be saved.")
                     }
                     FS.mkdir("/idbfs");
+                    // FS.mkdir("/idbfs/Test2")
                     FS.mount(IDBFS, {}, "/idbfs");
                     Module.addRunDependency("JS_FileSystem_Mount");
                     FS.syncfs(true, (function(err) {
@@ -1443,7 +1226,7 @@ var my4399UnityModule = (function() {
             return ASM_CONSTS[code](a0)
         }
         STATIC_BASE = GLOBAL_BASE;
-        STATICTOP = STATIC_BASE + 4577296;
+        STATICTOP = STATIC_BASE + 4344400;
         __ATINIT__.push({
             func: (function() {
                 __GLOBAL__sub_I_AccessibilityScriptingClasses_cpp()
@@ -1490,10 +1273,6 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                __GLOBAL__sub_I_ARScriptingClasses_cpp()
-            })
-        }, {
-            func: (function() {
                 __GLOBAL__sub_I_AssetBundleScriptingClasses_cpp()
             })
         }, {
@@ -1522,7 +1301,7 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                __GLOBAL__sub_I_Modules_Audio_Public_ScriptBindings_0_cpp()
+                __GLOBAL__sub_I_Modules_Audio_Public_ScriptBindings_1_cpp()
             })
         }, {
             func: (function() {
@@ -1535,6 +1314,26 @@ var my4399UnityModule = (function() {
         }, {
             func: (function() {
                 __GLOBAL__sub_I_Modules_Cloth_0_cpp()
+            })
+        }, {
+            func: (function() {
+                ___cxx_global_var_init_18()
+            })
+        }, {
+            func: (function() {
+                __GLOBAL__sub_I_nvcloth_src_0_cpp()
+            })
+        }, {
+            func: (function() {
+                __GLOBAL__sub_I_nvcloth_src_1_cpp()
+            })
+        }, {
+            func: (function() {
+                __GLOBAL__sub_I_SwInterCollision_cpp()
+            })
+        }, {
+            func: (function() {
+                __GLOBAL__sub_I_SwSolverKernel_cpp()
             })
         }, {
             func: (function() {
@@ -1562,7 +1361,7 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                __GLOBAL__sub_I_SpriteRendererJobs_cpp()
+                __GLOBAL__sub_I_Runtime_2D_Renderer_0_cpp()
             })
         }, {
             func: (function() {
@@ -1574,11 +1373,11 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                ___cxx_global_var_init_4_834()
+                __GLOBAL__sub_I_Runtime_Allocator_0_cpp()
             })
         }, {
             func: (function() {
-                __GLOBAL__sub_I_Runtime_Allocator_1_cpp()
+                __GLOBAL__sub_I_Runtime_Allocator_2_cpp()
             })
         }, {
             func: (function() {
@@ -1646,11 +1445,7 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                ___cxx_global_var_init_22()
-            })
-        }, {
-            func: (function() {
-                __GLOBAL__sub_I_Runtime_Camera_RenderLayers_0_cpp()
+                __GLOBAL__sub_I_GUITexture_cpp()
             })
         }, {
             func: (function() {
@@ -1682,11 +1477,19 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
+                ___cxx_global_var_init_98()
+            })
+        }, {
+            func: (function() {
                 __GLOBAL__sub_I_Runtime_Graphics_1_cpp()
             })
         }, {
             func: (function() {
-                ___cxx_global_var_init_51()
+                __GLOBAL__sub_I_Runtime_Graphics_2_cpp()
+            })
+        }, {
+            func: (function() {
+                __GLOBAL__sub_I_Runtime_Graphics_4_cpp()
             })
         }, {
             func: (function() {
@@ -1698,15 +1501,7 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                __GLOBAL__sub_I_Runtime_Graphics_7_cpp()
-            })
-        }, {
-            func: (function() {
                 __GLOBAL__sub_I_Runtime_Graphics_8_cpp()
-            })
-        }, {
-            func: (function() {
-                __GLOBAL__sub_I_Runtime_Graphics_9_cpp()
             })
         }, {
             func: (function() {
@@ -1727,6 +1522,10 @@ var my4399UnityModule = (function() {
         }, {
             func: (function() {
                 __GLOBAL__sub_I_Runtime_Graphics_Mesh_0_cpp()
+            })
+        }, {
+            func: (function() {
+                __GLOBAL__sub_I_Runtime_Graphics_Mesh_1_cpp()
             })
         }, {
             func: (function() {
@@ -1762,7 +1561,11 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                __GLOBAL__sub_I_Runtime_Jobs_ScriptBindings_0_cpp()
+                __GLOBAL__sub_I_Runtime_Jobs_1_cpp()
+            })
+        }, {
+            func: (function() {
+                __GLOBAL__sub_I_Runtime_Jobs_Internal_1_cpp()
             })
         }, {
             func: (function() {
@@ -1782,7 +1585,7 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                ___cxx_global_var_init_129()
+                ___cxx_global_var_init_127()
             })
         }, {
             func: (function() {
@@ -1814,15 +1617,15 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
+                ___cxx_global_var_init_116()
+            })
+        }, {
+            func: (function() {
                 __GLOBAL__sub_I_Runtime_Shaders_2_cpp()
             })
         }, {
             func: (function() {
-                __GLOBAL__sub_I_Runtime_Shaders_ShaderImpl_0_cpp()
-            })
-        }, {
-            func: (function() {
-                __GLOBAL__sub_I_Runtime_Shaders_ShaderImpl_1_cpp()
+                __GLOBAL__sub_I_Runtime_Shaders_ShaderImpl_2_cpp()
             })
         }, {
             func: (function() {
@@ -1838,7 +1641,7 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                ___cxx_global_var_init_2_9458()
+                ___cxx_global_var_init_2_9467()
             })
         }, {
             func: (function() {
@@ -1866,11 +1669,15 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                ___cxx_global_var_init_18()
+                ___cxx_global_var_init_13()
             })
         }, {
             func: (function() {
-                ___cxx_global_var_init_19()
+                ___cxx_global_var_init_14()
+            })
+        }, {
+            func: (function() {
+                ___cxx_global_var_init_15()
             })
         }, {
             func: (function() {
@@ -1878,7 +1685,7 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                __GLOBAL__sub_I_AndroidPermissions_bindings_cpp()
+                __GLOBAL__sub_I_Modules_Profiler_Runtime_1_cpp()
             })
         }, {
             func: (function() {
@@ -1938,7 +1745,19 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
+                __GLOBAL__sub_I_TemplateInstantiations_cpp()
+            })
+        }, {
+            func: (function() {
                 __GLOBAL__sub_I_Runtime_Scripting_APIUpdating_0_cpp()
+            })
+        }, {
+            func: (function() {
+                __GLOBAL__sub_I_Runtime_Serialize_0_cpp()
+            })
+        }, {
+            func: (function() {
+                __GLOBAL__sub_I_Runtime_Serialize_1_cpp()
             })
         }, {
             func: (function() {
@@ -1962,10 +1781,6 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                __GLOBAL__sub_I_artifacts_WebGL_modules_Core_WebGL_asmjs_nondev_i_r_nothreads_3_cpp()
-            })
-        }, {
-            func: (function() {
                 __GLOBAL__sub_I_LogAssert_cpp()
             })
         }, {
@@ -1978,7 +1793,7 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                __GLOBAL__sub_I_PlatformDependent_WebGL_External_baselib_builds_Platforms_WebGL_Source_PAL_0_cpp()
+                __GLOBAL__sub_I_PlatformDependent_WebGL_External_baselib_builds_Source_0_cpp()
             })
         }, {
             func: (function() {
@@ -1998,7 +1813,7 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                ___cxx_global_var_init_3096()
+                ___cxx_global_var_init_3660()
             })
         }, {
             func: (function() {
@@ -2010,7 +1825,7 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                ___cxx_global_var_init_20()
+                ___cxx_global_var_init_22()
             })
         }, {
             func: (function() {
@@ -2074,15 +1889,11 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                ___cxx_global_var_init_18_4873()
+                __GLOBAL__sub_I_SubsystemsScriptingClasses_cpp()
             })
         }, {
             func: (function() {
-                __GLOBAL__sub_I_NvCloth_src_0_cpp()
-            })
-        }, {
-            func: (function() {
-                __GLOBAL__sub_I_NvCloth_src_1_cpp()
+                __GLOBAL__sub_I_Modules_Subsystems_0_cpp()
             })
         }, {
             func: (function() {
@@ -2094,7 +1905,7 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                ___cxx_global_var_init_66()
+                ___cxx_global_var_init_69()
             })
         }, {
             func: (function() {
@@ -2118,15 +1929,11 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
-                __GLOBAL__sub_I_Modules_TextCore_Native_FontEngine_0_cpp()
-            })
-        }, {
-            func: (function() {
                 __GLOBAL__sub_I_TextRenderingScriptingClasses_cpp()
             })
         }, {
             func: (function() {
-                __GLOBAL__sub_I_Modules_TextRendering_Public_1_cpp()
+                __GLOBAL__sub_I_Modules_TextRendering_Public_0_cpp()
             })
         }, {
             func: (function() {
@@ -2206,6 +2013,10 @@ var my4399UnityModule = (function() {
             })
         }, {
             func: (function() {
+                __GLOBAL__sub_I_Modules_Video_Public_Base_0_cpp()
+            })
+        }, {
+            func: (function() {
                 __GLOBAL__sub_I_VRScriptingClasses_cpp()
             })
         }, {
@@ -2257,7 +2068,7 @@ var my4399UnityModule = (function() {
                 ___emscripten_environ_constructor()
             })
         });
-        var STATIC_BUMP = 4577296;
+        var STATIC_BUMP = 4344400;
         Module["STATIC_BASE"] = STATIC_BASE;
         Module["STATIC_BUMP"] = STATIC_BUMP;
         var tempDoublePtr = STATICTOP;
@@ -2273,31 +2084,25 @@ var my4399UnityModule = (function() {
             Module.canvas.style.cursor = show ? "default" : "none"
         }
 
-        function _JS_Eval_ClearTimeout(id) {
-            window.clearTimeout(id)
+        function _JS_Eval_ClearInterval(id) {
+            window.clearInterval(id)
         }
 
         function _JS_Eval_EvalJS(ptr) {
-            // var str = Pointer_stringify(ptr);
-            // try {
-            //     eval(str)
-            // } catch (exception) {
-            //     console.error(exception)
-            // }
+           
         }
 
         function _JS_Eval_OpenURL(ptr) {
-            // var str = Pointer_stringify(ptr);
-            // location.href = str
+          
         }
 
-        function _JS_Eval_SetTimeout(func, arg, millis) {
+        function _JS_Eval_SetInterval(func, arg, millis) {
             Module["noExitRuntime"] = true;
 
             function wrapper() {
                 getFuncWrapper(func, "vi")(arg)
             }
-            return Browser.safeSetTimeout(wrapper, millis)
+            return Browser.safeSetInterval(wrapper, millis)
         }
         var fs = {
             numPendingSync: 0,
@@ -2513,7 +2318,7 @@ var my4399UnityModule = (function() {
                 var resumeInterval = Module.setInterval(tryToResumeAudioContext, 400);
                 WEBAudio.audioWebEnabled = 1
             } catch (e) {
-
+              
             }
         }
 
@@ -2524,7 +2329,8 @@ var my4399UnityModule = (function() {
                 error: false
             };
             var instance = WEBAudio.audioInstances.push(sound) - 1;
-            WEBAudio.audioContext.decodeAudioData(HEAPU8.buffer.slice(ptr, ptr + length), (function(buffer) {
+            var audioData = HEAPU8.buffer.slice(ptr, ptr + length);
+            WEBAudio.audioContext.decodeAudioData(audioData, (function(buffer) {
                 sound.buffer = buffer
             }), (function() {
                 sound.error = true;
@@ -2663,12 +2469,11 @@ var my4399UnityModule = (function() {
             return lengthBytesUTF8(browserVer)
         }
 
-        function _JS_SystemInfo_GetCurrentCanvasHeight() {
-            return Module["canvas"].clientHeight
-        }
-
-        function _JS_SystemInfo_GetCurrentCanvasWidth() {
-            return Module["canvas"].clientWidth
+        function _JS_SystemInfo_GetCanvasClientSize(domElementSelector, outWidth, outHeight) {
+            var selector = UTF8ToString(domElementSelector);
+            var canvas = selector == "#canvas" ? Module["canvas"] : document.querySelector(selector);
+            HEAPF64[outWidth >> 3] = canvas ? canvas.clientWidth : 0;
+            HEAPF64[outHeight >> 3] = canvas ? canvas.clientHeight : 0
         }
 
         function _JS_SystemInfo_GetDocumentURL(buffer, bufferSize) {
@@ -2680,10 +2485,6 @@ var my4399UnityModule = (function() {
             var gpuinfo = UnityLoader.SystemInfo.gpu;
             if (buffer) stringToUTF8(gpuinfo, buffer, bufferSize);
             return lengthBytesUTF8(gpuinfo)
-        }
-
-        function _JS_SystemInfo_GetHeight() {
-            return UnityLoader.SystemInfo.height
         }
 
         function _JS_SystemInfo_GetLanguage(buffer, bufferSize) {
@@ -2702,8 +2503,13 @@ var my4399UnityModule = (function() {
             return lengthBytesUTF8(browser)
         }
 
-        function _JS_SystemInfo_GetWidth() {
-            return UnityLoader.SystemInfo.width
+        function _JS_SystemInfo_GetPreferredDevicePixelRatio() {
+            return Module.devicePixelRatio || window.devicePixelRatio || 1
+        }
+
+        function _JS_SystemInfo_GetScreenSize(outWidth, outHeight) {
+            HEAPF64[outWidth >> 3] = UnityLoader.SystemInfo.width;
+            HEAPF64[outHeight >> 3] = UnityLoader.SystemInfo.height
         }
 
         function _JS_SystemInfo_HasCursorLock() {
@@ -2717,255 +2523,6 @@ var my4399UnityModule = (function() {
         function _JS_SystemInfo_HasWebGL() {
             return UnityLoader.SystemInfo.hasWebGL
         }
-
-        function _JS_UNETWebSockets_HostsContainingMessagesCleanHost(hostId) {
-            for (i = 0; i < UNETWebSocketsInstances.hostsContainingMessages.length; i++) {
-                if (UNETWebSocketsInstances.hostsContainingMessages[i] != null) {
-                    if (UNETWebSocketsInstances.hostsContainingMessages[i].id == hostId) UNETWebSocketsInstances.hostsContainingMessages[i] = null
-                }
-            }
-            var socket = UNETWebSocketsInstances.hostsContainingMessages[0];
-            if (socket == null) return;
-            if (socket.messages.length == 0) {
-                socket.inQueue = false
-            } else {
-                UNETWebSocketsInstances.hostsContainingMessages.push(socket)
-            }
-            UNETWebSocketsInstances.hostsContainingMessages.shift()
-        }
-
-        function _JS_UNETWebSockets_HostsContainingMessagesPush(socket) {
-            if (socket.inQueue == false) {
-                UNETWebSocketsInstances.hostsContainingMessages.push(socket);
-                socket.inQueue = true
-            }
-        }
-        var UNETWebSocketsInstances = {
-            hosts: [, , , , , , , , , , , , , , ],
-            hostsContainingMessages: [],
-            pingDataArray: null,
-            HostStates: {
-                Created: 0,
-                Opening: 1,
-                Connected: 2,
-                Closing: 3,
-                Closed: 4
-            },
-            EventTypes: {
-                DataEvent: 0,
-                ConnectEvent: 1,
-                DisconnectEvent: 2,
-                Nothing: 3
-            }
-        };
-
-        function _JS_UNETWebSockets_AddHost(pingTimeoutParam) {
-            var placeHolderSocket = {
-                socket: null,
-                buffer: new Uint8Array(0),
-                error: null,
-                id: -1,
-                state: UNETWebSocketsInstances.HostStates.Closed,
-                pingTimeout: pingTimeoutParam,
-                messages: []
-            };
-            for (i = 0; i < UNETWebSocketsInstances.hosts.length; i++) {
-                if (UNETWebSocketsInstances.hosts[i] == null) {
-                    placeHolderSocket.id = i;
-                    UNETWebSocketsInstances.hosts[i] = placeHolderSocket;
-                    return i
-                }
-            }
-            return -1
-        }
-
-        function _JS_UNETWebSockets_Init() {
-            UNETWebSocketsInstances.pingDataArray = new ArrayBuffer(1);
-            var arr = new Uint8Array(UNETWebSocketsInstances.pingDataArray);
-            arr[0] = 255
-        }
-
-        function _JS_UNETWebSockets_IsHostCorrect(i) {
-            if (i < UNETWebSocketsInstances.hosts.length && UNETWebSocketsInstances.hosts[i] != null && UNETWebSocketsInstances.hosts[i].socket != null) {
-                return true
-            }
-            return false
-        }
-
-        function _JS_UNETWebSockets_IsHostReadyToConnect(i) {
-            if (i < UNETWebSocketsInstances.hosts.length && UNETWebSocketsInstances.hosts[i] != null && UNETWebSocketsInstances.hosts[i].socket == null) {
-                return true
-            }
-            return false
-        }
-
-        function _JS_UNETWebSockets_SocketCleanEvnt() {
-            var host = UNETWebSocketsInstances.hostsContainingMessages.shift();
-            host.inQueue = false;
-            if (host.state == UNETWebSocketsInstances.HostStates.Opening) {
-                host.state = UNETWebSocketsInstances.HostStates.Connected;
-                if (host.messages.length != 0) _JS_UNETWebSockets_HostsContainingMessagesPush(host)
-            } else if (host.state == UNETWebSocketsInstances.HostStates.Closing) {
-                if (host.messages.length == 0) UNETWebSocketsInstances.hosts[host.id] = null;
-                else {
-                    host.messages.shift();
-                    if (host.messages.length != 0) _JS_UNETWebSockets_HostsContainingMessagesPush(host)
-                }
-            } else {
-                host.messages.shift();
-                if (host.messages.length != 0) _JS_UNETWebSockets_HostsContainingMessagesPush(host)
-            }
-        }
-
-        function _JS_UNETWebSockets_SocketCleanEvntFromHost(hostId) {
-            if (UNETWebSocketsInstances.hosts[hostId].state == UNETWebSocketsInstances.HostStates.Opening) UNETWebSocketsInstances.hosts[hostId].state = UNETWebSocketsInstances.HostStates.Connected;
-            else if (UNETWebSocketsInstances.hosts[hostId].messages.length != 0) UNETWebSocketsInstances.hosts[hostId].messages.shift();
-            else if (UNETWebSocketsInstances.hosts[hostId].state == UNETWebSocketsInstances.HostStates.Closing) {
-                UNETWebSocketsInstances.hosts[hostId].state = UNETWebSocketsInstances.HostStates.Closed;
-                UNETWebSocketsInstances.hosts[hostId] = null;
-                _JS_UNETWebSockets_HostsContainingMessagesCleanHost(hostId)
-            }
-        }
-
-        function _JS_UNETWebSockets_SocketClose(hostId) {
-            var socket = UNETWebSocketsInstances.hosts[hostId];
-            if (socket.socket != null) socket.socket.close()
-        }
-
-        function _JS_UNETWebSockets_SocketCreate(hostId, url) {
-            var str = Pointer_stringify(url);
-
-            function keepAlive(socket) {
-                var now = Date.now();
-                var ab = new ArrayBuffer(1);
-                var pData = new Uint8Array(ab);
-                pData[0] = 255;
-                if (now - socket.lastSentTime > socket.pingTimeout) {
-                    socket.socket.send(UNETWebSocketsInstances.pingDataArray);
-                    socket.lastSentTime = now
-                }
-            }
-
-            function cancelKeepAlive(socket) {
-                if (socket.timerID) {
-                    Module.clearInterval(socket.timerID);
-                    socket.timerID = 0
-                }
-            }
-            var socket = {
-                socket: new WebSocket(str, ["unitygame"]),
-                buffer: new Uint8Array(0),
-                error: null,
-                id: hostId,
-                state: UNETWebSocketsInstances.HostStates.Created,
-                inQueue: false,
-                timerID: 0,
-                pingTimeout: 0,
-                lastSentTime: Date.now(),
-                messages: []
-            };
-            socket.socket.onopen = (function() {
-                socket.state = UNETWebSocketsInstances.HostStates.Opening;
-                _JS_UNETWebSockets_HostsContainingMessagesPush(socket);
-                socket.timerID = Module.setInterval((function() {
-                    keepAlive(socket)
-                }), socket.pingTimeout)
-            });
-            socket.socket.onmessage = (function(e) {
-                if (e.data instanceof Blob) {
-                    var reader = new FileReader;
-                    reader.addEventListener("loadend", (function() {
-                        var array = new Uint8Array(reader.result);
-                        _JS_UNETWebSockets_HostsContainingMessagesPush(socket);
-                        if (array.length == 1 && array[0] == 255) {
-                            return
-                        }
-                        socket.messages.push(array)
-                    }));
-                    reader.readAsArrayBuffer(e.data)
-                }
-            });
-            socket.socket.onclose = (function(e) {
-                cancelKeepAlive(socket);
-                if (socket.state == UNETWebSocketsInstances.HostStates.Closed) {
-                    return
-                }
-                socket.state = UNETWebSocketsInstances.HostStates.Closing;
-                _JS_UNETWebSockets_HostsContainingMessagesPush(socket)
-            });
-            socket.socket.onerror = (function(e) {
-                console.log("Error: " + e.data + " socket will be closed");
-                socket.state = UNETWebSocketsInstances.HostStates.Closing;
-                _JS_UNETWebSockets_HostsContainingMessagesPush(socket)
-            });
-            socket.pingTimeout = UNETWebSocketsInstances.hosts[socket.id].pingTimeout;
-            UNETWebSocketsInstances.hosts[socket.id] = socket
-        }
-
-        function _JS_UNETWebSockets_SocketRecvEvntBuff(ptr, length) {
-            HEAPU8.set(UNETWebSocketsInstances.hostsContainingMessages[0].messages[0], ptr)
-        }
-
-        function _JS_UNETWebSockets_SocketRecvEvntBuffFromHost(hostId, ptr, length) {
-            HEAPU8.set(UNETWebSocketsInstances.hosts[hostId].messages[0], ptr)
-        }
-
-        function _JS_UNETWebSockets_SocketRecvEvntBuffLength() {
-            return UNETWebSocketsInstances.hostsContainingMessages[0].messages[0].length
-        }
-
-        function _JS_UNETWebSockets_SocketRecvEvntBuffLengthFromHost(hostId) {
-            return UNETWebSocketsInstances.hosts[hostId].messages[0].length
-        }
-
-        function _JS_UNETWebSockets_SocketRecvEvntHost() {
-            return UNETWebSocketsInstances.hostsContainingMessages[0].id
-        }
-
-        function _JS_UNETWebSockets_SocketRecvEvntType() {
-            if (UNETWebSocketsInstances.hostsContainingMessages.length == 0) return UNETWebSocketsInstances.EventTypes.Nothing;
-            while (UNETWebSocketsInstances.hostsContainingMessages.length != 0) {
-                if (UNETWebSocketsInstances.hostsContainingMessages[0] == null) UNETWebSocketsInstances.hostsContainingMessages.shift();
-                else if (UNETWebSocketsInstances.hostsContainingMessages[0].state == UNETWebSocketsInstances.HostStates.Closed) UNETWebSocketsInstances.hostsContainingMessages.shift();
-                else if (UNETWebSocketsInstances.hostsContainingMessages[0].state == UNETWebSocketsInstances.HostStates.Opening) break;
-                else if (UNETWebSocketsInstances.hostsContainingMessages[0].state == UNETWebSocketsInstances.HostStates.Closing) break;
-                else if (UNETWebSocketsInstances.hostsContainingMessages[0].messages.length == 0) {
-                    UNETWebSocketsInstances.hostsContainingMessages[0].inQueue = false;
-                    UNETWebSocketsInstances.hostsContainingMessages.shift()
-                } else break
-            }
-            if (UNETWebSocketsInstances.hostsContainingMessages.length == 0) return UNETWebSocketsInstances.EventTypes.Nothing;
-            else if (UNETWebSocketsInstances.hostsContainingMessages[0].state == UNETWebSocketsInstances.HostStates.Opening) return UNETWebSocketsInstances.EventTypes.ConnectEvent;
-            else if (UNETWebSocketsInstances.hostsContainingMessages[0].state == UNETWebSocketsInstances.HostStates.Closing && UNETWebSocketsInstances.hostsContainingMessages[0].messages.length == 0) return UNETWebSocketsInstances.EventTypes.DisconnectEvent;
-            else return UNETWebSocketsInstances.EventTypes.DataEvent
-        }
-
-        function _JS_UNETWebSockets_SocketRecvEvntTypeFromHost(hostId) {
-            var evnt = UNETWebSocketsInstances.EventTypes.Nothing;
-            if (UNETWebSocketsInstances.hosts[hostId].state == UNETWebSocketsInstances.HostStates.Opening) evnt = UNETWebSocketsInstances.EventTypes.ConnectEvent;
-            else if (UNETWebSocketsInstances.hosts[hostId].messages.length != 0) evnt = UNETWebSocketsInstances.EventTypes.DataEvent;
-            else if (UNETWebSocketsInstances.hosts[hostId].state == UNETWebSocketsInstances.HostStates.Closing) evnt = UNETWebSocketsInstances.EventTypes.DisconnectEvent;
-            return evnt
-        }
-
-        function _JS_UNETWebSockets_SocketSend(hostId, ptr, length) {
-            var socket = UNETWebSocketsInstances.hosts[hostId];
-            if (socket == 0 || socket.socket.readyState != 1 || socket.state != UNETWebSocketsInstances.HostStates.Connected) return;
-            socket.socket.send(HEAPU8.buffer.slice(ptr, ptr + length));
-            socket.lastSentTime = Date.now()
-        }
-
-        function _JS_UNETWebSockets_SocketStop() {
-            for (i = 0; i < UNETWebSocketsInstances.hosts.length; i++) {
-                if (UNETWebSocketsInstances.hosts[i] != null && UNETWebSocketsInstances.hosts[i].socket != null) {
-                    var socket = UNETWebSocketsInstances.hosts[i];
-                    socket.socket.close();
-                    UNETWebSocketsInstances.hosts[i] = null
-                }
-            }
-            UNETWebSocketsInstances.hosts = new Array(UNETWebSocketsInstances.hosts.length);
-            UNETWebSocketsInstances.hostsContainingMessages = new Array
-        }
         var wr = {
             requestInstances: {},
             nextRequestId: 1
@@ -2976,9 +2533,14 @@ var my4399UnityModule = (function() {
         }
 
         function _JS_WebRequest_Create(url, method) {
-            var http = new XMLHttpRequest;
             var _url = Pointer_stringify(url);
             var _method = Pointer_stringify(method);
+            var cacheControl = typeof Module.cacheControl == "function" ? Module.cacheControl(_url) : Module.cacheControl ? Module.cacheControl["UnityWebRequest"] || Module.cacheControl["default"] : "no-cache";
+            var http = Module.companyName && Module.productName && cacheControl && cacheControl != "no-cache" ? new UnityLoader.UnityCache.XMLHttpRequest({
+                companyName: Module.companyName,
+                productName: Module.productName,
+                cacheControl: cacheControl
+            }) : new XMLHttpRequest;
             http.open(_method, _url, true);
             http.responseType = "arraybuffer";
             wr.requestInstances[wr.nextRequestId] = http;
@@ -3002,13 +2564,7 @@ var my4399UnityModule = (function() {
         }
 
         function _JS_WebRequest_Send(request, ptr, length) {
-            // var http = wr.requestInstances[request];
-            // try {
-            //     if (length > 0) http.send(HEAPU8.subarray(ptr, ptr + length));
-            //     else http.send()
-            // } catch (e) {
-            //     console.error(e.name + ": " + e.message)
-            // }
+             
         }
 
         function _JS_WebRequest_SetProgressHandler(request, arg, onprogress) {
@@ -3884,9 +3440,42 @@ var my4399UnityModule = (function() {
         var MEMFS = {
             ops_table: null,
             mount: (function(mount) {
+                // console.log("createNode called with:", { mount });
+
                 return MEMFS.createNode(null, "/", 16384 | 511, 0)
             }),
             createNode: (function(parent, name, mode, dev) {
+                    // console.log("createNode called with:", { parent, name, mode, dev });
+                    // if (node.name === "675cad986efc53c717c6a508ab60f8e0") {
+                    //     // //     // FS.mkdir("/idbfs/testV")
+                    //     // //     // FS.symlink("/idbfs/testV", "/idbfs/" + name);
+                    //     node.name = "VVV";
+                    //     // const ccc = name
+                    //     // //     // node.link =
+                    //     // }
+                    //
+                    // if (parent) {
+                    //     if (parent.name === "675cad986efc53c717c6a508ab60f8e0") {
+                    //         parent.name = "VVV"; // Change name to "VVV"
+                    //         // console.log("21313131")
+                    //     }
+                    //     console.log("Parent object exists. Parent name:", parent.name);
+                    // } else {
+                    //     console.log("Parent object is null or undefined.");
+                    // }
+                    // if (node.mode === 16877) {
+                    // //     // FS.mkdir("/idbfs/testV")
+                    // //     // FS.symlink("/idbfs/testV", "/idbfs/" + name);
+                    // // node.name = "VVV";
+                    // const ccc = name
+                    // //     // node.link =
+                    // }
+                    // if (ccc) {
+                    // console.log(ccc)
+                    // }
+                    // console.log("createN2ode called with:", { parent./*name*/ });
+
+
                 if (FS.isBlkdev(mode) || FS.isFIFO(mode)) {
                     throw new FS.ErrnoError(ERRNO_CODES.EPERM)
                 }
@@ -8233,17 +7822,6 @@ var my4399UnityModule = (function() {
                 return -e.errno
             }
         }
-
-        function ___syscall41(which, varargs) {
-            SYSCALLS.varargs = varargs;
-            try {
-                var old = SYSCALLS.getStreamFromFD();
-                return FS.open(old.path, old.flags, 0).fd
-            } catch (e) {
-                if (typeof FS === "undefined" || !(e instanceof FS.ErrnoError)) abort(e);
-                return -e.errno
-            }
-        }
         var PIPEFS = {
             BUCKET_BUFFER_SIZE: 8192,
             mount: (function(mount) {
@@ -11308,6 +10886,7 @@ var my4399UnityModule = (function() {
                 function onContextCreationError(event) {
                     errorInfo = event.statusMessage || errorInfo
                 }
+                webGLContextAttributes["powerPreference"] = "high-performance";
                 try {
                     canvas.addEventListener("webglcontextcreationerror", onContextCreationError, false);
                     try {
@@ -11421,7 +11000,7 @@ var my4399UnityModule = (function() {
                     }
                 }
                 GLctx.disjointTimerQueryExt = GLctx.getExtension("EXT_disjoint_timer_query");
-                var automaticallyEnabledExtensions = ["OES_texture_float", "OES_texture_half_float", "OES_standard_derivatives", "OES_vertex_array_object", "WEBGL_compressed_texture_s3tc", "WEBGL_depth_texture", "OES_element_index_uint", "EXT_texture_filter_anisotropic", "EXT_frag_depth", "WEBGL_draw_buffers", "ANGLE_instanced_arrays", "OES_texture_float_linear", "OES_texture_half_float_linear", "EXT_blend_minmax", "EXT_shader_texture_lod", "WEBGL_compressed_texture_pvrtc", "EXT_color_buffer_half_float", "WEBGL_color_buffer_float", "EXT_sRGB", "WEBGL_compressed_texture_etc1", "EXT_disjoint_timer_query", "WEBGL_compressed_texture_etc", "WEBGL_compressed_texture_astc", "EXT_color_buffer_float", "WEBGL_compressed_texture_s3tc_srgb", "EXT_disjoint_timer_query_webgl2"];
+                var automaticallyEnabledExtensions = ["OES_texture_float", "OES_texture_half_float", "OES_standard_derivatives", "OES_vertex_array_object", "WEBGL_compressed_texture_s3tc", "WEBGL_depth_texture", "OES_element_index_uint", "EXT_texture_filter_anisotropic", "EXT_frag_depth", "WEBGL_draw_buffers", "ANGLE_instanced_arrays", "OES_texture_float_linear", "OES_texture_half_float_linear", "EXT_blend_minmax", "EXT_shader_texture_lod", "EXT_texture_norm16", "WEBGL_compressed_texture_pvrtc", "EXT_color_buffer_half_float", "WEBGL_color_buffer_float", "EXT_sRGB", "WEBGL_compressed_texture_etc1", "EXT_disjoint_timer_query", "WEBGL_compressed_texture_etc", "WEBGL_compressed_texture_astc", "EXT_color_buffer_float", "WEBGL_compressed_texture_s3tc_srgb", "EXT_disjoint_timer_query_webgl2", "WEBKIT_WEBGL_compressed_texture_pvrtc"];
                 var exts = GLctx.getSupportedExtensions();
                 if (exts && exts.length > 0) {
                     GLctx.getSupportedExtensions().forEach((function(ext) {
@@ -11774,6 +11353,10 @@ var my4399UnityModule = (function() {
                 return -12
             }
             return 0
+        }
+
+        function _getpagesize() {
+            return PAGE_SIZE
         }
 
         function _getpwuid(uid) {
@@ -13762,8 +13345,9 @@ var my4399UnityModule = (function() {
             if (_tzset.called) return;
             _tzset.called = true;
             HEAP32[__get_timezone() >> 2] = (new Date).getTimezoneOffset() * 60;
-            var winter = new Date(2e3, 0, 1);
-            var summer = new Date(2e3, 6, 1);
+            var currentYear = (new Date).getFullYear();
+            var winter = new Date(currentYear, 0, 1);
+            var summer = new Date(currentYear, 6, 1);
             HEAP32[__get_daylight() >> 2] = Number(winter.getTimezoneOffset() != summer.getTimezoneOffset());
 
             function extractZone(date) {
@@ -13797,7 +13381,7 @@ var my4399UnityModule = (function() {
             var yday = (date.getTime() - start.getTime()) / (1e3 * 60 * 60 * 24) | 0;
             HEAP32[tmPtr + 28 >> 2] = yday;
             HEAP32[tmPtr + 36 >> 2] = -(date.getTimezoneOffset() * 60);
-            var summerOffset = (new Date(2e3, 6, 1)).getTimezoneOffset();
+            var summerOffset = (new Date(date.getFullYear(), 6, 1)).getTimezoneOffset();
             var winterOffset = start.getTimezoneOffset();
             var dst = (summerOffset != winterOffset && date.getTimezoneOffset() == Math.min(winterOffset, summerOffset)) | 0;
             HEAP32[tmPtr + 32 >> 2] = dst;
@@ -13821,7 +13405,7 @@ var my4399UnityModule = (function() {
             var dst = HEAP32[tmPtr + 32 >> 2];
             var guessedOffset = date.getTimezoneOffset();
             var start = new Date(date.getFullYear(), 0, 1);
-            var summerOffset = (new Date(2e3, 6, 1)).getTimezoneOffset();
+            var summerOffset = (new Date(date.getFullYear(), 6, 1)).getTimezoneOffset();
             var winterOffset = start.getTimezoneOffset();
             var dstOffset = Math.min(winterOffset, summerOffset);
             if (dst < 0) {
@@ -14505,30 +14089,8 @@ var my4399UnityModule = (function() {
             if (dontAddNull) u8array.length = numBytesWritten;
             return u8array
         }
-        Module["wasmTableSize"] = 126009;
-        Module["wasmMaxTableSize"] = 126009;
-
-        function invoke_dd(index, a1) {
-            var sp = stackSave();
-            try {
-                return Module["dynCall_dd"](index, a1)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
-        function invoke_ddd(index, a1, a2) {
-            var sp = stackSave();
-            try {
-                return Module["dynCall_ddd"](index, a1, a2)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
+        Module["wasmTableSize"] = 125739;
+        Module["wasmMaxTableSize"] = 125739;
 
         function invoke_ddddi(index, a1, a2, a3, a4) {
             var sp = stackSave();
@@ -14864,17 +14426,6 @@ var my4399UnityModule = (function() {
             var sp = stackSave();
             try {
                 return Module["dynCall_fiffffii"](index, a1, a2, a3, a4, a5, a6, a7)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
-        function invoke_fiffffiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10) {
-            var sp = stackSave();
-            try {
-                return Module["dynCall_fiffffiiiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
             } catch (e) {
                 stackRestore(sp);
                 if (typeof e !== "number" && e !== "longjmp") throw e;
@@ -15542,6 +15093,17 @@ var my4399UnityModule = (function() {
             }
         }
 
+        function invoke_iiiifffffii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10) {
+            var sp = stackSave();
+            try {
+                return Module["dynCall_iiiifffffii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
+            } catch (e) {
+                stackRestore(sp);
+                if (typeof e !== "number" && e !== "longjmp") throw e;
+                Module["setThrew"](1, 0)
+            }
+        }
+
         function invoke_iiiiffffiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10) {
             var sp = stackSave();
             try {
@@ -15685,17 +15247,6 @@ var my4399UnityModule = (function() {
             }
         }
 
-        function invoke_iiiiifiiiif(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10) {
-            var sp = stackSave();
-            try {
-                return Module["dynCall_iiiiifiiiif"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
         function invoke_iiiiifiiiiif(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11) {
             var sp = stackSave();
             try {
@@ -15711,6 +15262,17 @@ var my4399UnityModule = (function() {
             var sp = stackSave();
             try {
                 return Module["dynCall_iiiiii"](index, a1, a2, a3, a4, a5)
+            } catch (e) {
+                stackRestore(sp);
+                if (typeof e !== "number" && e !== "longjmp") throw e;
+                Module["setThrew"](1, 0)
+            }
+        }
+
+        function invoke_iiiiiifff(index, a1, a2, a3, a4, a5, a6, a7, a8) {
+            var sp = stackSave();
+            try {
+                return Module["dynCall_iiiiiifff"](index, a1, a2, a3, a4, a5, a6, a7, a8)
             } catch (e) {
                 stackRestore(sp);
                 if (typeof e !== "number" && e !== "longjmp") throw e;
@@ -15916,28 +15478,6 @@ var my4399UnityModule = (function() {
             }
         }
 
-        function invoke_iiiiiiijjiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13) {
-            var sp = stackSave();
-            try {
-                return Module["dynCall_iiiiiiijjiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
-        function invoke_iiiiiijjiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12) {
-            var sp = stackSave();
-            try {
-                return Module["dynCall_iiiiiijjiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
         function invoke_iiiiij(index, a1, a2, a3, a4, a5, a6) {
             var sp = stackSave();
             try {
@@ -16092,17 +15632,6 @@ var my4399UnityModule = (function() {
             }
         }
 
-        function invoke_iiijjiiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10) {
-            var sp = stackSave();
-            try {
-                return Module["dynCall_iiijjiiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
         function invoke_iiijjjiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11) {
             var sp = stackSave();
             try {
@@ -16151,28 +15680,6 @@ var my4399UnityModule = (function() {
             var sp = stackSave();
             try {
                 return Module["dynCall_iijiii"](index, a1, a2, a3, a4, a5, a6)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
-        function invoke_iijiiii(index, a1, a2, a3, a4, a5, a6, a7) {
-            var sp = stackSave();
-            try {
-                return Module["dynCall_iijiiii"](index, a1, a2, a3, a4, a5, a6, a7)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
-        function invoke_iijiiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10) {
-            var sp = stackSave();
-            try {
-                return Module["dynCall_iijiiiiiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
             } catch (e) {
                 stackRestore(sp);
                 if (typeof e !== "number" && e !== "longjmp") throw e;
@@ -16510,17 +16017,6 @@ var my4399UnityModule = (function() {
             }
         }
 
-        function invoke_jj(index, a1, a2) {
-            var sp = stackSave();
-            try {
-                return Module["dynCall_jj"](index, a1, a2)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
         function invoke_jji(index, a1, a2, a3) {
             var sp = stackSave();
             try {
@@ -16609,43 +16105,10 @@ var my4399UnityModule = (function() {
             }
         }
 
-        function invoke_vfff(index, a1, a2, a3) {
-            var sp = stackSave();
-            try {
-                Module["dynCall_vfff"](index, a1, a2, a3)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
         function invoke_vffff(index, a1, a2, a3, a4) {
             var sp = stackSave();
             try {
                 Module["dynCall_vffff"](index, a1, a2, a3, a4)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
-        function invoke_vffffi(index, a1, a2, a3, a4, a5) {
-            var sp = stackSave();
-            try {
-                Module["dynCall_vffffi"](index, a1, a2, a3, a4, a5)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
-        function invoke_vfffi(index, a1, a2, a3, a4) {
-            var sp = stackSave();
-            try {
-                Module["dynCall_vfffi"](index, a1, a2, a3, a4)
             } catch (e) {
                 stackRestore(sp);
                 if (typeof e !== "number" && e !== "longjmp") throw e;
@@ -16840,6 +16303,17 @@ var my4399UnityModule = (function() {
             }
         }
 
+        function invoke_viffffiifffiiiiif(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16) {
+            var sp = stackSave();
+            try {
+                Module["dynCall_viffffiifffiiiiif"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16)
+            } catch (e) {
+                stackRestore(sp);
+                if (typeof e !== "number" && e !== "longjmp") throw e;
+                Module["setThrew"](1, 0)
+            }
+        }
+
         function invoke_viffffiii(index, a1, a2, a3, a4, a5, a6, a7, a8) {
             var sp = stackSave();
             try {
@@ -16906,10 +16380,32 @@ var my4399UnityModule = (function() {
             }
         }
 
+        function invoke_viffiifffffiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13) {
+            var sp = stackSave();
+            try {
+                Module["dynCall_viffiifffffiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13)
+            } catch (e) {
+                stackRestore(sp);
+                if (typeof e !== "number" && e !== "longjmp") throw e;
+                Module["setThrew"](1, 0)
+            }
+        }
+
         function invoke_viffiii(index, a1, a2, a3, a4, a5, a6) {
             var sp = stackSave();
             try {
                 Module["dynCall_viffiii"](index, a1, a2, a3, a4, a5, a6)
+            } catch (e) {
+                stackRestore(sp);
+                if (typeof e !== "number" && e !== "longjmp") throw e;
+                Module["setThrew"](1, 0)
+            }
+        }
+
+        function invoke_viffiiiif(index, a1, a2, a3, a4, a5, a6, a7, a8) {
+            var sp = stackSave();
+            try {
+                Module["dynCall_viffiiiif"](index, a1, a2, a3, a4, a5, a6, a7, a8)
             } catch (e) {
                 stackRestore(sp);
                 if (typeof e !== "number" && e !== "longjmp") throw e;
@@ -17104,10 +16600,10 @@ var my4399UnityModule = (function() {
             }
         }
 
-        function invoke_viiffffiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11) {
+        function invoke_viiffffiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12) {
             var sp = stackSave();
             try {
-                Module["dynCall_viiffffiiiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11)
+                Module["dynCall_viiffffiiiiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12)
             } catch (e) {
                 stackRestore(sp);
                 if (typeof e !== "number" && e !== "longjmp") throw e;
@@ -17720,6 +17216,17 @@ var my4399UnityModule = (function() {
             }
         }
 
+        function invoke_viiiij(index, a1, a2, a3, a4, a5, a6) {
+            var sp = stackSave();
+            try {
+                Module["dynCall_viiiij"](index, a1, a2, a3, a4, a5, a6)
+            } catch (e) {
+                stackRestore(sp);
+                if (typeof e !== "number" && e !== "longjmp") throw e;
+                Module["setThrew"](1, 0)
+            }
+        }
+
         function invoke_viiiijii(index, a1, a2, a3, a4, a5, a6, a7, a8) {
             var sp = stackSave();
             try {
@@ -17735,17 +17242,6 @@ var my4399UnityModule = (function() {
             var sp = stackSave();
             try {
                 Module["dynCall_viiiijiiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
-        function invoke_viiiijjiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11) {
-            var sp = stackSave();
-            try {
-                Module["dynCall_viiiijjiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11)
             } catch (e) {
                 stackRestore(sp);
                 if (typeof e !== "number" && e !== "longjmp") throw e;
@@ -17812,28 +17308,6 @@ var my4399UnityModule = (function() {
             var sp = stackSave();
             try {
                 Module["dynCall_viiijji"](index, a1, a2, a3, a4, a5, a6, a7, a8)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
-        function invoke_viiijjii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
-            var sp = stackSave();
-            try {
-                Module["dynCall_viiijjii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
-        function invoke_viiijjiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10) {
-            var sp = stackSave();
-            try {
-                Module["dynCall_viiijjiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
             } catch (e) {
                 stackRestore(sp);
                 if (typeof e !== "number" && e !== "longjmp") throw e;
@@ -17973,10 +17447,10 @@ var my4399UnityModule = (function() {
             }
         }
 
-        function invoke_viijji(index, a1, a2, a3, a4, a5, a6, a7) {
+        function invoke_viijijj(index, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
             var sp = stackSave();
             try {
-                Module["dynCall_viijji"](index, a1, a2, a3, a4, a5, a6, a7)
+                Module["dynCall_viijijj"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9)
             } catch (e) {
                 stackRestore(sp);
                 if (typeof e !== "number" && e !== "longjmp") throw e;
@@ -17984,10 +17458,21 @@ var my4399UnityModule = (function() {
             }
         }
 
-        function invoke_viijjii(index, a1, a2, a3, a4, a5, a6, a7, a8) {
+        function invoke_viijj(index, a1, a2, a3, a4, a5, a6) {
             var sp = stackSave();
             try {
-                Module["dynCall_viijjii"](index, a1, a2, a3, a4, a5, a6, a7, a8)
+                Module["dynCall_viijj"](index, a1, a2, a3, a4, a5, a6)
+            } catch (e) {
+                stackRestore(sp);
+                if (typeof e !== "number" && e !== "longjmp") throw e;
+                Module["setThrew"](1, 0)
+            }
+        }
+
+        function invoke_viijji(index, a1, a2, a3, a4, a5, a6, a7) {
+            var sp = stackSave();
+            try {
+                Module["dynCall_viijji"](index, a1, a2, a3, a4, a5, a6, a7)
             } catch (e) {
                 stackRestore(sp);
                 if (typeof e !== "number" && e !== "longjmp") throw e;
@@ -18127,32 +17612,10 @@ var my4399UnityModule = (function() {
             }
         }
 
-        function invoke_vijjji(index, a1, a2, a3, a4, a5, a6, a7, a8) {
-            var sp = stackSave();
-            try {
-                Module["dynCall_vijjji"](index, a1, a2, a3, a4, a5, a6, a7, a8)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
         function invoke_vji(index, a1, a2, a3) {
             var sp = stackSave();
             try {
                 Module["dynCall_vji"](index, a1, a2, a3)
-            } catch (e) {
-                stackRestore(sp);
-                if (typeof e !== "number" && e !== "longjmp") throw e;
-                Module["setThrew"](1, 0)
-            }
-        }
-
-        function invoke_vjii(index, a1, a2, a3, a4) {
-            var sp = stackSave();
-            try {
-                Module["dynCall_vjii"](index, a1, a2, a3, a4)
             } catch (e) {
                 stackRestore(sp);
                 if (typeof e !== "number" && e !== "longjmp") throw e;
@@ -18188,8 +17651,6 @@ var my4399UnityModule = (function() {
             "enlargeMemory": enlargeMemory,
             "getTotalMemory": getTotalMemory,
             "abortOnCannotGrowMemory": abortOnCannotGrowMemory,
-            "invoke_dd": invoke_dd,
-            "invoke_ddd": invoke_ddd,
             "invoke_ddddi": invoke_ddddi,
             "invoke_dddi": invoke_dddi,
             "invoke_ddi": invoke_ddi,
@@ -18221,7 +17682,6 @@ var my4399UnityModule = (function() {
             "invoke_fif": invoke_fif,
             "invoke_fiff": invoke_fiff,
             "invoke_fiffffii": invoke_fiffffii,
-            "invoke_fiffffiiiii": invoke_fiffffiiiii,
             "invoke_fiffffiiiiii": invoke_fiffffiiiiii,
             "invoke_fifffi": invoke_fifffi,
             "invoke_fiffi": invoke_fiffi,
@@ -18282,6 +17742,7 @@ var my4399UnityModule = (function() {
             "invoke_iiifiiii": invoke_iiifiiii,
             "invoke_iiii": invoke_iiii,
             "invoke_iiiifffffi": invoke_iiiifffffi,
+            "invoke_iiiifffffii": invoke_iiiifffffii,
             "invoke_iiiiffffiii": invoke_iiiiffffiii,
             "invoke_iiiiffi": invoke_iiiiffi,
             "invoke_iiiiffii": invoke_iiiiffii,
@@ -18295,9 +17756,9 @@ var my4399UnityModule = (function() {
             "invoke_iiiiifi": invoke_iiiiifi,
             "invoke_iiiiifii": invoke_iiiiifii,
             "invoke_iiiiifiii": invoke_iiiiifiii,
-            "invoke_iiiiifiiiif": invoke_iiiiifiiiif,
             "invoke_iiiiifiiiiif": invoke_iiiiifiiiiif,
             "invoke_iiiiii": invoke_iiiiii,
+            "invoke_iiiiiifff": invoke_iiiiiifff,
             "invoke_iiiiiifffi": invoke_iiiiiifffi,
             "invoke_iiiiiifffiiifiii": invoke_iiiiiifffiiifiii,
             "invoke_iiiiiiffiiiiiiiiiffffiii": invoke_iiiiiiffiiiiiiiiiffffiii,
@@ -18316,8 +17777,6 @@ var my4399UnityModule = (function() {
             "invoke_iiiiiiiiiiii": invoke_iiiiiiiiiiii,
             "invoke_iiiiiiiiiiiii": invoke_iiiiiiiiiiiii,
             "invoke_iiiiiiiiiiiiii": invoke_iiiiiiiiiiiiii,
-            "invoke_iiiiiiijjiii": invoke_iiiiiiijjiii,
-            "invoke_iiiiiijjiii": invoke_iiiiiijjiii,
             "invoke_iiiiij": invoke_iiiiij,
             "invoke_iiiiiji": invoke_iiiiiji,
             "invoke_iiiiijiiii": invoke_iiiiijiiii,
@@ -18332,14 +17791,11 @@ var my4399UnityModule = (function() {
             "invoke_iiijiii": invoke_iiijiii,
             "invoke_iiijji": invoke_iiijji,
             "invoke_iiijjii": invoke_iiijjii,
-            "invoke_iiijjiiii": invoke_iiijjiiii,
             "invoke_iiijjjiii": invoke_iiijjjiii,
             "invoke_iij": invoke_iij,
             "invoke_iiji": invoke_iiji,
             "invoke_iijii": invoke_iijii,
             "invoke_iijiii": invoke_iijiii,
-            "invoke_iijiiii": invoke_iijiiii,
-            "invoke_iijiiiiiii": invoke_iijiiiiiii,
             "invoke_iijji": invoke_iijji,
             "invoke_iijjii": invoke_iijjii,
             "invoke_iijjiii": invoke_iijjiii,
@@ -18370,7 +17826,6 @@ var my4399UnityModule = (function() {
             "invoke_jijiii": invoke_jijiii,
             "invoke_jijj": invoke_jijj,
             "invoke_jijji": invoke_jijji,
-            "invoke_jj": invoke_jj,
             "invoke_jji": invoke_jji,
             "invoke_jjii": invoke_jjii,
             "invoke_jjjji": invoke_jjjji,
@@ -18379,10 +17834,7 @@ var my4399UnityModule = (function() {
             "invoke_vdii": invoke_vdii,
             "invoke_vf": invoke_vf,
             "invoke_vff": invoke_vff,
-            "invoke_vfff": invoke_vfff,
             "invoke_vffff": invoke_vffff,
-            "invoke_vffffi": invoke_vffffi,
-            "invoke_vfffi": invoke_vfffi,
             "invoke_vfi": invoke_vfi,
             "invoke_vfif": invoke_vfif,
             "invoke_vfifi": invoke_vfifi,
@@ -18400,13 +17852,16 @@ var my4399UnityModule = (function() {
             "invoke_viffffffi": invoke_viffffffi,
             "invoke_viffffi": invoke_viffffi,
             "invoke_viffffii": invoke_viffffii,
+            "invoke_viffffiifffiiiiif": invoke_viffffiifffiiiiif,
             "invoke_viffffiii": invoke_viffffiii,
             "invoke_viffffiiiii": invoke_viffffiiiii,
             "invoke_vifffi": invoke_vifffi,
             "invoke_vifffii": invoke_vifffii,
             "invoke_viffi": invoke_viffi,
             "invoke_viffii": invoke_viffii,
+            "invoke_viffiifffffiii": invoke_viffiifffffiii,
             "invoke_viffiii": invoke_viffiii,
+            "invoke_viffiiiif": invoke_viffiiiif,
             "invoke_vifi": invoke_vifi,
             "invoke_vififi": invoke_vififi,
             "invoke_vififififii": invoke_vififififii,
@@ -18424,7 +17879,7 @@ var my4399UnityModule = (function() {
             "invoke_viiffffffi": invoke_viiffffffi,
             "invoke_viiffffi": invoke_viiffffi,
             "invoke_viiffffii": invoke_viiffffii,
-            "invoke_viiffffiiiii": invoke_viiffffiiiii,
+            "invoke_viiffffiiiiii": invoke_viiffffiiiiii,
             "invoke_viifffi": invoke_viifffi,
             "invoke_viifffiiii": invoke_viifffiiii,
             "invoke_viiffi": invoke_viiffi,
@@ -18480,17 +17935,15 @@ var my4399UnityModule = (function() {
             "invoke_viiiiiiiiiiiiiii": invoke_viiiiiiiiiiiiiii,
             "invoke_viiiiiiiiiiiiiiiiii": invoke_viiiiiiiiiiiiiiiiii,
             "invoke_viiiiiiiiiji": invoke_viiiiiiiiiji,
+            "invoke_viiiij": invoke_viiiij,
             "invoke_viiiijii": invoke_viiiijii,
             "invoke_viiiijiiii": invoke_viiiijiiii,
-            "invoke_viiiijjiii": invoke_viiiijjiii,
             "invoke_viiiji": invoke_viiiji,
             "invoke_viiijii": invoke_viiijii,
             "invoke_viiijiii": invoke_viiijiii,
             "invoke_viiijiiifi": invoke_viiijiiifi,
             "invoke_viiijiiijji": invoke_viiijiiijji,
             "invoke_viiijji": invoke_viiijji,
-            "invoke_viiijjii": invoke_viiijjii,
-            "invoke_viiijjiii": invoke_viiijjiii,
             "invoke_viiijjiijji": invoke_viiijjiijji,
             "invoke_viiijjiijjji": invoke_viiijjiijjji,
             "invoke_viij": invoke_viij,
@@ -18503,8 +17956,9 @@ var my4399UnityModule = (function() {
             "invoke_viijiijiii": invoke_viijiijiii,
             "invoke_viijijii": invoke_viijijii,
             "invoke_viijijiii": invoke_viijijiii,
+            "invoke_viijijj": invoke_viijijj,
+            "invoke_viijj": invoke_viijj,
             "invoke_viijji": invoke_viijji,
-            "invoke_viijjii": invoke_viijjii,
             "invoke_viijjiii": invoke_viijjiii,
             "invoke_viijjji": invoke_viijjji,
             "invoke_vij": invoke_vij,
@@ -18517,17 +17971,15 @@ var my4399UnityModule = (function() {
             "invoke_vijijji": invoke_vijijji,
             "invoke_vijji": invoke_vijji,
             "invoke_vijjii": invoke_vijjii,
-            "invoke_vijjji": invoke_vijjji,
             "invoke_vji": invoke_vji,
-            "invoke_vjii": invoke_vjii,
             "invoke_vjiiii": invoke_vjiiii,
             "invoke_vjji": invoke_vjji,
             "_JS_Cursor_SetImage": _JS_Cursor_SetImage,
             "_JS_Cursor_SetShow": _JS_Cursor_SetShow,
-            "_JS_Eval_ClearTimeout": _JS_Eval_ClearTimeout,
+            "_JS_Eval_ClearInterval": _JS_Eval_ClearInterval,
             "_JS_Eval_EvalJS": _JS_Eval_EvalJS,
             "_JS_Eval_OpenURL": _JS_Eval_OpenURL,
-            "_JS_Eval_SetTimeout": _JS_Eval_SetTimeout,
+            "_JS_Eval_SetInterval": _JS_Eval_SetInterval,
             "_JS_FileSystem_Initialize": _JS_FileSystem_Initialize,
             "_JS_FileSystem_Sync": _JS_FileSystem_Sync,
             "_JS_Log_Dump": _JS_Log_Dump,
@@ -18569,37 +18021,17 @@ var my4399UnityModule = (function() {
             "_JS_Sound_Stop": _JS_Sound_Stop,
             "_JS_SystemInfo_GetBrowserName": _JS_SystemInfo_GetBrowserName,
             "_JS_SystemInfo_GetBrowserVersionString": _JS_SystemInfo_GetBrowserVersionString,
-            "_JS_SystemInfo_GetCurrentCanvasHeight": _JS_SystemInfo_GetCurrentCanvasHeight,
-            "_JS_SystemInfo_GetCurrentCanvasWidth": _JS_SystemInfo_GetCurrentCanvasWidth,
+            "_JS_SystemInfo_GetCanvasClientSize": _JS_SystemInfo_GetCanvasClientSize,
             "_JS_SystemInfo_GetDocumentURL": _JS_SystemInfo_GetDocumentURL,
             "_JS_SystemInfo_GetGPUInfo": _JS_SystemInfo_GetGPUInfo,
-            "_JS_SystemInfo_GetHeight": _JS_SystemInfo_GetHeight,
             "_JS_SystemInfo_GetLanguage": _JS_SystemInfo_GetLanguage,
             "_JS_SystemInfo_GetMemory": _JS_SystemInfo_GetMemory,
             "_JS_SystemInfo_GetOS": _JS_SystemInfo_GetOS,
-            "_JS_SystemInfo_GetWidth": _JS_SystemInfo_GetWidth,
+            "_JS_SystemInfo_GetPreferredDevicePixelRatio": _JS_SystemInfo_GetPreferredDevicePixelRatio,
+            "_JS_SystemInfo_GetScreenSize": _JS_SystemInfo_GetScreenSize,
             "_JS_SystemInfo_HasCursorLock": _JS_SystemInfo_HasCursorLock,
             "_JS_SystemInfo_HasFullscreen": _JS_SystemInfo_HasFullscreen,
             "_JS_SystemInfo_HasWebGL": _JS_SystemInfo_HasWebGL,
-            "_JS_UNETWebSockets_AddHost": _JS_UNETWebSockets_AddHost,
-            "_JS_UNETWebSockets_HostsContainingMessagesCleanHost": _JS_UNETWebSockets_HostsContainingMessagesCleanHost,
-            "_JS_UNETWebSockets_HostsContainingMessagesPush": _JS_UNETWebSockets_HostsContainingMessagesPush,
-            "_JS_UNETWebSockets_Init": _JS_UNETWebSockets_Init,
-            "_JS_UNETWebSockets_IsHostCorrect": _JS_UNETWebSockets_IsHostCorrect,
-            "_JS_UNETWebSockets_IsHostReadyToConnect": _JS_UNETWebSockets_IsHostReadyToConnect,
-            "_JS_UNETWebSockets_SocketCleanEvnt": _JS_UNETWebSockets_SocketCleanEvnt,
-            "_JS_UNETWebSockets_SocketCleanEvntFromHost": _JS_UNETWebSockets_SocketCleanEvntFromHost,
-            "_JS_UNETWebSockets_SocketClose": _JS_UNETWebSockets_SocketClose,
-            "_JS_UNETWebSockets_SocketCreate": _JS_UNETWebSockets_SocketCreate,
-            "_JS_UNETWebSockets_SocketRecvEvntBuff": _JS_UNETWebSockets_SocketRecvEvntBuff,
-            "_JS_UNETWebSockets_SocketRecvEvntBuffFromHost": _JS_UNETWebSockets_SocketRecvEvntBuffFromHost,
-            "_JS_UNETWebSockets_SocketRecvEvntBuffLength": _JS_UNETWebSockets_SocketRecvEvntBuffLength,
-            "_JS_UNETWebSockets_SocketRecvEvntBuffLengthFromHost": _JS_UNETWebSockets_SocketRecvEvntBuffLengthFromHost,
-            "_JS_UNETWebSockets_SocketRecvEvntHost": _JS_UNETWebSockets_SocketRecvEvntHost,
-            "_JS_UNETWebSockets_SocketRecvEvntType": _JS_UNETWebSockets_SocketRecvEvntType,
-            "_JS_UNETWebSockets_SocketRecvEvntTypeFromHost": _JS_UNETWebSockets_SocketRecvEvntTypeFromHost,
-            "_JS_UNETWebSockets_SocketSend": _JS_UNETWebSockets_SocketSend,
-            "_JS_UNETWebSockets_SocketStop": _JS_UNETWebSockets_SocketStop,
             "_JS_WebRequest_Abort": _JS_WebRequest_Abort,
             "_JS_WebRequest_Create": _JS_WebRequest_Create,
             "_JS_WebRequest_GetResponseHeaders": _JS_WebRequest_GetResponseHeaders,
@@ -18672,7 +18104,6 @@ var my4399UnityModule = (function() {
             "___syscall39": ___syscall39,
             "___syscall4": ___syscall4,
             "___syscall40": ___syscall40,
-            "___syscall41": ___syscall41,
             "___syscall42": ___syscall42,
             "___syscall5": ___syscall5,
             "___syscall54": ___syscall54,
@@ -18775,6 +18206,7 @@ var my4399UnityModule = (function() {
             "_gethostbyaddr": _gethostbyaddr,
             "_gethostbyname": _gethostbyname,
             "_getnameinfo": _getnameinfo,
+            "_getpagesize": _getpagesize,
             "_getpwuid": _getpwuid,
             "_gettimeofday": _gettimeofday,
             "_glActiveTexture": _glActiveTexture,
@@ -19019,17 +18451,11 @@ var my4399UnityModule = (function() {
         var __GLOBAL__sub_I_AIScriptingClasses_cpp = Module["__GLOBAL__sub_I_AIScriptingClasses_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_AIScriptingClasses_cpp"].apply(null, arguments)
         });
-        var __GLOBAL__sub_I_ARScriptingClasses_cpp = Module["__GLOBAL__sub_I_ARScriptingClasses_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_ARScriptingClasses_cpp"].apply(null, arguments)
-        });
         var __GLOBAL__sub_I_AccessibilityScriptingClasses_cpp = Module["__GLOBAL__sub_I_AccessibilityScriptingClasses_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_AccessibilityScriptingClasses_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_AndroidJNIScriptingClasses_cpp = Module["__GLOBAL__sub_I_AndroidJNIScriptingClasses_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_AndroidJNIScriptingClasses_cpp"].apply(null, arguments)
-        });
-        var __GLOBAL__sub_I_AndroidPermissions_bindings_cpp = Module["__GLOBAL__sub_I_AndroidPermissions_bindings_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_AndroidPermissions_bindings_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_AnimationClip_cpp = Module["__GLOBAL__sub_I_AnimationClip_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_AnimationClip_cpp"].apply(null, arguments)
@@ -19063,6 +18489,9 @@ var my4399UnityModule = (function() {
         });
         var __GLOBAL__sub_I_External_Yoga_Yoga_0_cpp = Module["__GLOBAL__sub_I_External_Yoga_Yoga_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_External_Yoga_Yoga_0_cpp"].apply(null, arguments)
+        });
+        var __GLOBAL__sub_I_GUITexture_cpp = Module["__GLOBAL__sub_I_GUITexture_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_GUITexture_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_GfxDeviceNull_cpp = Module["__GLOBAL__sub_I_GfxDeviceNull_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_GfxDeviceNull_cpp"].apply(null, arguments)
@@ -19121,8 +18550,8 @@ var my4399UnityModule = (function() {
         var __GLOBAL__sub_I_Modules_Audio_Public_3_cpp = Module["__GLOBAL__sub_I_Modules_Audio_Public_3_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Modules_Audio_Public_3_cpp"].apply(null, arguments)
         });
-        var __GLOBAL__sub_I_Modules_Audio_Public_ScriptBindings_0_cpp = Module["__GLOBAL__sub_I_Modules_Audio_Public_ScriptBindings_0_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_Modules_Audio_Public_ScriptBindings_0_cpp"].apply(null, arguments)
+        var __GLOBAL__sub_I_Modules_Audio_Public_ScriptBindings_1_cpp = Module["__GLOBAL__sub_I_Modules_Audio_Public_ScriptBindings_1_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Modules_Audio_Public_ScriptBindings_1_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_Modules_Audio_Public_sound_0_cpp = Module["__GLOBAL__sub_I_Modules_Audio_Public_sound_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Modules_Audio_Public_sound_0_cpp"].apply(null, arguments)
@@ -19163,6 +18592,12 @@ var my4399UnityModule = (function() {
         var __GLOBAL__sub_I_Modules_Profiler_Public_0_cpp = Module["__GLOBAL__sub_I_Modules_Profiler_Public_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Modules_Profiler_Public_0_cpp"].apply(null, arguments)
         });
+        var __GLOBAL__sub_I_Modules_Profiler_Runtime_1_cpp = Module["__GLOBAL__sub_I_Modules_Profiler_Runtime_1_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Modules_Profiler_Runtime_1_cpp"].apply(null, arguments)
+        });
+        var __GLOBAL__sub_I_Modules_Subsystems_0_cpp = Module["__GLOBAL__sub_I_Modules_Subsystems_0_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Modules_Subsystems_0_cpp"].apply(null, arguments)
+        });
         var __GLOBAL__sub_I_Modules_Terrain_Public_0_cpp = Module["__GLOBAL__sub_I_Modules_Terrain_Public_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Modules_Terrain_Public_0_cpp"].apply(null, arguments)
         });
@@ -19178,11 +18613,8 @@ var my4399UnityModule = (function() {
         var __GLOBAL__sub_I_Modules_Terrain_VR_0_cpp = Module["__GLOBAL__sub_I_Modules_Terrain_VR_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Modules_Terrain_VR_0_cpp"].apply(null, arguments)
         });
-        var __GLOBAL__sub_I_Modules_TextCore_Native_FontEngine_0_cpp = Module["__GLOBAL__sub_I_Modules_TextCore_Native_FontEngine_0_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_Modules_TextCore_Native_FontEngine_0_cpp"].apply(null, arguments)
-        });
-        var __GLOBAL__sub_I_Modules_TextRendering_Public_1_cpp = Module["__GLOBAL__sub_I_Modules_TextRendering_Public_1_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_Modules_TextRendering_Public_1_cpp"].apply(null, arguments)
+        var __GLOBAL__sub_I_Modules_TextRendering_Public_0_cpp = Module["__GLOBAL__sub_I_Modules_TextRendering_Public_0_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Modules_TextRendering_Public_0_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_Modules_Tilemap_0_cpp = Module["__GLOBAL__sub_I_Modules_Tilemap_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Modules_Tilemap_0_cpp"].apply(null, arguments)
@@ -19217,14 +18649,11 @@ var my4399UnityModule = (function() {
         var __GLOBAL__sub_I_Modules_VR_PluginInterface_0_cpp = Module["__GLOBAL__sub_I_Modules_VR_PluginInterface_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Modules_VR_PluginInterface_0_cpp"].apply(null, arguments)
         });
+        var __GLOBAL__sub_I_Modules_Video_Public_Base_0_cpp = Module["__GLOBAL__sub_I_Modules_Video_Public_Base_0_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Modules_Video_Public_Base_0_cpp"].apply(null, arguments)
+        });
         var __GLOBAL__sub_I_Modules_XR_Subsystems_Input_Public_1_cpp = Module["__GLOBAL__sub_I_Modules_XR_Subsystems_Input_Public_1_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Modules_XR_Subsystems_Input_Public_1_cpp"].apply(null, arguments)
-        });
-        var __GLOBAL__sub_I_NvCloth_src_0_cpp = Module["__GLOBAL__sub_I_NvCloth_src_0_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_NvCloth_src_0_cpp"].apply(null, arguments)
-        });
-        var __GLOBAL__sub_I_NvCloth_src_1_cpp = Module["__GLOBAL__sub_I_NvCloth_src_1_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_NvCloth_src_1_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_ParticleSystemRenderer_cpp = Module["__GLOBAL__sub_I_ParticleSystemRenderer_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_ParticleSystemRenderer_cpp"].apply(null, arguments)
@@ -19241,8 +18670,8 @@ var my4399UnityModule = (function() {
         var __GLOBAL__sub_I_PhysicsScriptingClasses_cpp = Module["__GLOBAL__sub_I_PhysicsScriptingClasses_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_PhysicsScriptingClasses_cpp"].apply(null, arguments)
         });
-        var __GLOBAL__sub_I_PlatformDependent_WebGL_External_baselib_builds_Platforms_WebGL_Source_PAL_0_cpp = Module["__GLOBAL__sub_I_PlatformDependent_WebGL_External_baselib_builds_Platforms_WebGL_Source_PAL_0_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_PlatformDependent_WebGL_External_baselib_builds_Platforms_WebGL_Source_PAL_0_cpp"].apply(null, arguments)
+        var __GLOBAL__sub_I_PlatformDependent_WebGL_External_baselib_builds_Source_0_cpp = Module["__GLOBAL__sub_I_PlatformDependent_WebGL_External_baselib_builds_Source_0_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_PlatformDependent_WebGL_External_baselib_builds_Source_0_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_PlatformDependent_WebGL_Source_0_cpp = Module["__GLOBAL__sub_I_PlatformDependent_WebGL_Source_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_PlatformDependent_WebGL_Source_0_cpp"].apply(null, arguments)
@@ -19250,14 +18679,20 @@ var my4399UnityModule = (function() {
         var __GLOBAL__sub_I_PlatformDependent_WebGL_Source_2_cpp = Module["__GLOBAL__sub_I_PlatformDependent_WebGL_Source_2_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_PlatformDependent_WebGL_Source_2_cpp"].apply(null, arguments)
         });
+        var __GLOBAL__sub_I_Runtime_2D_Renderer_0_cpp = Module["__GLOBAL__sub_I_Runtime_2D_Renderer_0_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Runtime_2D_Renderer_0_cpp"].apply(null, arguments)
+        });
         var __GLOBAL__sub_I_Runtime_2D_Sorting_0_cpp = Module["__GLOBAL__sub_I_Runtime_2D_Sorting_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_2D_Sorting_0_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_Runtime_2D_SpriteAtlas_0_cpp = Module["__GLOBAL__sub_I_Runtime_2D_SpriteAtlas_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_2D_SpriteAtlas_0_cpp"].apply(null, arguments)
         });
-        var __GLOBAL__sub_I_Runtime_Allocator_1_cpp = Module["__GLOBAL__sub_I_Runtime_Allocator_1_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_Runtime_Allocator_1_cpp"].apply(null, arguments)
+        var __GLOBAL__sub_I_Runtime_Allocator_0_cpp = Module["__GLOBAL__sub_I_Runtime_Allocator_0_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Runtime_Allocator_0_cpp"].apply(null, arguments)
+        });
+        var __GLOBAL__sub_I_Runtime_Allocator_2_cpp = Module["__GLOBAL__sub_I_Runtime_Allocator_2_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Runtime_Allocator_2_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_Runtime_Application_0_cpp = Module["__GLOBAL__sub_I_Runtime_Application_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Application_0_cpp"].apply(null, arguments)
@@ -19303,9 +18738,6 @@ var my4399UnityModule = (function() {
         });
         var __GLOBAL__sub_I_Runtime_Camera_Culling_0_cpp = Module["__GLOBAL__sub_I_Runtime_Camera_Culling_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Camera_Culling_0_cpp"].apply(null, arguments)
-        });
-        var __GLOBAL__sub_I_Runtime_Camera_RenderLayers_0_cpp = Module["__GLOBAL__sub_I_Runtime_Camera_RenderLayers_0_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_Runtime_Camera_RenderLayers_0_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_Runtime_Camera_RenderLoops_0_cpp = Module["__GLOBAL__sub_I_Runtime_Camera_RenderLoops_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Camera_RenderLoops_0_cpp"].apply(null, arguments)
@@ -19358,20 +18790,20 @@ var my4399UnityModule = (function() {
         var __GLOBAL__sub_I_Runtime_Graphics_1_cpp = Module["__GLOBAL__sub_I_Runtime_Graphics_1_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Graphics_1_cpp"].apply(null, arguments)
         });
+        var __GLOBAL__sub_I_Runtime_Graphics_2_cpp = Module["__GLOBAL__sub_I_Runtime_Graphics_2_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Runtime_Graphics_2_cpp"].apply(null, arguments)
+        });
+        var __GLOBAL__sub_I_Runtime_Graphics_4_cpp = Module["__GLOBAL__sub_I_Runtime_Graphics_4_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Runtime_Graphics_4_cpp"].apply(null, arguments)
+        });
         var __GLOBAL__sub_I_Runtime_Graphics_5_cpp = Module["__GLOBAL__sub_I_Runtime_Graphics_5_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Graphics_5_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_Runtime_Graphics_6_cpp = Module["__GLOBAL__sub_I_Runtime_Graphics_6_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Graphics_6_cpp"].apply(null, arguments)
         });
-        var __GLOBAL__sub_I_Runtime_Graphics_7_cpp = Module["__GLOBAL__sub_I_Runtime_Graphics_7_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_Runtime_Graphics_7_cpp"].apply(null, arguments)
-        });
         var __GLOBAL__sub_I_Runtime_Graphics_8_cpp = Module["__GLOBAL__sub_I_Runtime_Graphics_8_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Graphics_8_cpp"].apply(null, arguments)
-        });
-        var __GLOBAL__sub_I_Runtime_Graphics_9_cpp = Module["__GLOBAL__sub_I_Runtime_Graphics_9_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_Runtime_Graphics_9_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_Runtime_Graphics_Billboard_0_cpp = Module["__GLOBAL__sub_I_Runtime_Graphics_Billboard_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Graphics_Billboard_0_cpp"].apply(null, arguments)
@@ -19381,6 +18813,9 @@ var my4399UnityModule = (function() {
         });
         var __GLOBAL__sub_I_Runtime_Graphics_Mesh_0_cpp = Module["__GLOBAL__sub_I_Runtime_Graphics_Mesh_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Graphics_Mesh_0_cpp"].apply(null, arguments)
+        });
+        var __GLOBAL__sub_I_Runtime_Graphics_Mesh_1_cpp = Module["__GLOBAL__sub_I_Runtime_Graphics_Mesh_1_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Runtime_Graphics_Mesh_1_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_Runtime_Graphics_Mesh_2_cpp = Module["__GLOBAL__sub_I_Runtime_Graphics_Mesh_2_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Graphics_Mesh_2_cpp"].apply(null, arguments)
@@ -19409,8 +18844,11 @@ var my4399UnityModule = (function() {
         var __GLOBAL__sub_I_Runtime_Jobs_0_cpp = Module["__GLOBAL__sub_I_Runtime_Jobs_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Jobs_0_cpp"].apply(null, arguments)
         });
-        var __GLOBAL__sub_I_Runtime_Jobs_ScriptBindings_0_cpp = Module["__GLOBAL__sub_I_Runtime_Jobs_ScriptBindings_0_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_Runtime_Jobs_ScriptBindings_0_cpp"].apply(null, arguments)
+        var __GLOBAL__sub_I_Runtime_Jobs_1_cpp = Module["__GLOBAL__sub_I_Runtime_Jobs_1_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Runtime_Jobs_1_cpp"].apply(null, arguments)
+        });
+        var __GLOBAL__sub_I_Runtime_Jobs_Internal_1_cpp = Module["__GLOBAL__sub_I_Runtime_Jobs_Internal_1_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Runtime_Jobs_Internal_1_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_Runtime_Math_2_cpp = Module["__GLOBAL__sub_I_Runtime_Math_2_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Math_2_cpp"].apply(null, arguments)
@@ -19469,6 +18907,12 @@ var my4399UnityModule = (function() {
         var __GLOBAL__sub_I_Runtime_Scripting_APIUpdating_0_cpp = Module["__GLOBAL__sub_I_Runtime_Scripting_APIUpdating_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Scripting_APIUpdating_0_cpp"].apply(null, arguments)
         });
+        var __GLOBAL__sub_I_Runtime_Serialize_0_cpp = Module["__GLOBAL__sub_I_Runtime_Serialize_0_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Runtime_Serialize_0_cpp"].apply(null, arguments)
+        });
+        var __GLOBAL__sub_I_Runtime_Serialize_1_cpp = Module["__GLOBAL__sub_I_Runtime_Serialize_1_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Runtime_Serialize_1_cpp"].apply(null, arguments)
+        });
         var __GLOBAL__sub_I_Runtime_Serialize_2_cpp = Module["__GLOBAL__sub_I_Runtime_Serialize_2_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Serialize_2_cpp"].apply(null, arguments)
         });
@@ -19484,11 +18928,8 @@ var my4399UnityModule = (function() {
         var __GLOBAL__sub_I_Runtime_Shaders_2_cpp = Module["__GLOBAL__sub_I_Runtime_Shaders_2_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Shaders_2_cpp"].apply(null, arguments)
         });
-        var __GLOBAL__sub_I_Runtime_Shaders_ShaderImpl_0_cpp = Module["__GLOBAL__sub_I_Runtime_Shaders_ShaderImpl_0_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_Runtime_Shaders_ShaderImpl_0_cpp"].apply(null, arguments)
-        });
-        var __GLOBAL__sub_I_Runtime_Shaders_ShaderImpl_1_cpp = Module["__GLOBAL__sub_I_Runtime_Shaders_ShaderImpl_1_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_Runtime_Shaders_ShaderImpl_1_cpp"].apply(null, arguments)
+        var __GLOBAL__sub_I_Runtime_Shaders_ShaderImpl_2_cpp = Module["__GLOBAL__sub_I_Runtime_Shaders_ShaderImpl_2_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_Runtime_Shaders_ShaderImpl_2_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_Runtime_Transform_0_cpp = Module["__GLOBAL__sub_I_Runtime_Transform_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_Runtime_Transform_0_cpp"].apply(null, arguments)
@@ -19526,8 +18967,17 @@ var my4399UnityModule = (function() {
         var __GLOBAL__sub_I_ShapeModule_cpp = Module["__GLOBAL__sub_I_ShapeModule_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_ShapeModule_cpp"].apply(null, arguments)
         });
-        var __GLOBAL__sub_I_SpriteRendererJobs_cpp = Module["__GLOBAL__sub_I_SpriteRendererJobs_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_SpriteRendererJobs_cpp"].apply(null, arguments)
+        var __GLOBAL__sub_I_SubsystemsScriptingClasses_cpp = Module["__GLOBAL__sub_I_SubsystemsScriptingClasses_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_SubsystemsScriptingClasses_cpp"].apply(null, arguments)
+        });
+        var __GLOBAL__sub_I_SwInterCollision_cpp = Module["__GLOBAL__sub_I_SwInterCollision_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_SwInterCollision_cpp"].apply(null, arguments)
+        });
+        var __GLOBAL__sub_I_SwSolverKernel_cpp = Module["__GLOBAL__sub_I_SwSolverKernel_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_SwSolverKernel_cpp"].apply(null, arguments)
+        });
+        var __GLOBAL__sub_I_TemplateInstantiations_cpp = Module["__GLOBAL__sub_I_TemplateInstantiations_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_TemplateInstantiations_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_TerrainScriptingClasses_cpp = Module["__GLOBAL__sub_I_TerrainScriptingClasses_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_TerrainScriptingClasses_cpp"].apply(null, arguments)
@@ -19580,8 +19030,11 @@ var my4399UnityModule = (function() {
         var __GLOBAL__sub_I_artifacts_WebGL_codegenerator_0_cpp = Module["__GLOBAL__sub_I_artifacts_WebGL_codegenerator_0_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_artifacts_WebGL_codegenerator_0_cpp"].apply(null, arguments)
         });
-        var __GLOBAL__sub_I_artifacts_WebGL_modules_Core_WebGL_asmjs_nondev_i_r_nothreads_3_cpp = Module["__GLOBAL__sub_I_artifacts_WebGL_modules_Core_WebGL_asmjs_nondev_i_r_nothreads_3_cpp"] = (function() {
-            return Module["asm"]["__GLOBAL__sub_I_artifacts_WebGL_modules_Core_WebGL_asmjs_nondev_i_r_nothreads_3_cpp"].apply(null, arguments)
+        var __GLOBAL__sub_I_nvcloth_src_0_cpp = Module["__GLOBAL__sub_I_nvcloth_src_0_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_nvcloth_src_0_cpp"].apply(null, arguments)
+        });
+        var __GLOBAL__sub_I_nvcloth_src_1_cpp = Module["__GLOBAL__sub_I_nvcloth_src_1_cpp"] = (function() {
+            return Module["asm"]["__GLOBAL__sub_I_nvcloth_src_1_cpp"].apply(null, arguments)
         });
         var __GLOBAL__sub_I_umbra_cpp = Module["__GLOBAL__sub_I_umbra_cpp"] = (function() {
             return Module["asm"]["__GLOBAL__sub_I_umbra_cpp"].apply(null, arguments)
@@ -19595,38 +19048,38 @@ var my4399UnityModule = (function() {
         var ___cxx_global_var_init = Module["___cxx_global_var_init"] = (function() {
             return Module["asm"]["___cxx_global_var_init"].apply(null, arguments)
         });
-        var ___cxx_global_var_init_129 = Module["___cxx_global_var_init_129"] = (function() {
-            return Module["asm"]["___cxx_global_var_init_129"].apply(null, arguments)
+        var ___cxx_global_var_init_116 = Module["___cxx_global_var_init_116"] = (function() {
+            return Module["asm"]["___cxx_global_var_init_116"].apply(null, arguments)
+        });
+        var ___cxx_global_var_init_127 = Module["___cxx_global_var_init_127"] = (function() {
+            return Module["asm"]["___cxx_global_var_init_127"].apply(null, arguments)
+        });
+        var ___cxx_global_var_init_13 = Module["___cxx_global_var_init_13"] = (function() {
+            return Module["asm"]["___cxx_global_var_init_13"].apply(null, arguments)
+        });
+        var ___cxx_global_var_init_14 = Module["___cxx_global_var_init_14"] = (function() {
+            return Module["asm"]["___cxx_global_var_init_14"].apply(null, arguments)
+        });
+        var ___cxx_global_var_init_15 = Module["___cxx_global_var_init_15"] = (function() {
+            return Module["asm"]["___cxx_global_var_init_15"].apply(null, arguments)
         });
         var ___cxx_global_var_init_18 = Module["___cxx_global_var_init_18"] = (function() {
             return Module["asm"]["___cxx_global_var_init_18"].apply(null, arguments)
         });
-        var ___cxx_global_var_init_18_4873 = Module["___cxx_global_var_init_18_4873"] = (function() {
-            return Module["asm"]["___cxx_global_var_init_18_4873"].apply(null, arguments)
-        });
-        var ___cxx_global_var_init_19 = Module["___cxx_global_var_init_19"] = (function() {
-            return Module["asm"]["___cxx_global_var_init_19"].apply(null, arguments)
-        });
-        var ___cxx_global_var_init_20 = Module["___cxx_global_var_init_20"] = (function() {
-            return Module["asm"]["___cxx_global_var_init_20"].apply(null, arguments)
-        });
         var ___cxx_global_var_init_22 = Module["___cxx_global_var_init_22"] = (function() {
             return Module["asm"]["___cxx_global_var_init_22"].apply(null, arguments)
         });
-        var ___cxx_global_var_init_2_9458 = Module["___cxx_global_var_init_2_9458"] = (function() {
-            return Module["asm"]["___cxx_global_var_init_2_9458"].apply(null, arguments)
+        var ___cxx_global_var_init_2_9467 = Module["___cxx_global_var_init_2_9467"] = (function() {
+            return Module["asm"]["___cxx_global_var_init_2_9467"].apply(null, arguments)
         });
-        var ___cxx_global_var_init_3096 = Module["___cxx_global_var_init_3096"] = (function() {
-            return Module["asm"]["___cxx_global_var_init_3096"].apply(null, arguments)
+        var ___cxx_global_var_init_3660 = Module["___cxx_global_var_init_3660"] = (function() {
+            return Module["asm"]["___cxx_global_var_init_3660"].apply(null, arguments)
         });
-        var ___cxx_global_var_init_4_834 = Module["___cxx_global_var_init_4_834"] = (function() {
-            return Module["asm"]["___cxx_global_var_init_4_834"].apply(null, arguments)
+        var ___cxx_global_var_init_69 = Module["___cxx_global_var_init_69"] = (function() {
+            return Module["asm"]["___cxx_global_var_init_69"].apply(null, arguments)
         });
-        var ___cxx_global_var_init_51 = Module["___cxx_global_var_init_51"] = (function() {
-            return Module["asm"]["___cxx_global_var_init_51"].apply(null, arguments)
-        });
-        var ___cxx_global_var_init_66 = Module["___cxx_global_var_init_66"] = (function() {
-            return Module["asm"]["___cxx_global_var_init_66"].apply(null, arguments)
+        var ___cxx_global_var_init_98 = Module["___cxx_global_var_init_98"] = (function() {
+            return Module["asm"]["___cxx_global_var_init_98"].apply(null, arguments)
         });
         var ___emscripten_environ_constructor = Module["___emscripten_environ_constructor"] = (function() {
             return Module["asm"]["___emscripten_environ_constructor"].apply(null, arguments)
@@ -19669,6 +19122,9 @@ var my4399UnityModule = (function() {
         });
         var _llvm_ctlz_i64 = Module["_llvm_ctlz_i64"] = (function() {
             return Module["asm"]["_llvm_ctlz_i64"].apply(null, arguments)
+        });
+        var _llvm_ctpop_i32 = Module["_llvm_ctpop_i32"] = (function() {
+            return Module["asm"]["_llvm_ctpop_i32"].apply(null, arguments)
         });
         var _llvm_maxnum_f32 = Module["_llvm_maxnum_f32"] = (function() {
             return Module["asm"]["_llvm_maxnum_f32"].apply(null, arguments)
@@ -19750,12 +19206,6 @@ var my4399UnityModule = (function() {
         });
         var stackSave = Module["stackSave"] = (function() {
             return Module["asm"]["stackSave"].apply(null, arguments)
-        });
-        var dynCall_dd = Module["dynCall_dd"] = (function() {
-            return Module["asm"]["dynCall_dd"].apply(null, arguments)
-        });
-        var dynCall_ddd = Module["dynCall_ddd"] = (function() {
-            return Module["asm"]["dynCall_ddd"].apply(null, arguments)
         });
         var dynCall_ddddi = Module["dynCall_ddddi"] = (function() {
             return Module["asm"]["dynCall_ddddi"].apply(null, arguments)
@@ -19849,9 +19299,6 @@ var my4399UnityModule = (function() {
         });
         var dynCall_fiffffii = Module["dynCall_fiffffii"] = (function() {
             return Module["asm"]["dynCall_fiffffii"].apply(null, arguments)
-        });
-        var dynCall_fiffffiiiii = Module["dynCall_fiffffiiiii"] = (function() {
-            return Module["asm"]["dynCall_fiffffiiiii"].apply(null, arguments)
         });
         var dynCall_fiffffiiiiii = Module["dynCall_fiffffiiiiii"] = (function() {
             return Module["asm"]["dynCall_fiffffiiiiii"].apply(null, arguments)
@@ -20033,6 +19480,9 @@ var my4399UnityModule = (function() {
         var dynCall_iiiifffffi = Module["dynCall_iiiifffffi"] = (function() {
             return Module["asm"]["dynCall_iiiifffffi"].apply(null, arguments)
         });
+        var dynCall_iiiifffffii = Module["dynCall_iiiifffffii"] = (function() {
+            return Module["asm"]["dynCall_iiiifffffii"].apply(null, arguments)
+        });
         var dynCall_iiiiffffiii = Module["dynCall_iiiiffffiii"] = (function() {
             return Module["asm"]["dynCall_iiiiffffiii"].apply(null, arguments)
         });
@@ -20072,14 +19522,14 @@ var my4399UnityModule = (function() {
         var dynCall_iiiiifiii = Module["dynCall_iiiiifiii"] = (function() {
             return Module["asm"]["dynCall_iiiiifiii"].apply(null, arguments)
         });
-        var dynCall_iiiiifiiiif = Module["dynCall_iiiiifiiiif"] = (function() {
-            return Module["asm"]["dynCall_iiiiifiiiif"].apply(null, arguments)
-        });
         var dynCall_iiiiifiiiiif = Module["dynCall_iiiiifiiiiif"] = (function() {
             return Module["asm"]["dynCall_iiiiifiiiiif"].apply(null, arguments)
         });
         var dynCall_iiiiii = Module["dynCall_iiiiii"] = (function() {
             return Module["asm"]["dynCall_iiiiii"].apply(null, arguments)
+        });
+        var dynCall_iiiiiifff = Module["dynCall_iiiiiifff"] = (function() {
+            return Module["asm"]["dynCall_iiiiiifff"].apply(null, arguments)
         });
         var dynCall_iiiiiifffi = Module["dynCall_iiiiiifffi"] = (function() {
             return Module["asm"]["dynCall_iiiiiifffi"].apply(null, arguments)
@@ -20135,12 +19585,6 @@ var my4399UnityModule = (function() {
         var dynCall_iiiiiiiiiiiiii = Module["dynCall_iiiiiiiiiiiiii"] = (function() {
             return Module["asm"]["dynCall_iiiiiiiiiiiiii"].apply(null, arguments)
         });
-        var dynCall_iiiiiiijjiii = Module["dynCall_iiiiiiijjiii"] = (function() {
-            return Module["asm"]["dynCall_iiiiiiijjiii"].apply(null, arguments)
-        });
-        var dynCall_iiiiiijjiii = Module["dynCall_iiiiiijjiii"] = (function() {
-            return Module["asm"]["dynCall_iiiiiijjiii"].apply(null, arguments)
-        });
         var dynCall_iiiiij = Module["dynCall_iiiiij"] = (function() {
             return Module["asm"]["dynCall_iiiiij"].apply(null, arguments)
         });
@@ -20183,9 +19627,6 @@ var my4399UnityModule = (function() {
         var dynCall_iiijjii = Module["dynCall_iiijjii"] = (function() {
             return Module["asm"]["dynCall_iiijjii"].apply(null, arguments)
         });
-        var dynCall_iiijjiiii = Module["dynCall_iiijjiiii"] = (function() {
-            return Module["asm"]["dynCall_iiijjiiii"].apply(null, arguments)
-        });
         var dynCall_iiijjjiii = Module["dynCall_iiijjjiii"] = (function() {
             return Module["asm"]["dynCall_iiijjjiii"].apply(null, arguments)
         });
@@ -20200,12 +19641,6 @@ var my4399UnityModule = (function() {
         });
         var dynCall_iijiii = Module["dynCall_iijiii"] = (function() {
             return Module["asm"]["dynCall_iijiii"].apply(null, arguments)
-        });
-        var dynCall_iijiiii = Module["dynCall_iijiiii"] = (function() {
-            return Module["asm"]["dynCall_iijiiii"].apply(null, arguments)
-        });
-        var dynCall_iijiiiiiii = Module["dynCall_iijiiiiiii"] = (function() {
-            return Module["asm"]["dynCall_iijiiiiiii"].apply(null, arguments)
         });
         var dynCall_iijji = Module["dynCall_iijji"] = (function() {
             return Module["asm"]["dynCall_iijji"].apply(null, arguments)
@@ -20297,9 +19732,6 @@ var my4399UnityModule = (function() {
         var dynCall_jijji = Module["dynCall_jijji"] = (function() {
             return Module["asm"]["dynCall_jijji"].apply(null, arguments)
         });
-        var dynCall_jj = Module["dynCall_jj"] = (function() {
-            return Module["asm"]["dynCall_jj"].apply(null, arguments)
-        });
         var dynCall_jji = Module["dynCall_jji"] = (function() {
             return Module["asm"]["dynCall_jji"].apply(null, arguments)
         });
@@ -20324,17 +19756,8 @@ var my4399UnityModule = (function() {
         var dynCall_vff = Module["dynCall_vff"] = (function() {
             return Module["asm"]["dynCall_vff"].apply(null, arguments)
         });
-        var dynCall_vfff = Module["dynCall_vfff"] = (function() {
-            return Module["asm"]["dynCall_vfff"].apply(null, arguments)
-        });
         var dynCall_vffff = Module["dynCall_vffff"] = (function() {
             return Module["asm"]["dynCall_vffff"].apply(null, arguments)
-        });
-        var dynCall_vffffi = Module["dynCall_vffffi"] = (function() {
-            return Module["asm"]["dynCall_vffffi"].apply(null, arguments)
-        });
-        var dynCall_vfffi = Module["dynCall_vfffi"] = (function() {
-            return Module["asm"]["dynCall_vfffi"].apply(null, arguments)
         });
         var dynCall_vfi = Module["dynCall_vfi"] = (function() {
             return Module["asm"]["dynCall_vfi"].apply(null, arguments)
@@ -20387,6 +19810,9 @@ var my4399UnityModule = (function() {
         var dynCall_viffffii = Module["dynCall_viffffii"] = (function() {
             return Module["asm"]["dynCall_viffffii"].apply(null, arguments)
         });
+        var dynCall_viffffiifffiiiiif = Module["dynCall_viffffiifffiiiiif"] = (function() {
+            return Module["asm"]["dynCall_viffffiifffiiiiif"].apply(null, arguments)
+        });
         var dynCall_viffffiii = Module["dynCall_viffffiii"] = (function() {
             return Module["asm"]["dynCall_viffffiii"].apply(null, arguments)
         });
@@ -20405,8 +19831,14 @@ var my4399UnityModule = (function() {
         var dynCall_viffii = Module["dynCall_viffii"] = (function() {
             return Module["asm"]["dynCall_viffii"].apply(null, arguments)
         });
+        var dynCall_viffiifffffiii = Module["dynCall_viffiifffffiii"] = (function() {
+            return Module["asm"]["dynCall_viffiifffffiii"].apply(null, arguments)
+        });
         var dynCall_viffiii = Module["dynCall_viffiii"] = (function() {
             return Module["asm"]["dynCall_viffiii"].apply(null, arguments)
+        });
+        var dynCall_viffiiiif = Module["dynCall_viffiiiif"] = (function() {
+            return Module["asm"]["dynCall_viffiiiif"].apply(null, arguments)
         });
         var dynCall_vifi = Module["dynCall_vifi"] = (function() {
             return Module["asm"]["dynCall_vifi"].apply(null, arguments)
@@ -20459,8 +19891,8 @@ var my4399UnityModule = (function() {
         var dynCall_viiffffii = Module["dynCall_viiffffii"] = (function() {
             return Module["asm"]["dynCall_viiffffii"].apply(null, arguments)
         });
-        var dynCall_viiffffiiiii = Module["dynCall_viiffffiiiii"] = (function() {
-            return Module["asm"]["dynCall_viiffffiiiii"].apply(null, arguments)
+        var dynCall_viiffffiiiiii = Module["dynCall_viiffffiiiiii"] = (function() {
+            return Module["asm"]["dynCall_viiffffiiiiii"].apply(null, arguments)
         });
         var dynCall_viifffi = Module["dynCall_viifffi"] = (function() {
             return Module["asm"]["dynCall_viifffi"].apply(null, arguments)
@@ -20627,14 +20059,14 @@ var my4399UnityModule = (function() {
         var dynCall_viiiiiiiiiji = Module["dynCall_viiiiiiiiiji"] = (function() {
             return Module["asm"]["dynCall_viiiiiiiiiji"].apply(null, arguments)
         });
+        var dynCall_viiiij = Module["dynCall_viiiij"] = (function() {
+            return Module["asm"]["dynCall_viiiij"].apply(null, arguments)
+        });
         var dynCall_viiiijii = Module["dynCall_viiiijii"] = (function() {
             return Module["asm"]["dynCall_viiiijii"].apply(null, arguments)
         });
         var dynCall_viiiijiiii = Module["dynCall_viiiijiiii"] = (function() {
             return Module["asm"]["dynCall_viiiijiiii"].apply(null, arguments)
-        });
-        var dynCall_viiiijjiii = Module["dynCall_viiiijjiii"] = (function() {
-            return Module["asm"]["dynCall_viiiijjiii"].apply(null, arguments)
         });
         var dynCall_viiiji = Module["dynCall_viiiji"] = (function() {
             return Module["asm"]["dynCall_viiiji"].apply(null, arguments)
@@ -20653,12 +20085,6 @@ var my4399UnityModule = (function() {
         });
         var dynCall_viiijji = Module["dynCall_viiijji"] = (function() {
             return Module["asm"]["dynCall_viiijji"].apply(null, arguments)
-        });
-        var dynCall_viiijjii = Module["dynCall_viiijjii"] = (function() {
-            return Module["asm"]["dynCall_viiijjii"].apply(null, arguments)
-        });
-        var dynCall_viiijjiii = Module["dynCall_viiijjiii"] = (function() {
-            return Module["asm"]["dynCall_viiijjiii"].apply(null, arguments)
         });
         var dynCall_viiijjiijji = Module["dynCall_viiijjiijji"] = (function() {
             return Module["asm"]["dynCall_viiijjiijji"].apply(null, arguments)
@@ -20696,11 +20122,14 @@ var my4399UnityModule = (function() {
         var dynCall_viijijiii = Module["dynCall_viijijiii"] = (function() {
             return Module["asm"]["dynCall_viijijiii"].apply(null, arguments)
         });
+        var dynCall_viijijj = Module["dynCall_viijijj"] = (function() {
+            return Module["asm"]["dynCall_viijijj"].apply(null, arguments)
+        });
+        var dynCall_viijj = Module["dynCall_viijj"] = (function() {
+            return Module["asm"]["dynCall_viijj"].apply(null, arguments)
+        });
         var dynCall_viijji = Module["dynCall_viijji"] = (function() {
             return Module["asm"]["dynCall_viijji"].apply(null, arguments)
-        });
-        var dynCall_viijjii = Module["dynCall_viijjii"] = (function() {
-            return Module["asm"]["dynCall_viijjii"].apply(null, arguments)
         });
         var dynCall_viijjiii = Module["dynCall_viijjiii"] = (function() {
             return Module["asm"]["dynCall_viijjiii"].apply(null, arguments)
@@ -20738,14 +20167,8 @@ var my4399UnityModule = (function() {
         var dynCall_vijjii = Module["dynCall_vijjii"] = (function() {
             return Module["asm"]["dynCall_vijjii"].apply(null, arguments)
         });
-        var dynCall_vijjji = Module["dynCall_vijjji"] = (function() {
-            return Module["asm"]["dynCall_vijjji"].apply(null, arguments)
-        });
         var dynCall_vji = Module["dynCall_vji"] = (function() {
             return Module["asm"]["dynCall_vji"].apply(null, arguments)
-        });
-        var dynCall_vjii = Module["dynCall_vjii"] = (function() {
-            return Module["asm"]["dynCall_vjii"].apply(null, arguments)
         });
         var dynCall_vjiiii = Module["dynCall_vjiiii"] = (function() {
             return Module["asm"]["dynCall_vjiiii"].apply(null, arguments)
