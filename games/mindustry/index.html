@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindustry Classic | Dual Gaming Centre</title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+    <style>
+        *{
+            font-family:Arial, Helvetica, sans-serif;
+        }
+        body{
+            margin:0;
+        }
+        a{
+            display:block;
+            color:cyan;
+            text-align:center;
+        }
+        .title{
+            min-width:300px;
+            image-rendering:crisp-edges;
+            display:block;
+            margin:auto;
+        }
+        .save-menu{
+            width:300px;
+            margin:auto;
+        }
+        p{
+            color:white;
+        }
+    </style>
+</head>
+<body>
+    <img src="/title.png" class="title">
+    <br>
+    <a href="/game.html">Launch Game</a>
+    <hr>
+    <div class="save-menu">
+        <p><i>The ability to export/import specific saves from the launcher is coming soon!</i></p>
+        <button id="export-save">Export Save Data</button>
+        <button id="import-save">Import Save Data</button>
+    </div>
+
+    <script>
+
+        // Dear stackoverflow... https://stackoverflow.com/questions/13405129/create-and-save-a-file-with-javascript
+        function download(data, filename, type="plain/text") {
+            var file = new Blob([data], {type: type});
+            if (window.navigator.msSaveOrOpenBlob) // IE10+
+                window.navigator.msSaveOrOpenBlob(file, filename);
+            else { // Others
+                var a = document.createElement("a"),
+                        url = URL.createObjectURL(file);
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(function() {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);  
+                }, 0); 
+            }
+        }
+
+        function upload(){
+            let input = document.createElement("input")
+            input.type = "file"
+            input.style.display="none"
+            document.body.appendChild(input)
+            input.click()
+            input.remove()
+
+            input.addEventListener("change", ()=>{
+                const selectedFile = input.files[0];
+                console.log(selectedFile)
+
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    let parsed = JSON.parse(e.target.result)
+                    if(!confirm("Are you sure you want to do this? Your current save will be overridden!"))return;
+                    localStorage.clear()
+                    for(let key of Object.keys(parsed)){
+                        localStorage.setItem(key, parsed[key])
+                    }
+                };
+                reader.readAsText(selectedFile);
+            })
+        }
+
+        document.getElementById("export-save").addEventListener("click", ()=>{
+            download(JSON.stringify(localStorage), "mindustry-classic-web.save")
+        })
+        document.getElementById("import-save").addEventListener("click", upload)
+
+
+    </script>
+</body>
+</html>
