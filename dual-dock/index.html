@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dual Dock</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: transparent;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+        }
+        
+        #site-frame {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            z-index: 1;
+        }
+        
+        /* ОСНОВНОЙ ДОК */
+        .dock {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999999;
+            background: rgba(20, 20, 30, 0.85);
+            border-radius: 50px;
+            padding: 10px 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: 0.3s;
+        }
+        
+        .dock.minimized {
+            opacity: 0;
+            visibility: hidden;
+            bottom: -100px;
+            pointer-events: none;
+        }
+        
+        /* МАЛЕНЬКАЯ ВКЛАДОЧКА В ПРАВОМ НИЖНЕМ УГЛУ */
+        .dock-tab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999998;
+            background: rgba(20, 20, 30, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        
+        .dock-tab:hover {
+            background: rgba(40, 40, 50, 0.95);
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,114,255,0.3);
+        }
+        
+        .dock-tab.hidden {
+            display: none;
+        }
+        
+        .tab-icon {
+            width: 30px;
+            height: 30px;
+            background: #0072ff;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .dock-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            padding-right: 15px;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            background: #0072ff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            color: white;
+        }
+        
+        .timer-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0,0,0,0.3);
+            padding: 5px 15px;
+            border-radius: 40px;
+        }
+        
+        .timer-display {
+            font-size: 22px;
+            font-weight: bold;
+            font-family: monospace;
+            min-width: 110px;
+            text-align: center;
+        }
+        
+        .timer-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .timer-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .dock-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dock-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .settings-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999997;
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            width: 300px;
+            transition: 0.3s;
+        }
+        
+        .settings-panel.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-20px);
+        }
+        
+        .settings-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .settings-row {
+            margin-bottom: 20px;
+        }
+        
+        .settings-label {
+            display: block;
+            font-size: 13px;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+        
+        .settings-select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            color: white;
+        }
+        
+        .settings-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            color: white;
+        }
+        
+        .color-picker {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .color-item {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .color-item.selected {
+            border-color: white;
+        }
+        
+        .apply-btn {
+            background: #0072ff;
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+        }
+        
+        .close-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 40px;
+            cursor: pointer;
+        }
+        
+        .info-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .info-text span {
+            color: #00c6ff;
+        }
+        
+        .hotkey-hint {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 999996;
+            border: 1px solid #0072ff;
+            display: none;
+        }
+        
+        .hotkey-hint.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        (function() {
+            "use strict";
+            
+            // === ПОЛУЧАЕМ URL САЙТА ===
+            let siteUrl = null;
+            let params = window.location.search;
+            
+            if (params) {
+                if (params.startsWith('?') && !params.includes('=')) {
+                    siteUrl = params.substring(1);
+                } else {
+                    let urlParams = new URLSearchParams(params);
+                    siteUrl = urlParams.get('site');
+                    
+                    if (!siteUrl) {
+                        for (let [key] of urlParams.entries()) {
+                            if (key !== 'color' && key !== 'position') {
+                                siteUrl = key;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // === СОЗДАЁМ IFRAME С САЙТОМ ===
+            if (siteUrl) {
+                if (!siteUrl.startsWith('http://') && !siteUrl.startsWith('https://')) {
+                    siteUrl = 'https://' + siteUrl;
+                }
+                
+                let iframe = document.createElement('iframe');
+                iframe.id = 'site-frame';
+                iframe.src = siteUrl;
+                document.body.appendChild(iframe);
+            }
+            
+            // === СОЗДАЁМ ДОК ===
+            setTimeout(function() {
+                // ОСНОВНОЙ ДОК
+                let dock = document.createElement('div');
+                dock.id = 'dual-dock';
+                dock.className = 'dock';
+                
+                // Логотип
+                let logo = document.createElement('a');
+                logo.href = 'https://dual-gaming-centre.ru';
+                logo.className = 'dock-logo';
+                logo.target = '_blank';
+                logo.innerHTML = '<div class="logo-box">DG</div><div style="font-weight: 600;">Dual <span style="color: #aaa; font-weight: 400;">Gaming</span></div>';
+                
+                // Таймер
+                let timer = document.createElement('div');
+                timer.className = 'timer-box';
+                timer.innerHTML = `
+                    <span id="timer-display" class="timer-display">00:00:00</span>
+                    <div style="display: flex; gap: 5px;">
+                        <button id="timer-start" class="timer-btn">▶</button>
+                        <button id="timer-pause" class="timer-btn">⏸️</button>
+                        <button id="timer-reset" class="timer-btn">↺</button>
+                    </div>
+                `;
+                
+                // Кнопки дока
+                let actions = document.createElement('div');
+                actions.style.display = 'flex';
+                actions.style.gap = '8px';
+                actions.innerHTML = `
+                    <button id="settings-btn" class="dock-btn">⚙️</button>
+                    <button id="minimize-btn" class="dock-btn">▼</button>
+                `;
+                
+                dock.appendChild(logo);
+                dock.appendChild(timer);
+                dock.appendChild(actions);
+                
+                // МАЛЕНЬКАЯ ВКЛАДОЧКА В ПРАВОМ НИЖНЕМ УГЛУ
+                let dockTab = document.createElement('div');
+                dockTab.id = 'dock-tab';
+                dockTab.className = 'dock-tab hidden';
+                dockTab.innerHTML = `
+                    <div class="tab-icon">DG</div>
+                    <span>Dual Dock</span>
+                    <span style="background: #0072ff; padding: 4px 10px; border-radius: 30px; font-size: 12px;">Развернуть</span>
+                `;
+                
+                // Панель настроек
+                let settings = document.createElement('div');
+                settings.id = 'settings-panel';
+                settings.className = 'settings-panel hidden';
+                settings.innerHTML = `
+                    <div class="settings-title">⚙️ Настройки Dual Dock</div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">📍 Позиция</div>
+                        <select id="dock-pos" class="settings-select">
+                            <option value="center">Центр</option>
+                            <option value="left">Слева</option>
+                            <option value="right">Справа</option>
+                        </select>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">🎨 Цвет</div>
+                        <div class="color-picker">
+                            <div class="color-item selected" style="background: #0072ff;" data-color="#0072ff"></div>
+                            <div class="color-item" style="background: #ff3b30;" data-color="#ff3b30"></div>
+                            <div class="color-item" style="background: #4cd964;" data-color="#4cd964"></div>
+                            <div class="color-item" style="background: #ff9500;" data-color="#ff9500"></div>
+                            <div class="color-item" style="background: #af52de;" data-color="#af52de"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">🔮 Прозрачность</div>
+                        <input type="range" id="dock-alpha" min="0.5" max="0.95" step="0.05" value="0.85" class="settings-select">
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">🔗 Ссылка логотипа</div>
+                        <input type="text" id="logo-url" value="https://dual-gaming-centre.ru" class="settings-input">
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button id="apply-settings" class="apply-btn">Применить</button>
+                        <button id="close-settings" class="close-btn">✕</button>
+                    </div>
+                    
+                    <div class="info-text">
+                        🎮 Dual Dock • <span>https://this-dock.com/?example.com</span><br>
+                        Ctrl+Shift+H - показать/скрыть
+                    </div>
+                `;
+                
+                // Подсказка о горячих клавишах
+                let hotkeyHint = document.createElement('div');
+                hotkeyHint.id = 'hotkey-hint';
+                hotkeyHint.className = 'hotkey-hint';
+                hotkeyHint.innerHTML = '⌨️ Ctrl+Shift+H - показать док';
+                
+                // Добавляем на страницу
+                document.body.appendChild(dock);
+                document.body.appendChild(dockTab);
+                document.body.appendChild(settings);
+                document.body.appendChild(hotkeyHint);
+                
+                // === ТАЙМЕР ===
+                let seconds = 0;
+                let timerInterval = null;
+                let isRunning = false;
+                
+                let timerDisplay = document.getElementById('timer-display');
+                let startBtn = document.getElementById('timer-start');
+                let pauseBtn = document.getElementById('timer-pause');
+                let resetBtn = document.getElementById('timer-reset');
+                
+                function formatTime(sec) {
+                    let h = Math.floor(sec / 3600);
+                    let m = Math.floor((sec % 3600) / 60);
+                    let s = sec % 60;
+                    return (h < 10 ? '0' + h : h) + ':' + 
+                           (m < 10 ? '0' + m : m) + ':' + 
+                           (s < 10 ? '0' + s : s);
+                }
+                
+                function updateTime() {
+                    timerDisplay.textContent = formatTime(seconds);
+                }
+                
+                startBtn.onclick = function() {
+                    if (!isRunning) {
+                        isRunning = true;
+                        timerInterval = setInterval(function() {
+                            seconds++;
+                            updateTime();
+                        }, 1000);
+                        startBtn.style.background = '#ff3b30';
+                        pauseBtn.style.background = 'rgba(255,255,255,0.1)';
+                    }
+                };
+                
+                pauseBtn.onclick = function() {
+                    clearInterval(timerInterval);
+                    isRunning = false;
+                    startBtn.style.background = 'rgba(255,255,255,0.1)';
+                    pauseBtn.style.background = '#ff3b30';
+                };
+                
+                resetBtn.onclick = function() {
+                    clearInterval(timerInterval);
+                    isRunning = false;
+                    seconds = 0;
+                    updateTime();
+                    startBtn.style.background = 'rgba(255,255,255,0.1)';
+                    pauseBtn.style.background = 'rgba(255,255,255,0.1)';
+                };
+                
+                // === УПРАВЛЕНИЕ ДОКОМ ===
+                let minimizeBtn = document.getElementById('minimize-btn');
+                let tabButton = document.getElementById('dock-tab');
+                
+                // Функция показа дока
+                function showDock() {
+                    dock.classList.remove('minimized');
+                    tabButton.classList.add('hidden');
+                    hotkeyHint.classList.remove('show');
+                }
+                
+                // Функция скрытия дока
+                function hideDock() {
+                    dock.classList.add('minimized');
+                    tabButton.classList.remove('hidden');
+                    hotkeyHint.classList.add('show');
+                    
+                    // Скрываем подсказку через 3 секунды
+                    setTimeout(function() {
+                        hotkeyHint.classList.remove('show');
+                    }, 3000);
+                }
+                
+                // Кнопка свернуть
+                minimizeBtn.onclick = function() {
+                    hideDock();
+                };
+                
+                // Кнопка развернуть (вкладочка)
+                tabButton.onclick = function() {
+                    showDock();
+                };
+                
+                // === НАСТРОЙКИ ===
+                let settingsBtn = document.getElementById('settings-btn');
+                let settingsPanel = document.getElementById('settings-panel');
+                let closeSettings = document.getElementById('close-settings');
+                
+                settingsBtn.onclick = function() {
+                    settingsPanel.classList.toggle('hidden');
+                };
+                
+                closeSettings.onclick = function() {
+                    settingsPanel.classList.add('hidden');
+                };
+                
+                // === ПРИМЕНЕНИЕ НАСТРОЕК ===
+                let posSelect = document.getElementById('dock-pos');
+                let alphaSlider = document.getElementById('dock-alpha');
+                let logoInput = document.getElementById('logo-url');
+                let logoLink = document.querySelector('.dock-logo');
+                let logoBox = document.querySelector('.logo-box');
+                let colorItems = document.querySelectorAll('.color-item');
+                let applyBtn = document.getElementById('apply-settings');
+                
+                function setPosition(pos) {
+                    dock.style.left = pos === 'center' ? '50%' : (pos === 'left' ? '20px' : 'auto');
+                    dock.style.right = pos === 'right' ? '20px' : 'auto';
+                    dock.style.transform = pos === 'center' ? 'translateX(-50%)' : 'none';
+                }
+                
+                posSelect.onchange = function() {
+                    setPosition(this.value);
+                };
+                
+                alphaSlider.oninput = function() {
+                    dock.style.background = 'rgba(20, 20, 30, ' + this.value + ')';
+                };
+                
+                colorItems.forEach(function(item) {
+                    item.onclick = function() {
+                        colorItems.forEach(function(i) { i.classList.remove('selected'); });
+                        this.classList.add('selected');
+                        logoBox.style.background = this.dataset.color;
+                        document.querySelector('.tab-icon').style.background = this.dataset.color;
+                    };
+                });
+                
+                logoInput.oninput = function() {
+                    logoLink.href = this.value;
+                };
+                
+                applyBtn.onclick = function() {
+                    settingsPanel.classList.add('hidden');
+                    
+                    try {
+                        localStorage.setItem('dockSettings', JSON.stringify({
+                            pos: posSelect.value,
+                            alpha: alphaSlider.value,
+                            color: document.querySelector('.color-item.selected').dataset.color,
+                            logo: logoInput.value
+                        }));
+                    } catch(e) {}
+                };
+                
+                // Загружаем настройки
+                try {
+                    let saved = localStorage.getItem('dockSettings');
+                    if (saved) {
+                        let s = JSON.parse(saved);
+                        if (s.pos) { posSelect.value = s.pos; setPosition(s.pos); }
+                        if (s.alpha) { alphaSlider.value = s.alpha; dock.style.background = 'rgba(20, 20, 30, ' + s.alpha + ')'; }
+                        if (s.color) {
+                            colorItems.forEach(function(i) { i.classList.remove('selected'); });
+                            let selected = Array.from(colorItems).find(function(i) { 
+                                return i.dataset.color === s.color; 
+                            });
+                            if (selected) {
+                                selected.classList.add('selected');
+                                logoBox.style.background = s.color;
+                                document.querySelector('.tab-icon').style.background = s.color;
+                            }
+                        }
+                        if (s.logo) { logoInput.value = s.logo; logoLink.href = s.logo; }
+                    }
+                } catch(e) {}
+                
+                // === ГОРЯЧИЕ КЛАВИШИ ===
+                document.onkeydown = function(e) {
+                    if (e.ctrlKey && e.shiftKey && e.key === 'H') {
+                        if (dock.classList.contains('minimized')) {
+                            showDock();
+                        } else {
+                            hideDock();
+                        }
+                        e.preventDefault();
+                    }
+                    
+                    if (e.ctrlKey && e.shiftKey && e.key === 'T') {
+                        if (isRunning) {
+                            clearInterval(timerInterval);
+                            isRunning = false;
+                            startBtn.style.background = 'rgba(255,255,255,0.1)';
+                            pauseBtn.style.background = '#ff3b30';
+                        } else {
+                            isRunning = true;
+                            timerInterval = setInterval(function() {
+                                seconds++;
+                                updateTime();
+                            }, 1000);
+                            startBtn.style.background = '#ff3b30';
+                            pauseBtn.style.background = 'rgba(255,255,255,0.1)';
+                        }
+                        e.preventDefault();
+                    }
+                };
+                
+                // Приветствие
+                if (!siteUrl) {
+                    alert('🎮 Dual Dock активирован!\n\nГорячие клавиши:\nCtrl+Shift+H - показать/скрыть док (вкладочка в углу)\nCtrl+Shift+T - старт/пауза таймера\n\nФормат: https://this-dock.com/?example.com');
+                }
+                
+            }, 50);
+        })();
+    </script>
+</body>
+</html>
