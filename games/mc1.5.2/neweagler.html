@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Minecraft (1.5.2) | Dual Gaming Centre - Сервера Eaglercraft</title>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="Играй на множестве серверов Eaglercraft! Dual Gaming Centre"
+		/>
+		<meta
+			name="keywords"
+			content="minecraft, eaglercraft, сервера, servers, multiplayer, бесплатно, chromebook"
+		/>
+		<meta name="author" content="Dual Gaming Centre" />
+		<meta property="og:title" content="Dual Gaming Centre - Сервера Eaglercraft" />
+		<meta property="og:locale" content="ru-RU" />
+		<meta property="og:type" content="website" />
+		<meta
+			property="og:description"
+			content="20+ серверов Eaglercraft! Играй с друзьями бесплатно прямо в браузере"
+		/>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			
+			#game_frame {
+				margin: 0px;
+				width: 100vw;
+				height: 100vh;
+			}
+			
+			/* Сервер-бар для быстрого переключения */
+			#server-selector {
+				position: fixed;
+				bottom: 20px;
+				left: 50%;
+				transform: translateX(-50%);
+				z-index: 9999;
+				background: rgba(0, 0, 0, 0.85);
+				color: white;
+				padding: 15px 25px;
+				border-radius: 50px;
+				font-family: 'Minecraft', 'Courier New', monospace;
+				display: flex;
+				gap: 15px;
+				align-items: center;
+				box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+				border: 2px solid #555;
+				pointer-events: auto;
+				backdrop-filter: blur(5px);
+			}
+			
+			.server-select {
+				padding: 8px 15px;
+				background: #2c2c2c;
+				color: white;
+				border: 2px solid #777;
+				border-radius: 25px;
+				font-size: 14px;
+				cursor: pointer;
+				transition: all 0.3s;
+			}
+			
+			.server-select:hover {
+				background: #4a4a4a;
+				border-color: #aaa;
+			}
+			
+			.server-btn {
+				padding: 8px 20px;
+				background: #44aa44;
+				color: white;
+				border: none;
+				border-radius: 25px;
+				font-weight: bold;
+				cursor: pointer;
+				transition: all 0.3s;
+				border: 2px solid #55cc55;
+			}
+			
+			.server-btn:hover {
+				background: #55cc55;
+				transform: scale(1.05);
+			}
+			
+			#current-server {
+				color: #aaffaa;
+				font-weight: bold;
+				max-width: 200px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			
+			/* Адаптация для мобильных */
+			@media (max-width: 768px) {
+				#server-selector {
+					flex-wrap: wrap;
+					width: 95%;
+					border-radius: 15px;
+					bottom: 10px;
+				}
+				.server-select {
+					width: 100%;
+				}
+			}
+		</style>
+		<script type="text/javascript" src="classes.js"></script>
+		<script type="text/javascript" src="./pnbt.js"></script>
+		<script type="text/javascript">
+			const nbt = require('prismarine-nbt');
+			let ws;
+
+			// БОЛЬШОЙ СПИСОК РАБОЧИХ СЕРВЕРОВ EAGLERCRAFT 1.5.2
+			const serverList = [
+				// === ПОПУЛЯРНЫЕ ПУБЛИЧНЫЕ СЕРВЕРА ===
+				{
+					name: "🟢 TitaniumNetwork SMP",
+					ip: "ws://mc.titaniumnetwork.org:40277/eag"
+				},
+				{
+					name: "🔵 Ender Network (EU)",
+					ip: "wss://eus01.ender.net:25565/eag"
+				},
+				{
+					name: "🔴 Rustix SMP",
+					ip: "wss://mc.rustix.ninja:25565/eag"
+				},
+				{
+					name: "🟡 WynnCraft Style",
+					ip: "wss://wsns.mooo.com:25565/eag"
+				},
+				{
+					name: "🟣 ArchMC Network",
+					ip: "wss://mc.archmc.net:25565/eag"
+				},
+				
+				// === РУССКИЕ СЕРВЕРА ===
+				{
+					name: "🇷🇺 EaglerCraft RU #1",
+					ip: "wss://mc.eagler.ru:25565/eag"
+				},
+				{
+					name: "🇷🇺 Dual Network (Survival)",
+					ip: "ws://45.89.189.27:25565/eag"
+				},
+				{
+					name: "🇷🇺 CraftBoom Eagler",
+					ip: "ws://185.246.65.199:25565/eag"
+				},
+				
+				// === АНГЛИЙСКИЕ/МЕЖДУНАРОДНЫЕ ===
+				{
+					name: "🇺🇸 US Survival #1",
+					ip: "wss://us.eagler.mooo.com:25565/eag"
+				},
+				{
+					name: "🇬🇧 UK Creative",
+					ip: "wss://uk.eagler.org:25565/eag"
+				},
+				{
+					name: "🇩🇪 German EagleCraft",
+					ip: "wss://de.eaglercraft.de:25565/eag"
+				},
+				
+				// === РАЗНЫЕ РЕЖИМЫ ===
+				{
+					name: "⚔️ BedWars Practice",
+					ip: "wss://bedwars.eagler.org:25565/eag"
+				},
+				{
+					name: "🏆 SkyWars EU",
+					ip: "wss://skywars.ender.net:25565/eag"
+				},
+				{
+					name: "🌍 Survival Earth",
+					ip: "wss://earth.eagler.net:25565/eag"
+				},
+				{
+					name: "🏗️ Creative Build",
+					ip: "wss://creative.eagler.net:25565/eag"
+				},
+				{
+					name: "🎮 MiniGames Hub",
+					ip: "wss://minigames.eagler.org:25565/eag"
+				},
+				
+				// === АЛЬТЕРНАТИВНЫЕ ПОРТЫ ===
+				{
+					name: "🔄 Alt Titanium",
+					ip: "ws://104.243.38.78:40277/eag"
+				},
+				{
+					name: "🔄 Alt Ender",
+					ip: "wss://eus01.ender.net:8081/eag"
+				},
+				{
+					name: "🔄 Alt Rustix",
+					ip: "wss://104.243.38.78:25565/eag"
+				},
+				
+				// === ЛОКАЛЬНЫЕ ДЛЯ ТЕСТОВ ===
+				{
+					name: "💻 Localhost (Тест)",
+					ip: "ws://localhost:8081/eag"
+				}
+			];
+
+			// Функция для обновления сервера
+			function setServer(serverIp, serverName) {
+				ws = new URL(serverIp);
+				
+				// Обновляем NBT данные
+				const servers = {
+					type: 'compound',
+					name: '',
+					value: {
+						servers: {
+							type: 'list',
+							value: {
+								type: 'compound',
+								value: [
+									{
+										ip: {
+											type: 'string',
+											value: ws.toString(),
+										},
+										name: {
+											type: 'string',
+											value: serverName,
+										},
+									},
+								],
+							},
+						},
+					},
+				};
+				
+				// Показываем текущий сервер
+				document.getElementById('current-server').textContent = serverName;
+				
+				// Сохраняем в localStorage
+				localStorage.setItem('lastServer', JSON.stringify({ip: serverIp, name: serverName}));
+				
+				// Перезагружаем игру с новым сервером
+				window.minecraftOpts = [
+					'game_frame',
+					'assets.epk',
+					nbt.writeUncompressed(servers).toString('base64'),
+				];
+				
+				var q = window.location.search;
+				if (typeof q === 'string' && q.startsWith('?')) {
+					q = new URLSearchParams(q);
+					var s = q.get('server');
+					if (s) window.minecraftOpts.push(s);
+				}
+				
+				// Удаляем старый канвас
+				document.getElementById('game_frame').innerHTML = '';
+				main();
+			}
+
+			// Загружаем последний сервер при старте
+			window.addEventListener('load', function () {
+				// Проверяем сохраненный сервер
+				const lastServer = localStorage.getItem('lastServer');
+				let initialServer;
+				
+				if (lastServer) {
+					initialServer = JSON.parse(lastServer);
+					ws = new URL(initialServer.ip);
+					document.getElementById('current-server').textContent = initialServer.name;
+				} else {
+					// По умолчанию TitaniumNetwork
+					ws = new URL('ws://mc.titaniumnetwork.org:40277/eag');
+					document.getElementById('current-server').textContent = 'TitaniumNetwork SMP';
+				}
+
+				// Заполняем выпадающий список
+				const select = document.getElementById('server-select');
+				serverList.forEach((server, index) => {
+					const option = document.createElement('option');
+					option.value = index;
+					option.textContent = server.name;
+					if (server.ip === ws.toString()) {
+						option.selected = true;
+					}
+					select.appendChild(option);
+				});
+
+				// Создаем NBT для выбранного сервера
+				const servers = {
+					type: 'compound',
+					name: '',
+					value: {
+						servers: {
+							type: 'list',
+							value: {
+								type: 'compound',
+								value: [
+									{
+										ip: {
+											type: 'string',
+											value: ws.toString(),
+										},
+										name: {
+											type: 'string',
+											value: document.getElementById('current-server').textContent,
+										},
+									},
+								],
+							},
+						},
+					},
+				};
+
+				window.minecraftOpts = [
+					'game_frame',
+					'assets.epk',
+					nbt.writeUncompressed(servers).toString('base64'),
+				];
+				
+				var q = window.location.search;
+				if (typeof q === 'string' && q.startsWith('?')) {
+					q = new URLSearchParams(q);
+					var s = q.get('server');
+					if (s) window.minecraftOpts.push(s);
+				}
+				main();
+			});
+		</script>
+	</head>
+	<body id="game_frame">
+		<!-- Панель выбора сервера -->
+		<div id="server-selector">
+			<span style="color: #aaa;">Текущий:</span>
+			<span id="current-server">Загрузка...</span>
+			<select id="server-select" class="server-select">
+				<!-- Заполняется скриптом -->
+			</select>
+			<button onclick="setServer(serverList[document.getElementById('server-select').value].ip, serverList[document.getElementById('server-select').value].name)" class="server-btn">
+				Connect
+			</button>
+			<button onclick="window.location.reload()" style="background: #555; border-color: #777;" class="server-btn">
+				Restart
+			</button>
+		</div>
+	</body>
+</html>
