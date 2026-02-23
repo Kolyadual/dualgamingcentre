@@ -3,9 +3,9 @@
 # 🎮 Dual Gaming Centre
 **One Portal. All Eras. No Limits.**
 
-[![GitHub Stars](https://img.shields.io)](https://github.com)
-[![Platform: Web](https://img.shields.io)](https://kolyadual.github.io)
-[![Telegram](https://img.shields.io)](https://t.me)
+[![GitHub Stars](https://img.shields.io)](https://github.com/Kolyadual/dualgamingcentre/)
+[![Platform: Web](https://img.shields.io)](https://kolyadual.github.io/dualgamingcentre)
+[![Telegram](https://img.shields.io)](https://t.me/DGC_off)
 
 [**🇺🇸 English**](#english-version) | [**🇷🇺 Русский**](#russian-version)
 
@@ -16,14 +16,14 @@
 ## 🌐 English Version
 
 ### Play any game online without registration!
-From legendary **DOOM** and **Minecraft** to mobile hits like **Jetpack Joyride**. If you love a game, you can easily download it for **Runget OS**, **Windows**, or **Android**!
+From legendary **DOOM** and **Minecraft** to mobile hits like **Jetpack Joyride**. If you love a game, you can easily download it for **Runget**, **Windows**, or **Android**!
 
 ### 🕹️ Features
 *   **Ultimate Alternative:** A 100% FREE alternative to VK Play or Yandex Games. **No ads, no subscriptions.** Made with soul for gamers worldwide!
 *   **Virtual Emulator:** Built-in powerful engine. Search for "Virtual Emulator" on the site to run your own ROMs: **PSP, PS1, Sega, NES, SNES, GBA, N64**, and more.
 *   **Events:** Participate in free tournaments and competitions.
 *   **Daily Updates:** New games added every single day.
-*   **Community Powered:** Join our [Telegram](https://t.me) to request any game you want to see!
+*   **Community Powered:** Join our [Telegram](https://t.me/DGC_off) to request any game you want to see!
 
 ### ⚙️ System Requirements
 *   **Speed:** Play smoothly even with **32 Mbps** internet.
@@ -39,7 +39,7 @@ From legendary **DOOM** and **Minecraft** to mobile hits like **Jetpack Joyride*
 ## 🇷🇺 Русская версия
 
 ### Играй в любые игры без регистрации онлайн!
-От легендарных **DOOM** и **Minecraft** до мобильных хитов вроде **Jetpack Joyride**. Если игра понравилась — её можно легко скачать для **Runget OS**, **Windows** или **Android**!
+От легендарных **DOOM** и **Minecraft** до мобильных хитов вроде **Jetpack Joyride**. Если игра понравилась — её можно легко скачать для **Runget**, **Windows** или **Android**!
 
 ### 🔥 Фичи, ради которых стоит попробовать
 1.  **Настоящая свобода:** Полностью БЕСПЛАТНАЯ альтернатива VK Play и Яндекс Играм. **Без рекламы и подписок.** Сделано с душой в России — для людей по всей земле!
