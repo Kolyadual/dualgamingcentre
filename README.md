@@ -1,11 +1,36 @@
 <div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://images.pling.com/cache/85x85-2/img/00/00/84/48/12/2345743/andryemu.png">
+    <img alt="DGC Logo" src="https://raw.githubusercontent.com/Kolyadual/dualgamingcentre/refs/heads/main/img/logo-light.png"
+  </picture>
+  
+  <h1>Dual Gaming Centre</h1>
+  
+  <p>
+    <strong>One Portal. All Eras. No Limits.</strong><br>
+    Play any game online without registration!
+  </p>
 
-# 🎮 Dual Gaming Centre
-**One Portal. All Eras. No Limits.**
+  <p>
+    <a href="https://github.com/Kolyadual/andryemu/releases">
+      <img src="https://img.shields.io/github/v/release/Kolyadual/dualgamingcentre?style=flat&color=6366f1&logo=github" alt="Release">
+    </a>
+    <a href="https://github.com/Kolyadual/dualgamingcentre/blob/main/LICENSE">
+      <img src="https://img.shields.io/badge/license-GPLv3-3b82f6.svg?style=flat" alt="License">
+    </a>
+    <a href="https://github.com/Kolyadual/dualgamingcentre/stargazers">
+      <img src="https://img.shields.io/github/stars/Kolyadual/dualgamingcentre?style=flat&color=fbbf24" alt="Stars">
+    </a>
+    <a href="https://github.com/Kolyadual/dualgamingcentre/issues">
+      <img src="https://img.shields.io/github/issues/Kolyadual/dualgamingcentre?style=flat&color=10b981" alt="Issues">
+    </a>
+  </p>
 
-[![GitHub Stars](https://img.shields.io)](https://github.com/Kolyadual/dualgamingcentre/)
-[![Platform: Web](https://img.shields.io)](https://kolyadual.github.io/dualgamingcentre)
-[![Telegram](https://img.shields.io)](https://t.me/DGC_off)
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://via.placeholder.com/800x400/0f172a/94a3b8?text=Running+Telegram+on+Asus+EEE+PC+1005HA">
+    <img width="1920" height="958" alt="Home DGC" src="https://github.com/user-attachments/assets/f02b42f8-90a7-48f2-84e9-3b87a4a89f6e" />
+
+  </picture>
 
 [**🇺🇸 English**](#english-version) | [**🇷🇺 Русский**](#russian-version)
 
