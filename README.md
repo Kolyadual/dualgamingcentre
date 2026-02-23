@@ -1,6 +1,7 @@
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://images.pling.com/cache/85x85-2/img/00/00/84/48/12/2345743/andryemu.png">
+    
     ![dgc](https://github.com/user-attachments/assets/133e2952-a470-490a-b554-9336c36c1049)
 
   </picture>
