@@ -1,7 +1,8 @@
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://images.pling.com/cache/85x85-2/img/00/00/84/48/12/2345743/andryemu.png">
-    <img alt="DGC Logo" src="https://raw.githubusercontent.com/Kolyadual/dualgamingcentre/refs/heads/main/img/logo-light.png"
+    ![dgc](https://github.com/user-attachments/assets/133e2952-a470-490a-b554-9336c36c1049)
+
   </picture>
   
   <h1>Dual Gaming Centre</h1>
@@ -28,7 +29,7 @@
 
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://via.placeholder.com/800x400/0f172a/94a3b8?text=Running+Telegram+on+Asus+EEE+PC+1005HA">
-    <img width="1920" height="958" alt="Home DGC" src="https://github.com/user-attachments/assets/f02b42f8-90a7-48f2-84e9-3b87a4a89f6e" />
+    <img width="639" height="319" alt="Снимок экрана_20260223_213142" src="https://github.com/user-attachments/assets/e99abe6f-efdd-435f-a653-f124c4556775" />
 
   </picture>
 
