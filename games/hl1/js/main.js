@@ -57,7 +57,7 @@
 			$container	= $('.container');
 			$canvas		= $('div.fullscreen');
 			$progress	= $body.find('progress').first();
-			path		= window.location.hostname !== 'localhost' ? '//' + window.location.hostname + '/emupedia-data-halflife1/' : 'data/';
+			path		= window.location.hostname !== 'localhost' ? '//' + window.location.hostname + '/dualgamingcentre/games/hl1/' : 'data/';
 
 			(function() {
 				if (typeof simplestorage.get('intro') === 'undefined') {
