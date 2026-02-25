@@ -1,0 +1,39 @@
+To do:
+	- Implement unit rotation
+	- Allow unit to shoot not only to the center of the building
+	- Shroud should be calculated as passable cell for every unit
+	- Change unit order/action structure
+
+- High priority bugs:
+	- when ordering scouted unit it don't stop scout
+	- when disabling order, unit should stop
+	- Disable effects under the fog - optimize the way how effects added to drawing queue
+	- Can't attack building by selected units
+
+- Medium priority bugs:
+	- Add Boost weapon (weapon for Amper unit)
+	- Add Vortex weapon
+	- Add Shredder weapon
+	- Add self-destruction weapon
+	- Add Hostage Taker weapon
+	- Air Defense Site should have 3 weapons instead one
+	- Add animation for repair station
+	- More beautiful shroud
+
+- Low priority bugs:
+	- Mouse cursor should not change when mouse over other player's units
+	- Map: Water animation
+	- When building upgraded we should calculate exact proportion on health for new building
+	- Implement access by level in Archive > journal
+
+- Very low priority bugs:
+	- Add smooth animation on water indicator when selling water
+	- Need to add animation when energy state changed
+	- Energy meter blinking incorrectly
+	- When mouseover building or unit, it's name should be shown after small delay
+	- Game menu scroll (for example in archive) works not exactly as in the game
+	- Add infiltrator idle animation
+
+
+- Known browser-related bugs
+	- Chrome 25: glitch while playing sound of cloned audio element

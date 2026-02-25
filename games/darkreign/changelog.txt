@@ -1,0 +1,333 @@
+Build 45
+- Added Freedom Guard Units: Raider, Spider Bike (and DoubleRailGun weapon)
+- Added Freedom Guard buildings: Headquarter, Laser Turret
+- Some buildings refactoring
+- Restored Chrome support
+- Added music player randomization
+- Bugfix: disable ability to harvest for other player buildings
+
+Build 44 (13.10.2013)
+- Added level objective text in game menu
+- First implementation of shroud
+- Added shroud on minimap
+- Map refactoring
+- Add word warp function for text in game objective window
+- Starting to work on Imperium Level 1 map
+- Added snow sprites for: Headquarter, Water Launch Pad, Taelon Power, Training Facility, Assembly Plant, Plasma Turret, Water Well, Taelon Mine
+- Added new buildings: Civilian Horizontal Bridge, Small Wall 1, Small Wall 2
+
+Build 43 (22.08.2013)
+- Fly units can't "stand" above buildings structures
+- Show attack cursor when mouse placed on enemy unit
+- Tactical AI: Attack enemy unit when it moved inside seeing range
+- Tactical AI: Damage tolerance now works
+- Tactical AI: basic actions when unit under attack
+- Tactical AI: Orders implemented: scout & harass
+- Bugfix: weapon location fix when unit teleported
+- Bugfix: bridge construction fixed
+- Bugfix: fixed freighter auto-harvesting
+- Some code refactoring and optimizations
+
+Build 42 (28.06.2013)
+- Bugfix: Fog of war fix during unit teleport
+- Bugfix: Unit couldn't enter invader transport
+- Bugfix: demolishing Temporal gate during charge sate
+- Bugfix: minimap fog error when unit moves near right side
+- Bugfix: Fog drawing function rewritten to allow correct fog display on right and bottom edges
+- Bugfix: do not select unit/building if it positioned under the fog
+- Units and buildings of other players now colored differently
+- Game basic parameters can be configured throw config object
+- Added damage animation for all units
+- Added units without weapons: Shredder, Hostage Taker, Water Contaminator
+- Added Infiltrator unit (without spy abilities)
+
+Build 41 (14.06.2013)
+- Added level select screen
+- Added game archive
+- Game require browser to support WebM video
+
+Build 40 (05.06.2013)
+- Added "Orders" tab to right panel
+- Tactical AI: Cyclone flies to Rearming deck when have no ammo
+- Tactical AI: weapon maximal range check moved to tactical AI
+- Implemented weapon's minimal attack range
+- First implementation of the fog of war
+- Starting this build you can not run game just from local folder, you should set up virtual domain or upload it to remote computer.
+- Water display switcher are now clickable
+- Start working on game menu (level select menu)
+- Code refactoring
+
+Build 39 (17.05.2013)
+- Sky Fortress now have correct fire delay and weapon state display
+- Added damage area for all weapons
+- Added persistent damage for S.C.A.R.A.B. weapon
+- Font class optimizations
+- Bug fixes
+- Bullet speed corrected
+- Unit speed corrected
+- Map elements (trees, rocks) now draw dynamically
+
+Build 38 (09.05.2013)
+- Added music player (tracks will not be available on GitHub)
+- Added ability to change music volume on right panel (at Menu tab)
+- Added Invader Troop Transport unit
+- Added Plasma Tank unit & PlasmaCannon weapon
+- Added Amper unit (without weapon)
+- Added Mobile Air Defense unit with its weapon
+- Added Recon Drone unit (first fly unit)
+- Added Tachion Tank unit and TachyonCannon weapon
+- Added S.C.A.R.A.B. unit and its weapon
+- Added Cyclone unit and its weapon
+- Added Sky Fortress unit
+- Added ability for Cyclone to rearm in Rearming Deck
+- Added shadows to all units that still not had it
+- Added unit generation in progress sound
+- Unit rotation function significantly improved
+- Code refactoring
+- Different bug fixes
+
+Build 37 (01.05.2013)
+- Added Rearming Deck building
+- Added Rift Creator building (without weapon)
+- Unit class changed to support multiple parts
+- Bullet animation fixed for all units
+- Added first multipart unit: Hover Freighter
+- Added Scout Runner unit & Laser Cannon weapon
+- Added ability to scroll construction menu on right panel
+- Added Bridge Junction, last building for Imperium side
+- Small map corrections
+- Added "Menu" tab on right panel
+- Added ability to change game sounds volume (other settings still have no effect)
+- Some code refactoring
+
+Build 36 (20.04.2013)
+- Added Air Defense Site building & weapon
+- Added Repair Station & added ability to fix non human units
+- Added Civilian Vertical Bridge
+- Added player start position
+- Added Temporal Gate building and all related mouse cursors
+- Added ability to teleport units through Temporal Gate
+- Game grid changed, now it's works as in original game
+- Added ability to create tactical groups (hold Ctrl button and press 0-9 button)
+- Different bugfixes
+
+Build 35 (11.04.2013)
+- Minimap not available if player have low energy
+- Added Exterminator unit and PolyAcid weapon
+- Unit sound system now have much flexible structure 
+- Added "Hover" movement mode
+- Added Vertical Bridge
+- Completely recreated animation system
+- Added damage explosions for all buildings
+- Added sound for building explosion
+
+Build 34 (21.03.2013)
+- Changed the way building are constructed and sold. Now it's works exactly as in original game
+- Added broken state for all buildings
+- Added ability to fix buildings
+- Unit heal speed corrected
+- Added ability to create building with weapon
+- Added Plasma Turret building & GatPlasma weapon
+- Added Neutron Accelerator building & NeutronAss weapon
+
+Build 33 (12.03.2013)
+- Added Bion unit & Plasma Rifle weapon
+- Fixed building upgrade bug
+- Destroyed building leaves crater on land
+- Building of Camera tower and bridges now not require Construction Rig destruction
+- All bridge problems are solved
+- Complete recreation of unit producing system
+- Different small bugs fixed
+
+Build 32 (06.03.2013)
+- Units now can die and buildings now can be destroyed
+- Added explosion effects for existing units
+- Few attacking bugs fixed
+- Field Hospital now can heal units
+
+Build 31 (26.02.2013)
+- Added mouse panning. It disabled by default, in order to enable it, go to "Special" tab
+- Shooting sound optimizations
+- Big structural change in unit object class
+- Construction Rig don't need to move to the middle of the building site to start building
+- Attacking unit can pursue it's target
+- Pathfinding algorithm improved, units now can find alternative position to move if target position is occupied by another unit
+- Weapons finally cause damage. (Units still can't be killed)
+
+Build 30 (20.02.2013)
+- Removed div selection when clicking many time on unit box on right panel
+- Ability to pause game, by pressing P key.
+- Added dialog module, when game paused corresponding dialog is appeared
+
+Build 29 (12.02.2013)
+- Added shadow for all buildings
+- Added shadow for units. Unfortunately can't find shadow image for Freighter, for now it will be without shadow. 
+- Added healing cursor
+- Added damage table. Preparing for weapon implementation.
+- Added small horizontal bridge building. Still can't correctly build it, some improvements required for pathfinding algorithm.
+- Small code optimizations
+
+Build 28 (06.02.2013)
+- Preloading right panel images for buildings and units
+- Do not start game load until start screen is loaded completely
+- Added animation to Advanced Training Facility building
+- Added Field Hospital building (it still can't heal)
+- Added shadow layer to graphic drawer
+- Added shadows for all Headquarter buildings
+
+Build 27 (16.12.2012)
+- Freighter automatically choose only nearest objects
+- Energy indicator blinking implemented by CSS animation
+- Added water indicator
+- You can urgently sell water by clicking on indicator
+- When selecting construction rig right panel automatically switch to build section
+
+Build 26 (11.12.2012)
+- Freighter now can harvest
+- Removed Freighter sounds, because they same as Guardian sounds
+- Added water sell sound and water sell effect
+- Added debug option that allows to see game speed and FPS
+
+Build 25 (10.12.2012)
+- Added "Advanced Assembly Plant" building
+- Added "Freighter" unit (it still can't harvest)
+- Power generator & Water launch pad now constructed with one Freighter unit
+- Added "Headquarter 3" building
+- Added harvesting cursor
+
+Build 24 (03.12.2012)
+- Changed interface cursor
+- Units marked blue on right panel when selected building can't produce that unit
+- Added "Headquarter 2" building
+- Added ability to upgrade buildings
+- Added "Advanced Training Facility" building
+- Guardian now can shoot (Only in test mode, many things are still not implemented)
+- Attack volume changing depends on how far your viewport is placed
+
+Build 23 (27.11.2012)
+- Added neutral player
+- Added neutral objects: Water well, Taelon mine
+- Selection colors are changing depending on player belonging
+- Added Insufficient credits sound
+
+Build 22 (26.11.2012)
+- Added unit producing indicator on right panel. It not looks like an original one, but very similar.
+- Added "Guardian" unit
+- Added ability to demolish buildings
+- Many selection fixes
+- Showing units on mini-map
+- Added repair mouse pointer
+- Added "attack mode". Can be enabled by pressing A button or attack icon on top menu. Weapon still not implemented.
+- Added debug options in "special" panel
+
+Build 21 (18.11.2012)
+- New object drawing engine, that allows to draw units & building by layers
+- New map cell structure that allows to place different types of units in single cell
+- Producing "Construction Rig"
+-- Known problems: 
+	- Where is still no good algorithm for finding exit point. Sometimes units are stuck in buildings 
+	- There is no progress indicator on right bar
+- Added "Critical power" sound notification
+- A lot of different bug fixes & structure changes
+- Added sound notification queue
+- Added "Training Facility" building
+- Added "Assembly Plant" building
+
+Build 20 (12.11.2012)
+- More correct way to check building position
+- Added energy indicator
+- Added "Low power" sound notification, when power is too low
+- Added "Taelon Power Generator" building (without Freighter). This is first animated building.
+- Bugfix: Building selection when map view moved from top left corner
+- Added addition Construction Rig to map
+
+Build 19 (07.11.2012)
+- Improved popup for units on building panel, now it shows required buildings too
+- Added "Water Launch Pad" building (without Freighter)
+
+Build 18 (06.11.2012)
+- Added building and unit name when mouseover the object
+- Added popup for units on building panel
+
+Build 17 (05.11.2012)
+- Some building based code optimizations
+- Added new building: Camera Tower
+
+Build 16 (18.10.2012)
+- Finally added ability to build Headquarter, but still no option to produce new units.
+- Project source code moved to GitHub
+
+Build 15 (13.09.2012)
+- Added ability to select building and choose place to build. But actually still no way to build it.
+
+Build 14 (11.09.2012)
+- Interface stop button now working
+- Implemented "Can't move there" mouse cursor
+- Implemented "Sell building" & "Power building" cursor and interface buttons
+- View building options on right panel when selecting single Construction Rig
+- Added some preparations for first building
+
+Build 13 (04.09.2012)
+- First implementation of pathfinding algorithm
+- Units can avoid impact when moving toward each other
+- Bridges, Crystal & water resources added to test level
+- Implemented multi-select feature
+- When press keyboard "S" button selected unit stop movement
+- Improved unit selection drawing
+- Draw unit health on mouseover
+
+Build 12 (01.09.2012)
+- Added Firefox support
+- Added browser support check
+- All cursors merged in to one sprite
+- Added unit move sounds
+
+Build 11 (31.08.2012)
+- Added unit select & move cursors
+- Testing unit movment animation (still no implementation of pathfinding algorithm)
+- Some small code improvments
+
+Build 10 (28.08.2012)
+- Improved & optimized unit sprites and interface images
+- Added few missing elements in right panel
+- First test of replacing default cursor by custom one
+- Key event handling optimisations
+- Added normal resource preloader
+- Added unit sounds support
+- Using tiles to build map image instead of loading one big image
+
+Build 9 (25.08.2012)
+- Creating this page
+- Added loading screen & progress bar
+
+Build 8 (24.08.2012)
+- Added money showing & change animation
+
+Build 7 (21.08.2012)
+- Added available construction units on right panel
+
+Build 6 (21.08.2012)
+- Unit selection & health showing
+- Testing of sprite animation (when selecting unit)
+
+Build 5 (20.08.2012)
+- Added support of objects
+- Synchronization of map layer and objects layer
+
+Build 4 (19.08.2012)
+- Improved map scrolling by keyboard
+- View rectangle on minimap
+- Scrolling map from minimap
+
+Build 3 (18.08.2012)
+- Scrolling map by arrow keys
+- Added minimap
+- Minimized map image to 1.9 Mb
+
+Build 2 (15.08.2012)
+- Showing map in main window
+- Map loaded as png image 5Mb (!)
+- For test purposes I use original 2jungle map
+
+Build 1 (14.08.2012)
+- Created interface
