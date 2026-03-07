@@ -83,9 +83,9 @@ From legendary **DOOM** and **Minecraft** to mobile hits like **Jetpack Joyride*
 ---
 
 ## 🔗 Quick Links / Быстрые ссылки
-*   🚀 **[Open Dual Gaming Centre](https://kolyadual.github.io)**
-*   📢 **[Official Telegram Channel](https://t.me)**
-*   🧪 **[Tester's Channel](https://t.me)**
+*   🚀 **[Open Dual Gaming Centre](https://kolyadual.github.io/dualgamingcentre)**
+*   📢 **[Official Telegram Channel](https://t.me/DGC_off)**
+*   🧪 **[Tester's Channel](https://t.me/ffbnx)**
 
 ---
 
@@ -94,6 +94,10 @@ From legendary **DOOM** and **Minecraft** to mobile hits like **Jetpack Joyride*
 <img width="694" height="561" alt="Снимок экрана_20260307_183430" src="https://github.com/user-attachments/assets/44b2a735-d3d8-4593-b192-ada9e168a26a" />
 
 Load Dual Gaming Centre extension for Firefox to your system and fast play your videogames!
+
+## See also / Смотрите также
+
+I update my service very frequently, so I can't keep up with adding new video games as quickly as possible. There are a lot of games. See the <a href="https://kolyadual.github.io/dualgamingcentre/games/list">list</a>
 
 ## 🛡️ Disclaimer / Отказ от ответственности
 *ALL GAMES available in Dual Gaming Centre are NOT developed by Kolyadual. All rights belong to their respective developers and owners. Please play responsibly!*
