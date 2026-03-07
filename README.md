@@ -89,6 +89,12 @@ From legendary **DOOM** and **Minecraft** to mobile hits like **Jetpack Joyride*
 
 ---
 
+## Other: Browser Add-On / Дополнение к браузеру
+
+<img width="694" height="561" alt="Снимок экрана_20260307_183430" src="https://github.com/user-attachments/assets/44b2a735-d3d8-4593-b192-ada9e168a26a" />
+
+Load Dual Gaming Centre extension for Firefox to your system and fast play your videogames!
+
 ## 🛡️ Disclaimer / Отказ от ответственности
 *ALL GAMES available in Dual Gaming Centre are NOT developed by Kolyadual. All rights belong to their respective developers and owners. Please play responsibly!*
 
