@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Emulator | Dual Gaming Centre</title>
+    <link rel="icon" href="./favicon.png" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="DGCWINEMUCSS.css">
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <!-- Верхняя панель -->
+    <div class="top-dock">
+        <div class="logo">
+            <a href="index.html" style="text-decoration: none;">
+                <h1>Windows Emulator</h1>
+            </a>
+        </div>
+        <div class="controls-group">
+            <!-- Скрытые кнопки, нужные скриптам -->
+            <button id="startbtn" style="display: none;">Start</button>
+            <button id="uploadbtn" style="display: none;">Add File(s)</button>
+            <input id="upload" type="file" multiple name="upload" style="display: none;">
+            <button id="downloadbtn" style="display: none;">Get File(s)</button>
+
+            <div class="toggle-group">
+                <input type="checkbox" id="pointerLock" checked> <label for="pointerLock">Lock/hide mouse</label>
+            </div>
+            <div class="toggle-group">
+                <input type="checkbox" id="showConsole" checked onclick="toggleConsole()"> <label for="showConsole">Show console</label>
+            </div>
+            <div class="toggle-group">
+                <input type="checkbox" id="resize"> <label for="resize">Resize canvas</label>
+            </div>
+            <button class="btn-primary" onclick="Module.requestFullScreen(document.getElementById('pointerLock').checked, document.getElementById('resize').checked)">
+                <i class="fas fa-expand"></i> Fullscreen
+            </button>
+            <div class="theme-toggle-wrapper">
+                <i class="fas fa-moon"></i>
+                <div class="theme-toggle-container">
+                    <input type="checkbox" id="theme-toggle-checkbox" class="theme-toggle-checkbox">
+                    <label for="theme-toggle-checkbox" class="theme-toggle-label"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран загрузки -->
+    <div id="loading" class="loading-overlay">
+        <div class="spinner"></div>
+        <div id="status" class="status-text">Downloading...</div>
+        <progress id="progress" max="100" value="0" hidden></progress>
+    </div>
+
+    <div id="inline" style="display: none;"></div>
+
+    <!-- Основной контейнер -->
+    <main class="emulator-container">
+        <div id="dropzone" class="dropzone">
+            <div class="canvas-wrapper">
+                <canvas id="canvas" class="emulator-canvas"></canvas>
+            </div>
+        </div>
+        <textarea id="output" class="console-output" rows="8" style="display: none;"></textarea>
+    </main>
+
+    <!-- Модальные окна -->
+    <div id="openModal" class="modal">
+        <div class="modal-content">
+            <a href="#" class="close-modal" onclick="done()">×</a>
+            <h3>Get File(s)</h3>
+            <div class="modal-body">
+                <input id="selectedItem" size="50" readonly>
+                <button class="btn-primary" onclick="extract()">Get</button>
+                <div id="tree" class="tree-view"></div>
+                <div id="loadStatus">Loading...</div>
+            </div>
+        </div>
+    </div>
+    <div id="openModalExe" class="modal">
+        <div class="modal-content">
+            <a href="#" id="openModalExeClick" class="close-modal">×</a>
+            <h3>Execute</h3>
+            <div id="message"></div>
+            <div id="items"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="copyright">
+            &copy; Dual Gaming Centre. Windows emulator powered by BoxedWine.
+        </div>
+    </footer>
+
+    <script src="browserfs.boxedwine.js"></script>
+    <script src="jszip.min.js"></script>
+    <script src="boxedwine-shell.js"></script>
+    <script>
+        // Совместимость с оригинальным скриптом
+        function startInline() {
+            document.getElementById("run-inline").style.display = "none";
+            document.getElementById("loading").style.display = "";
+            Config.isRunningInline = true;
+            Config.urlParams = "p=notepad";
+            var script = document.createElement("script");
+            script.src = "winemu.js";
+            document.body.appendChild(script);
+        }
+        function addDefaultOnDemand(url) {
+            if (url.includes("root=") || url.includes("ondemand=")) return url;
+            if (url.length > 0) url += "&";
+            url += "ondemand=root&root=fullWine1.7.55-v8&inline-default-ondemand-root-overlay=wine1.7.55-v8-min";
+            return url;
+        }
+        // Функции toggleConsole и др. уже определены в boxedwine-shell.js
+    </script>
+    <script src="boxedwine.js" async></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#6e45e2" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#6e45e2", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true },
+                modes: { grab: { distance: 140, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+        // Тёмная тема
+        const themeToggle = document.getElementById('theme-toggle-checkbox');
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'default';
+            if (savedTheme === 'brutal-dark') {
+                themeToggle.checked = true;
+                document.documentElement.setAttribute('data-theme', 'brutal-dark');
+            } else {
+                themeToggle.checked = false;
+                document.documentElement.setAttribute('data-theme', 'default');
+            }
+        }
+        function toggleTheme() {
+            if (themeToggle.checked) {
+                document.documentElement.setAttribute('data-theme', 'brutal-dark');
+                localStorage.setItem('theme', 'brutal-dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'default');
+                localStorage.setItem('theme', 'default');
+            }
+        }
+        themeToggle.addEventListener('change', toggleTheme);
+        loadTheme();
+    </script>
+</body>
+</html>
