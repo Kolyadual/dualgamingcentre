@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статья — DGC Blog</title>
+    <link rel="icon" href="./favicon.png" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* === Глобальные переменные (те же, что на главной) === */
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --dark: #1a1a2e;
+            --light: #f1f1f1;
+            --accent: #ff6b6b;
+            --toggle-bg: #2a2a3a;
+            --toggle-active: #6e45e2;
+            --toggle-handle: #ffffff;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+        }
+
+        :root[data-theme="brutal-dark"] {
+            --primary: #ff0000;
+            --secondary: #ff4444;
+            --dark: #0a0a0a;
+            --light: #cccccc;
+            --accent: #ff3300;
+            --toggle-bg: #330000;
+            --toggle-active: #ff0000;
+            --toggle-handle: #ff6666;
+            --border-color: #ff0000;
+            --card-bg: #1a0000;
+            --text-secondary: #ff9999;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rubik', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: var(--light);
+            min-height: 100vh;
+            transition: background 0.5s ease;
+        }
+
+        /* Верхняя панель */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+        }
+
+        .logo h1 {
+            font-size: 1.6rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        .logo a {
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: var(--secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        .theme-toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle-container {
+            position: relative;
+            width: 44px;
+            height: 24px;
+        }
+
+        .theme-toggle-checkbox {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        .theme-toggle-label {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: var(--toggle-bg);
+            border-radius: 24px;
+            cursor: pointer;
+            position: relative;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle-label::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--toggle-handle);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .theme-toggle-checkbox:checked + .theme-toggle-label {
+            background: var(--toggle-active);
+        }
+
+        .theme-toggle-checkbox:checked + .theme-toggle-label::after {
+            left: calc(100% - 22px);
+            background: white;
+        }
+
+        /* Основной контент статьи */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 100px 20px 60px;
+        }
+
+        .article-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .article-category {
+            display: inline-block;
+            background: var(--primary);
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .article-title {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .article-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .article-content {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--light);
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Блок автора */
+        .author-block {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .author-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .author-info {
+            flex: 1;
+        }
+
+        .author-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .author-socials {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .author-socials a {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .author-socials a:hover {
+            color: var(--primary);
+        }
+
+        footer {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 1.8rem;
+            }
+            .article-container {
+                padding-top: 80px;
+            }
+            .top-bar {
+                height: 60px;
+            }
+            .author-block {
+                flex-direction: column;
+                text-align: center;
+            }
+            .author-socials {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="top-bar">
+        <div class="logo">
+            <a href="blog.html">
+                <h1>DGC Blog</h1>
+            </a>
+        </div>
+        <a href="blog.html" class="back-link"><i class="fas fa-arrow-left"></i> Назад к блогу</a>
+        <div class="theme-toggle-wrapper">
+            <i class="fas fa-moon"></i>
+            <div class="theme-toggle-container">
+                <input type="checkbox" id="theme-toggle-checkbox" class="theme-toggle-checkbox">
+                <label for="theme-toggle-checkbox" class="theme-toggle-label"></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="article-container" id="article-container">
+        <div class="article-header">
+            <span class="article-category" id="article-category"></span>
+            <h1 class="article-title" id="article-title"></h1>
+            <div class="article-meta">
+                <span id="article-date"></span>
+            </div>
+        </div>
+        <img id="article-image" class="article-image" alt="Иллюстрация">
+        <div class="article-content" id="article-content"></div>
+        <div id="author-block" class="author-block" style="display: none;"></div>
+    </div>
+
+    <footer>
+        <div class="copyright">
+            &copy; Dual Gaming Centre. Сделано Kolyadual.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        let postsData = [];
+
+        function getCategoryName(cat) {
+            const names = {
+                news: 'Новость',
+                updates: 'Обновление',
+                guides: 'Гайд',
+                articles: 'Статья'
+            };
+            return names[cat] || cat;
+        }
+
+        // Отображение автора и его соцсетей
+        function renderAuthor(author) {
+            if (!author || !author.name) return;
+            const authorDiv = document.getElementById('author-block');
+            authorDiv.style.display = 'flex';
+
+            let socialLinks = '';
+            if (author.telegram) socialLinks += `<a href="${author.telegram}" target="_blank"><i class="fab fa-telegram"></i></a>`;
+            if (author.twitter) socialLinks += `<a href="${author.twitter}" target="_blank"><i class="fab fa-twitter"></i></a>`;
+            if (author.github) socialLinks += `<a href="${author.github}" target="_blank"><i class="fab fa-github"></i></a>`;
+            if (author.website) socialLinks += `<a href="${author.website}" target="_blank"><i class="fas fa-globe"></i></a>`;
+
+            authorDiv.innerHTML = `
+                ${author.avatar ? `<img class="author-avatar" src="${author.avatar}" alt="${author.name}">` : ''}
+                <div class="author-info">
+                    <div class="author-name">${author.name}</div>
+                    ${socialLinks ? `<div class="author-socials">${socialLinks}</div>` : ''}
+                </div>
+            `;
+        }
+
+        // Загрузка постов и отображение выбранного
+        async function loadAndDisplayPost() {
+            try {
+                const response = await fetch('posts.json');
+                const data = await response.json();
+                postsData = data.posts;
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const postId = parseInt(urlParams.get('id'));
+                const post = postsData.find(p => p.id === postId);
+
+                if (post) {
+                    document.getElementById('article-category').textContent = getCategoryName(post.category);
+                    document.getElementById('article-title').textContent = post.title;
+                    document.getElementById('article-date').innerHTML = `<i class="far fa-calendar-alt"></i> ${post.date}`;
+                    document.getElementById('article-image').src = post.image;
+
+                    // Отображение текста: каждый абзац в <p>
+                    const contentDiv = document.getElementById('article-content');
+                    contentDiv.innerHTML = post.content.map(paragraph => `<p>${paragraph}</p>`).join('');
+
+                    // Отображение автора
+                    if (post.author) renderAuthor(post.author);
+
+                    document.title = `${post.title} — DGC Blog`;
+                } else {
+                    document.getElementById('article-container').innerHTML = `
+                        <div style="text-align:center; padding:2rem;">
+                            <h2>Статья не найдена</h2>
+                            <a href="blog.html" class="back-link">Вернуться в блог</a>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки статьи:', error);
+                document.getElementById('article-container').innerHTML = `
+                    <div style="text-align:center; padding:2rem;">
+                        <h2>Ошибка загрузки статьи</h2>
+                        <a href="blog.html" class="back-link">Вернуться в блог</a>
+                    </div>
+                `;
+            }
+        }
+
+        // Тёмная тема
+        const themeToggle = document.getElementById('theme-toggle-checkbox');
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'default';
+            if (savedTheme === 'brutal-dark') {
+                themeToggle.checked = true;
+                document.documentElement.setAttribute('data-theme', 'brutal-dark');
+            } else {
+                themeToggle.checked = false;
+                document.documentElement.setAttribute('data-theme', 'default');
+            }
+        }
+        function toggleTheme() {
+            if (themeToggle.checked) {
+                document.documentElement.setAttribute('data-theme', 'brutal-dark');
+                localStorage.setItem('theme', 'brutal-dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'default');
+                localStorage.setItem('theme', 'default');
+            }
+        }
+        themeToggle.addEventListener('change', toggleTheme);
+        loadTheme();
+
+        // Запуск загрузки статьи
+        loadAndDisplayPost();
+
+        // Particles.js
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {"value": 80, "density": {"enable": true, "value_area": 800}},
+                "color": {"value": "#6e45e2"},
+                "shape": {"type": "circle"},
+                "opacity": {"value": 0.5},
+                "size": {"value": 3, "random": true},
+                "line_linked": {"enable": true, "distance": 150, "color": "#6e45e2", "opacity": 0.4, "width": 1},
+                "move": {"enable": true, "speed": 2}
+            },
+            "interactivity": {
+                "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": true, "mode": "push"}}
+            },
+            "retina_detect": true
+        });
+    </script>
+</body>
+</html>
