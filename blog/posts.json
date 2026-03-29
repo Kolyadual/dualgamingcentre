@@ -2,9 +2,9 @@
   "posts": [
     {
       "id": 1,
-      "title": "🎮 DOOM 2 теперь доступен в эмуляторе!",
+      "title": "DOOM 2 теперь доступен в эмуляторе!",
       "category": "news",
-      "date": "28 марта 2026",
+      "date": "29 марта 2026",
       "excerpt": "Легендарный шутер DOOM 2 добавлен в нашу коллекцию. Играйте прямо в браузере без скачивания!",
       "content": [
         "Рады сообщить, что в Dual Gaming Centre появилась возможность поиграть в DOOM 2 прямо в окне браузера. Эмулятор работает отлично, поддерживается управление с клавиатуры.",
@@ -13,9 +13,8 @@
       "image": "https://avatars.mds.yandex.net/get-entity_search/5503081/1177553001/S600xU_2x",
       "author": {
         "name": "Kolyadual",
-        "avatar": "https://avatars.githubusercontent.com/u/12345678?v=4",
-        "telegram": "https://t.me/kolyadual",
-        "twitter": "https://twitter.com/kolyadual",
+        "avatar": "https://avatars.githubusercontent.com/u/201611719?v=4",
+        "telegram": "https://t.me/DGC_off",
         "website": "https://kolyadual.github.io"
       }
     },
