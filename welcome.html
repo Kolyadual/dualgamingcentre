@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Dual Gaming Centre — Добро пожаловать в лучший игровой центр</title>
+    <link rel="icon" href="./favicon.png" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <meta name="description" content="Dual Gaming Centre — огромная коллекция классических и современных игр. Играй онлайн, скачивай, участвуй в турнирах. Без регистрации, без вирусов.">
+    <meta property="og:title" content="Dual Gaming Centre — Игровой портал нового поколения">
+    <meta property="og:description" content="500+ игр, эмуляторы PS1, NES, Sega, аркад. Присоединяйся к сообществу геймеров!">
+    <meta property="og:image" content="https://kolyadual.github.io/dualgamingcentre/preview.jpg">
+    <meta property="og:url" content="https://kolyadual.github.io/dualgamingcentre/welcome.html">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --dark: #1a1a2e;
+            --light: #f1f1f1;
+            --accent: #ff6b6b;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --toggle-bg: #2a2a3a;
+            --toggle-active: #6e45e2;
+            --toggle-handle: #ffffff;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --hover-bg: rgba(110, 69, 226, 0.2);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+        }
+        :root[data-theme="brutal-dark"] {
+            --primary: #ff0000;
+            --secondary: #ff4444;
+            --dark: #0a0a0a;
+            --light: #cccccc;
+            --accent: #ff3300;
+            --success: #00ff00;
+            --warning: #ffaa00;
+            --toggle-bg: #330000;
+            --toggle-active: #ff0000;
+            --toggle-handle: #ff6666;
+            --border-color: #ff0000;
+            --card-bg: #1a0000;
+            --hover-bg: rgba(255, 0, 0, 0.2);
+            --text-secondary: #ff9999;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rubik', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: var(--light);
+            overflow-x: hidden;
+            transition: background 0.5s ease;
+        }
+        /* Верхняя панель — адаптив */
+        .top-dock {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+            gap: 15px;
+            flex-wrap: wrap;
+            transition: all 0.3s;
+        }
+        .logo h1 {
+            font-size: 1.4rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .logo a {
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        .theme-toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .theme-toggle-container {
+            position: relative;
+            width: 44px;
+            height: 24px;
+        }
+        .theme-toggle-checkbox {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+        .theme-toggle-label {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: var(--toggle-bg);
+            border-radius: 24px;
+            cursor: pointer;
+            position: relative;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        .theme-toggle-label::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--toggle-handle);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .theme-toggle-checkbox:checked + .theme-toggle-label {
+            background: var(--toggle-active);
+        }
+        .theme-toggle-checkbox:checked + .theme-toggle-label::after {
+            left: calc(100% - 22px);
+            background: white;
+        }
+        /* Основной контент */
+        main {
+            padding-top: 80px;
+        }
+        /* Герой */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+        .hero h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: fadeInUp 0.8s ease;
+        }
+        .hero .tagline {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            color: var(--text-secondary);
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(110, 69, 226, 0.3);
+        }
+        .btn-outline {
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+        }
+        .btn-outline:hover {
+            background: var(--hover-bg);
+            transform: translateY(-2px);
+        }
+        /* Преимущества */
+        .features {
+            padding: 3rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+        .feature-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        /* Скриншоты */
+        .screenshots {
+            padding: 3rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .screenshot-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s;
+        }
+        .screenshot-card:hover {
+            transform: scale(1.02);
+        }
+        .screenshot-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .screenshot-caption {
+            padding: 0.8rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        /* Статистика */
+        .stats {
+            background: linear-gradient(135deg, rgba(110, 69, 226, 0.1), rgba(136, 211, 206, 0.1));
+            backdrop-filter: blur(10px);
+            padding: 3rem 1.5rem;
+            margin: 1rem 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            text-align: center;
+        }
+        .stat-item h4 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+        }
+        .stat-item p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        /* Цитата */
+        .quote {
+            max-width: 700px;
+            margin: 2rem auto;
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 30px;
+            border-left: 4px solid var(--primary);
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            background: linear-gradient(135deg, var(--dark), #16213e);
+        }
+        .cta-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+        /* Футер */
+        footer {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 1.5rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: 1rem;
+        }
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+        }
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Мобильная оптимизация */
+        @media (max-width: 768px) {
+            .top-dock {
+                padding: 8px 15px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .logo h1 {
+                font-size: 1.2rem;
+                text-align: center;
+            }
+            .nav-links {
+                justify-content: center;
+                gap: 0.8rem;
+            }
+            .nav-links a {
+                font-size: 0.8rem;
+            }
+            .theme-toggle-wrapper {
+                align-self: flex-end;
+                margin-top: 5px;
+            }
+            main {
+                padding-top: 110px;
+            }
+            .hero h2 {
+                font-size: 2rem;
+            }
+            .hero .tagline {
+                font-size: 1rem;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .screenshots-grid {
+                grid-template-columns: 1fr;
+            }
+            .stat-item h4 {
+                font-size: 1.6rem;
+            }
+            .cta-section h3 {
+                font-size: 1.4rem;
+            }
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+            }
+        }
+        /* Для очень маленьких экранов */
+        @media (max-width: 480px) {
+            .hero h2 {
+                font-size: 1.6rem;
+            }
+            .feature-card {
+                padding: 1rem;
+            }
+            .stats-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        /* Отключение анимации цифр на слабых устройствах (опционально) */
+        @media (prefers-reduced-motion: reduce) {
+            .animate-on-scroll {
+                transition: none;
+            }
+            .stat-number {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="top-dock">
+        <div class="logo">
+            <a href="index.html"><h1>Dual Gaming Centre</h1></a>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Игры</a>
+            <a href="blog.html">Блог</a>
+            <a href="welcome.html">О проекте</a>
+            <a href="boxedwine.html">Windows Эмулятор</a>
+        </div>
+        <div class="theme-toggle-wrapper">
+            <i class="fas fa-moon"></i>
+            <div class="theme-toggle-container">
+                <input type="checkbox" id="theme-toggle-checkbox" class="theme-toggle-checkbox">
+                <label for="theme-toggle-checkbox" class="theme-toggle-label"></label>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <section class="hero">
+            <h2>Добро пожаловать в<br>Dual Gaming Centre</h2>
+            <p class="tagline">Крупнейший игровой центр в твоём браузере. Бесплатно. Без регистрации. Без вирусов.</p>
+            <div class="hero-buttons">
+                <a href="index.html" class="btn btn-primary"><i class="fas fa-gamepad"></i> Начать играть</a>
+                <a href="blog.html" class="btn btn-outline"><i class="fas fa-newspaper"></i> Читать блог</a>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2 class="section-title">Почему выбирают нас?</h2>
+            <div class="features-grid">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon"><i class="fas fa-infinity"></i></div>
+                    <h3>500+ игр</h3>
+                    <p>Огромная коллекция от ретро-хитов до современных браузерных шедевров. Ежедневные обновления.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon"><i class="fas fa-download"></i></div>
+                    <h3>Скачивай или играй онлайн</h3>
+                    <p>Любую игру можно запустить в браузере или скачать на ПК — выбор за тобой.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon"><i class="fas fa-trophy"></i></div>
+                    <h3>Турниры и эвенты</h3>
+                    <p>Регулярные соревнования с призами. Стань чемпионом в любимой игре!</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon"><i class="fas fa-wine-bottle"></i></div>
+                    <h3>Windows в браузере</h3>
+                    <p>Эмулятор BoxedWine позволяет запускать .exe приложения прямо на сайте.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon"><i class="fas fa-cloud-save"></i></div>
+                    <h3>Облачные сохранения</h3>
+                    <p>Прогресс сохраняется в облаке. Играй с любого устройства, продолжай с того же места.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon"><i class="fas fa-users"></i></div>
+                    <h3>Активное сообщество</h3>
+                    <p>Telegram-канал с новостями, обсуждениями и помощью. Присоединяйся!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок скриншотов -->
+        <section class="screenshots">
+            <h2 class="section-title">Игровой процесс</h2>
+            <div class="screenshots-grid">
+                <div class="screenshot-card animate-on-scroll">
+                    <img src="https://via.placeholder.com/600x338/6e45e2/ffffff?text=DOOM+2+Gameplay" alt="DOOM 2 в браузере" loading="lazy">
+                    <div class="screenshot-caption">DOOM 2 — классический шутер</div>
+                </div>
+                <div class="screenshot-card animate-on-scroll">
+                    <img src="https://via.placeholder.com/600x338/88d3ce/1a1a2e?text=GTA+Vice+City" alt="GTA Vice City" loading="lazy">
+                    <div class="screenshot-caption">GTA Vice City в эмуляторе</div>
+                </div>
+                <div class="screenshot-card animate-on-scroll">
+                    <img src="https://via.placeholder.com/600x338/ff6b6b/ffffff?text=Super+Mario+64" alt="Super Mario 64" loading="lazy">
+                    <div class="screenshot-caption">Super Mario 64 — ностальгия</div>
+                </div>
+                <div class="screenshot-card animate-on-scroll">
+                    <img src="https://via.placeholder.com/600x338/6e45e2/ffffff?text=Minecraft+Web" alt="Minecraft в браузере" loading="lazy">
+                    <div class="screenshot-caption">Minecraft — строй и выживай</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="stats-container">
+                <div class="stat-item animate-on-scroll">
+                    <h4 class="stat-number" data-target="537">0</h4>
+                    <p>игр в коллекции</p>
+                </div>
+                <div class="stat-item animate-on-scroll">
+                    <h4 class="stat-number" data-target="24">0</h4>
+                    <p>жанров</p>
+                </div>
+                <div class="stat-item animate-on-scroll">
+                    <h4 class="stat-number" data-target="100">0</h4>
+                    <p>ежедневных игроков</p>
+                </div>
+                <div class="stat-item animate-on-scroll">
+                    <h4 class="stat-number" data-target="10">0</h4>
+                    <p>эмуляторов</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="quote animate-on-scroll">
+            <i class="fas fa-quote-left" style="color: var(--primary); margin-right: 10px;"></i>
+            Мы создали Dual Gaming Centre, чтобы каждый мог вернуться в детство или открыть для себя классику, не тратя деньги и время на установку. Играйте, побеждайте, наслаждайтесь!
+            <div style="margin-top: 0.8rem; font-weight: 600;">— Kolyadual, основатель</div>
+        </div>
+
+        <section class="cta-section">
+            <h3>Готов окунуться в мир игр?</h3>
+            <div class="cta-buttons">
+                <a href="index.html" class="btn btn-primary"><i class="fas fa-play"></i> Играть сейчас</a>
+                <a href="https://t.me/DGC_off" target="_blank" class="btn btn-outline"><i class="fab fa-telegram"></i> Telegram канал</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="copyright">
+            &copy; Dual Gaming Centre. Создано Kolyadual. Все права защищены.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Проверка на мобильное устройство (упрощаем частицы)
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        // Particles.js — уменьшаем количество частиц на мобилках
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: isMobile ? 40 : 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#6e45e2" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: false },
+                size: { value: isMobile ? 2 : 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#6e45e2", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: isMobile ? 1 : 2, direction: "none", random: false, straight: false, out_mode: "out" }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: { onhover: { enable: !isMobile, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true },
+                modes: { grab: { distance: 140, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+
+        // Тёмная тема
+        const themeToggle = document.getElementById('theme-toggle-checkbox');
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'default';
+            if (savedTheme === 'brutal-dark') {
+                themeToggle.checked = true;
+                document.documentElement.setAttribute('data-theme', 'brutal-dark');
+            } else {
+                themeToggle.checked = false;
+                document.documentElement.setAttribute('data-theme', 'default');
+            }
+        }
+        function toggleTheme() {
+            if (themeToggle.checked) {
+                document.documentElement.setAttribute('data-theme', 'brutal-dark');
+                localStorage.setItem('theme', 'brutal-dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'default');
+                localStorage.setItem('theme', 'default');
+            }
+        }
+        themeToggle.addEventListener('change', toggleTheme);
+        loadTheme();
+
+        // Анимация при скролле и анимация цифр
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Если это блок статистики — запускаем анимацию цифр
+                    if (entry.target.querySelector('.stat-number')) {
+                        animateNumbers(entry.target);
+                    }
+                }
+            });
+        }, { threshold: 0.3 });
+        animatedElements.forEach(el => observer.observe(el));
+
+        function animateNumbers(container) {
+            const numbers = container.querySelectorAll('.stat-number');
+            numbers.forEach(num => {
+                const target = parseInt(num.getAttribute('data-target'));
+                if (!target) return;
+                let current = 0;
+                const increment = target / 40; // плавно за ~0.8 сек
+                const updateNumber = () => {
+                    current += increment;
+                    if (current < target) {
+                        num.textContent = Math.floor(current);
+                        requestAnimationFrame(updateNumber);
+                    } else {
+                        num.textContent = target;
+                    }
+                };
+                updateNumber();
+            });
+        }
+
+        // Немедленно показать элементы, которые уже видны
+        setTimeout(() => {
+            animatedElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    el.classList.add('visible');
+                    if (el.querySelector('.stat-number')) animateNumbers(el);
+                }
+            });
+        }, 200);
+    </script>
+</body>
+</html>

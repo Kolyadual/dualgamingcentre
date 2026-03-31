@@ -7,34 +7,16 @@
     <title>Dual Gaming Centre | Играй в лучшие игры и скачивай их без регистрации!</title>
     <link rel="icon" href="./favicon.png" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
     <link rel="apple-touch-icon" href="img/icon.png" />
-    <meta name="description" content="Огромная коллекция классических и современных игр. Играйте онлайн без скачивания или скачивайте на ПК. Ежедневные обновления, эвенты, турниры.">
-    <meta name="keywords" content="игры онлайн, скачать игры бесплатно, ретро игры, эмуляторы, GTA Vice City, DOOM, Sonic, играть без регистрации, игры скачать, стим, DGC, dgc, old games, old, games, fnaf в браузере, марио в браузере, все игры в браузере, игры без рекламы">
-    <link rel="canonical" href="https://kolyadual.github.io/dualgamingcentre/">
     <meta property="og:title" content="Dual Gaming Centre — Играйте или загружайте лучшие игры бесплатно и без регистрации!">
     <meta property="og:description" content="Откройте для себя огромную коллекцию классических и современных игр. Никаких скачиваний, никаких подписок — просто наслаждайтесь игрой! Телеграм: https://t.me/DGC_off">
     <meta property="og:image" content="https://kolyadual.github.io/dualgamingcentre/image.png">
     <meta property="og:url" content="https://kolyadual.github.io/dualgamingcentre/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-
-<script type="application/ld+json">
-{
-"@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Dual Gaming Centre",
-  "url": "https://kolyadual.github.io/dualgamingcentre/",
-  "description": "Бесплатные онлайн-игры и загрузка классических игр. Эмуляторы PS1, NES, Sega, аркады.",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://kolyadual.github.io/dualgamingcentre/?search={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
-
+    
     <!-- Supabase и Яндекс авторизация -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
+    
     <style>
         :root {
             --primary: #6e45e2;
@@ -53,7 +35,7 @@
             --hover-bg: rgba(110, 69, 226, 0.2);
             --text-secondary: rgba(255, 255, 255, 0.7);
         }
-
+        
         :root[data-theme="brutal-dark"] {
             --primary: #ff0000;
             --secondary: #ff4444;
@@ -71,14 +53,14 @@
             --hover-bg: rgba(255, 0, 0, 0.2);
             --text-secondary: #ff9999;
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Rubik', sans-serif;
         }
-
+        
         body {
             background: linear-gradient(135deg, var(--dark), #16213e);
             color: var(--light);
@@ -105,11 +87,11 @@
             display: flex;
             flex-direction: column;
         }
-
+        
         .slide-menu.active {
             left: 0;
         }
-
+        
         .menu-overlay {
             position: fixed;
             top: 0;
@@ -123,18 +105,18 @@
             visibility: hidden;
             transition: all 0.3s ease;
         }
-
+        
         .menu-overlay.active {
             opacity: 1;
             visibility: visible;
         }
-
+        
         .menu-header {
             padding: 25px 20px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-bottom: 1px solid var(--border-color);
         }
-
+        
         .menu-header h2 {
             font-size: 1.5rem;
             background: rgba(255, 255, 255, 0.95);
@@ -143,7 +125,7 @@
             color: transparent;
             font-weight: 700;
         }
-
+        
         /* === ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ В МЕНЮ === */
         .user-profile-menu {
             padding: 20px;
@@ -151,17 +133,17 @@
             border-bottom: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
-
+        
         .user-profile-menu.logged-in {
             background: linear-gradient(135deg, rgba(110, 69, 226, 0.2), rgba(136, 211, 206, 0.1));
         }
-
+        
         .user-info-menu {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-
+        
         .user-avatar-menu {
             width: 60px;
             height: 60px;
@@ -170,30 +152,30 @@
             border: 3px solid var(--primary);
             transition: all 0.3s ease;
         }
-
+        
         .user-details-menu {
             flex: 1;
         }
-
+        
         .user-name-menu {
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 5px;
             color: var(--light);
         }
-
+        
         .user-email-menu {
             font-size: 0.8rem;
             color: var(--text-secondary);
             word-break: break-all;
         }
-
+        
         .user-actions-menu {
             display: flex;
             gap: 10px;
             margin-top: 15px;
         }
-
+        
         .user-action-btn {
             flex: 1;
             padding: 8px;
@@ -208,27 +190,27 @@
             justify-content: center;
             gap: 5px;
         }
-
+        
         .dashboard-btn {
             background: var(--primary);
             color: white;
         }
-
+        
         .dashboard-btn:hover {
             background: var(--secondary);
             transform: translateY(-2px);
         }
-
+        
         .logout-btn {
             background: var(--accent);
             color: white;
         }
-
+        
         .logout-btn:hover {
             background: #e05555;
             transform: translateY(-2px);
         }
-
+        
         .login-btn-menu {
             width: 100%;
             padding: 12px;
@@ -245,23 +227,23 @@
             gap: 10px;
             font-size: 1rem;
         }
-
+        
         .login-btn-menu:hover {
             background: var(--primary);
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(110, 69, 226, 0.4);
         }
-
+        
         .login-btn-menu i {
             font-size: 1.2rem;
         }
-
+        
         .menu-section {
             padding: 20px;
             border-bottom: 1px solid var(--border-color);
         }
-
+        
         .menu-section-title {
             font-size: 0.9rem;
             color: var(--secondary);
@@ -270,13 +252,13 @@
             margin-bottom: 15px;
             font-weight: 600;
         }
-
+        
         .menu-items {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-
+        
         .menu-item {
             display: flex;
             align-items: center;
@@ -288,37 +270,37 @@
             transition: all 0.3s;
             border: 1px solid transparent;
         }
-
+        
         .menu-item:hover {
             background: var(--hover-bg);
             border-color: var(--primary);
             transform: translateX(5px);
         }
-
+        
         .menu-item.active {
             background: var(--hover-bg);
             border-color: var(--primary);
         }
-
+        
         .menu-item i {
             width: 24px;
             text-align: center;
             font-size: 1.2rem;
             color: var(--secondary);
         }
-
+        
         .menu-item span {
             font-size: 1rem;
             font-weight: 500;
         }
-
+        
         .platform-icons {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
             margin-top: 10px;
         }
-
+        
         .platform-icon {
             width: 100%;
             height: 80px;
@@ -333,105 +315,105 @@
             border: 1px solid transparent;
             padding: 10px;
         }
-
+        
         .platform-icon:hover {
             background: var(--hover-bg);
             border-color: var(--primary);
             transform: scale(1.05);
         }
-
+        
         .platform-icon.active {
             background: var(--hover-bg);
             border-color: var(--primary);
         }
-
+        
         .platform-icon img {
             width: 32px;
             height: 32px;
             object-fit: contain;
             margin-bottom: 5px;
         }
-
+        
         .platform-icon span {
             font-size: 0.7rem;
             text-align: center;
             line-height: 1.2;
         }
-
-        /* === КОМПАКТНЫЙ ТОГГЛ ТЕМЫ (уменьшен) === */
+        
+        /* === ИДЕАЛЬНО РОВНЫЙ ТОГГЛ ТЕМЫ === */
         .theme-switcher-menu {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 6px 12px;
+            padding: 12px 15px;
             background: var(--card-bg);
-            border-radius: 8px;
+            border-radius: 10px;
             margin-top: 5px;
             border: 1px solid var(--border-color);
         }
-
+        
         .theme-label {
-            font-size: 0.85rem;
+            font-size: 1rem;
             font-weight: 500;
             color: var(--light);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 10px;
         }
-
+        
         .theme-label i {
             color: var(--secondary);
-            font-size: 1rem;
+            font-size: 1.2rem;
         }
-
+        
         .theme-toggle-container {
             position: relative;
-            width: 44px;
-            height: 24px;
+            width: 52px;
+            height: 28px;
             flex-shrink: 0;
         }
-
+        
         .theme-toggle-checkbox {
             opacity: 0;
             width: 0;
             height: 0;
             position: absolute;
         }
-
+        
         .theme-toggle-label {
             display: block;
             width: 100%;
             height: 100%;
             background: var(--toggle-bg);
-            border-radius: 24px;
+            border-radius: 28px;
             cursor: pointer;
             position: relative;
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--border-color);
             transition: all 0.3s ease;
         }
-
+        
         .theme-toggle-label::after {
             content: '';
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             background: var(--toggle-handle);
             border-radius: 50%;
-            top: 2px;
-            left: 2px;
+            top: 3px;
+            left: 3px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
-
+        
         .theme-toggle-checkbox:checked + .theme-toggle-label {
             background: var(--toggle-active);
         }
-
+        
         .theme-toggle-checkbox:checked + .theme-toggle-label::after {
-            left: calc(100% - 22px);
+            left: calc(100% - 25px);
             background: white;
         }
-
+        
         .theme-toggle-checkbox:checked + .theme-toggle-label.brutal-theme::after {
             background: #ff6666;
         }
@@ -452,7 +434,7 @@
             z-index: 100;
             gap: 20px;
         }
-
+        
         .menu-toggle {
             width: 45px;
             height: 45px;
@@ -467,12 +449,12 @@
             gap: 4px;
             transition: all 0.3s;
         }
-
+        
         .menu-toggle:hover {
             background: var(--hover-bg);
             transform: scale(1.05);
         }
-
+        
         .menu-toggle span {
             width: 20px;
             height: 2px;
@@ -480,25 +462,25 @@
             border-radius: 2px;
             transition: all 0.3s;
         }
-
+        
         .menu-toggle.active span:nth-child(1) {
             transform: rotate(45deg) translate(5px, 5px);
         }
-
+        
         .menu-toggle.active span:nth-child(2) {
             opacity: 0;
         }
-
+        
         .menu-toggle.active span:nth-child(3) {
             transform: rotate(-45deg) translate(5px, -5px);
         }
-
+        
         .logo {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-
+        
         .logo h1 {
             font-size: 1.6rem;
             background: linear-gradient(to right, var(--primary), var(--secondary));
@@ -507,13 +489,13 @@
             color: transparent;
             font-weight: 700;
         }
-
+        
         .search-bar {
             flex-grow: 1;
             position: relative;
             max-width: 600px;
         }
-
+        
         .search-bar input {
             width: 100%;
             padding: 12px 20px;
@@ -525,13 +507,13 @@
             outline: none;
             transition: all 0.3s;
         }
-
+        
         .search-bar input:focus {
             background: var(--hover-bg);
             border-color: var(--primary);
             box-shadow: 0 0 15px rgba(110, 69, 226, 0.4);
         }
-
+        
         .search-bar i {
             position: absolute;
             right: 20px;
@@ -551,13 +533,13 @@
             padding: 2rem;
             padding-top: 90px;
         }
-
+        
         .hero {
             text-align: center;
             padding: 3rem 0;
             margin-bottom: 2rem;
         }
-
+        
         .hero h2 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
@@ -566,20 +548,20 @@
             background-clip: text;
             color: transparent;
         }
-
+        
         .hero p {
             font-size: 1.2rem;
             max-width: 800px;
             margin: 0 auto 2rem;
             color: var(--text-secondary);
         }
-
+        
         .cta-buttons {
             display: flex;
             justify-content: center;
             gap: 1rem;
         }
-
+        
         .cta-buttons button {
             padding: 0.8rem 2rem;
             border-radius: 50px;
@@ -592,33 +574,33 @@
             align-items: center;
             gap: 0.5rem;
         }
-
+        
         .browse-games {
             background: var(--accent);
             color: white;
         }
-
+        
         .browse-games:hover {
             background: #e05555;
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
         }
-
+        
         .trending {
             background: transparent;
             color: var(--light);
             border: 2px solid var(--secondary);
         }
-
+        
         .trending:hover {
             background: var(--hover-bg);
             transform: translateY(-3px);
         }
-
+        
         .categories {
             margin: 3rem 0;
         }
-
+        
         .section-title {
             font-size: 1.8rem;
             margin-bottom: 1.5rem;
@@ -626,32 +608,32 @@
             align-items: center;
             gap: 1rem;
         }
-
+        
         .section-title i {
             color: var(--primary);
         }
-
+        
         .category-buttons {
             display: flex;
             gap: 1rem;
             overflow-x: auto;
             padding-bottom: 1rem;
         }
-
+        
         .category-buttons::-webkit-scrollbar {
             height: 5px;
         }
-
+        
         .category-buttons::-webkit-scrollbar-track {
             background: var(--card-bg);
             border-radius: 10px;
         }
-
+        
         .category-buttons::-webkit-scrollbar-thumb {
             background: var(--primary);
             border-radius: 10px;
         }
-
+        
         .category-btn {
             padding: 0.6rem 1.5rem;
             border-radius: 50px;
@@ -663,19 +645,19 @@
             transition: all 0.3s;
             white-space: nowrap;
         }
-
+        
         .category-btn:hover, .category-btn.active {
             background: var(--primary);
             border-color: var(--primary);
         }
-
+        
         .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
-
+        
         .game-card {
             background: var(--card-bg);
             border-radius: 15px;
@@ -686,38 +668,38 @@
             display: flex;
             flex-direction: column;
         }
-
+        
         .game-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
             border-color: var(--primary);
         }
-
+        
         .game-card img {
             width: 100%;
             height: 180px;
             object-fit: cover;
         }
-
+        
         .game-info {
             padding: 1.5rem;
             flex: 1;
             display: flex;
             flex-direction: column;
         }
-
+        
         .game-info h3 {
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
         }
-
+        
         .game-info .genre {
             color: var(--secondary);
             font-size: 0.9rem;
             margin-bottom: 1rem;
             display: block;
         }
-
+        
         .game-info .description {
             font-size: 0.9rem;
             color: var(--text-secondary);
@@ -728,13 +710,13 @@
             overflow: hidden;
             flex: 1;
         }
-
+        
         .game-actions {
             display: flex;
             gap: 0.8rem;
             margin-top: auto;
         }
-
+        
         .play-btn, .download-btn-card {
             flex: 1;
             padding: 0.6rem 0;
@@ -749,67 +731,29 @@
             gap: 0.3rem;
             font-size: 0.9rem;
         }
-
+        
         .play-btn {
             background: var(--success);
             color: white;
         }
-
+        
         .play-btn:hover {
             background: #3d9c40;
             transform: translateY(-2px);
             box-shadow: 0 5px 10px rgba(76, 175, 80, 0.3);
         }
-
+        
         .download-btn-card {
             background: var(--primary);
             color: white;
         }
-
+        
         .download-btn-card:hover {
             background: var(--secondary);
             transform: translateY(-2px);
             box-shadow: 0 5px 10px rgba(110, 69, 226, 0.3);
         }
-
-        /* ПАГИНАЦИЯ */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .pagination button {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--light);
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .pagination button.active {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-
-        .pagination button:hover:not(.active) {
-            background: var(--hover-bg);
-            transform: translateY(-2px);
-        }
-
-        .pagination .dots {
-            padding: 8px 12px;
-            color: var(--text-secondary);
-        }
-
+        
         .confirm-modal {
             display: none;
             position: fixed;
@@ -822,7 +766,7 @@
             justify-content: center;
             align-items: center;
         }
-
+        
         .confirm-content {
             background: var(--dark);
             padding: 2rem;
@@ -831,43 +775,43 @@
             width: 90%;
             border: 1px solid var(--primary);
         }
-
+        
         .confirm-content h3 {
             color: var(--accent);
             margin-bottom: 1rem;
         }
-
+        
         .confirm-content p {
             margin-bottom: 1.5rem;
             line-height: 1.5;
             color: var(--text-secondary);
         }
-
+        
         .confirm-buttons {
             display: flex;
             gap: 1rem;
             justify-content: flex-end;
         }
-
+        
         .confirm-btn {
             padding: 0.5rem 1.5rem;
             border-radius: 5px;
             cursor: pointer;
             font-weight: 600;
         }
-
+        
         .confirm-cancel {
             background: transparent;
             border: 1px solid var(--primary);
             color: var(--primary);
         }
-
+        
         .confirm-proceed {
             background: var(--accent);
             border: 1px solid var(--accent);
             color: white;
         }
-
+        
         .events-page {
             display: none;
             padding: 2rem;
@@ -875,14 +819,14 @@
             margin: 0 auto;
             padding-top: 90px;
         }
-
+        
         .events-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
-
+        
         .event-card {
             background: var(--card-bg);
             border-radius: 15px;
@@ -891,35 +835,35 @@
             position: relative;
             border: 1px solid var(--border-color);
         }
-
+        
         .event-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
             border-color: var(--primary);
         }
-
+        
         .event-card img {
             width: 100%;
             height: 200px;
             object-fit: cover;
         }
-
+        
         .event-info {
             padding: 1.5rem;
         }
-
+        
         .event-info h3 {
             font-size: 1.3rem;
             margin-bottom: 0.5rem;
         }
-
+        
         .event-date {
             color: var(--secondary);
             font-size: 0.9rem;
             margin-bottom: 1rem;
             display: block;
         }
-
+        
         .event-info .description {
             font-size: 0.9rem;
             color: var(--text-secondary);
@@ -929,13 +873,13 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-
+        
         .event-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
+        
         .participate-btn {
             padding: 0.6rem 1.5rem;
             border-radius: 50px;
@@ -949,13 +893,13 @@
             align-items: center;
             gap: 0.5rem;
         }
-
+        
         .participate-btn:hover {
             background: #e05555;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
         }
-
+        
         .participants-count {
             font-size: 0.9rem;
             color: var(--text-secondary);
@@ -963,7 +907,7 @@
             align-items: center;
             gap: 0.3rem;
         }
-
+        
         .flipsters-page {
             display: none;
             padding: 0;
@@ -977,7 +921,7 @@
             z-index: 1000;
             flex-direction: column;
         }
-
+        
         .flipster-container {
             position: relative;
             width: 100%;
@@ -987,14 +931,14 @@
             justify-content: center;
             align-items: center;
         }
-
+        
         .flipster-frame {
             position: absolute;
             width: 100%;
             height: 100%;
             border: none;
         }
-
+        
         .flipster-controls {
             position: absolute;
             bottom: 20px;
@@ -1008,7 +952,7 @@
             border-radius: 50px;
             backdrop-filter: blur(5px);
         }
-
+        
         .flipster-btn {
             width: 50px;
             height: 50px;
@@ -1023,11 +967,11 @@
             align-items: center;
             transition: all 0.3s;
         }
-
+        
         .flipster-btn:hover {
             background: rgba(255, 255, 255, 0.2);
         }
-
+        
         .flipster-actions {
             position: absolute;
             right: 20px;
@@ -1037,7 +981,7 @@
             gap: 1rem;
             z-index: 10;
         }
-
+        
         .flipster-action-btn {
             width: 50px;
             height: 50px;
@@ -1052,11 +996,11 @@
             align-items: center;
             transition: all 0.3s;
         }
-
+        
         .flipster-action-btn:hover {
             background: rgba(255, 255, 255, 0.2);
         }
-
+        
         .flipster-info {
             position: absolute;
             left: 20px;
@@ -1065,18 +1009,18 @@
             z-index: 10;
             max-width: 70%;
         }
-
+        
         .flipster-title {
             font-size: 1.5rem;
             font-weight: bold;
             margin-bottom: 0.5rem;
         }
-
+        
         .flipster-genre {
             color: var(--secondary);
             font-size: 1rem;
         }
-
+        
         .flipster-loader {
             position: absolute;
             top: 0;
@@ -1091,18 +1035,18 @@
             color: white;
             z-index: 20;
         }
-
+        
         .flipster-loader i {
             font-size: 2rem;
             margin-bottom: 1rem;
             animation: spin 1s linear infinite;
         }
-
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
+        
         .welcome-screen {
             position: fixed;
             top: 0;
@@ -1117,7 +1061,7 @@
             z-index: 200;
             transition: opacity 0.5s ease;
         }
-
+        
         .welcome-logo {
             font-size: 3rem;
             margin-bottom: 2rem;
@@ -1127,7 +1071,7 @@
             color: transparent;
             text-align: center;
         }
-
+        
         .welcome-text {
             font-size: 1.2rem;
             max-width: 600px;
@@ -1135,7 +1079,7 @@
             margin-bottom: 2rem;
             color: var(--light);
         }
-
+        
         .enter-btn {
             padding: 1rem 2rem;
             border-radius: 50px;
@@ -1147,20 +1091,20 @@
             transition: all 0.3s;
             font-size: 1rem;
         }
-
+        
         .enter-btn:hover {
             background: #e05555;
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
         }
-
+        
         footer {
             background: rgba(26, 26, 46, 0.8);
             padding: 3rem 2rem 2rem;
             margin-top: 3rem;
             border-top: 1px solid var(--border-color);
         }
-
+        
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1168,37 +1112,37 @@
             max-width: 1200px;
             margin: 0 auto;
         }
-
+        
         .footer-column h3 {
             font-size: 1.2rem;
             margin-bottom: 1.5rem;
             color: var(--secondary);
         }
-
+        
         .footer-column ul {
             list-style: none;
         }
-
+        
         .footer-column li {
             margin-bottom: 0.8rem;
         }
-
+        
         .footer-column a {
             color: var(--text-secondary);
             text-decoration: none;
             transition: all 0.3s;
         }
-
+        
         .footer-column a:hover {
             color: var(--primary);
         }
-
+        
         .social-links {
             display: flex;
             gap: 1rem;
             margin-top: 1rem;
         }
-
+        
         .social-links a {
             display: flex;
             align-items: center;
@@ -1210,12 +1154,12 @@
             color: white;
             transition: all 0.3s;
         }
-
+        
         .social-links a:hover {
             background: var(--primary);
             transform: translateY(-3px);
         }
-
+        
         .copyright {
             text-align: center;
             margin-top: 3rem;
@@ -1224,7 +1168,7 @@
             color: rgba(255, 255, 255, 0.5);
             font-size: 0.9rem;
         }
-
+        
         .yandex-ads {
             margin: 20px auto;
             max-width: 1200px;
@@ -1235,108 +1179,108 @@
             padding: 15px;
             display: none;
         }
-
+        
         .yandex-ads.show {
             display: block;
         }
-
+        
         /* === BRUTAL-DARK THEME === */
         :root[data-theme="brutal-dark"] body {
             background: linear-gradient(135deg, #000000, #0a0a0a);
         }
-
+        
         :root[data-theme="brutal-dark"] .top-dock {
             background: rgba(10, 10, 10, 0.95);
         }
-
+        
         :root[data-theme="brutal-dark"] .game-card:hover {
             animation: brutal-pulse 2s infinite;
         }
-
+        
         @keyframes brutal-pulse {
             0% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.7); }
             50% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.9); }
             100% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.7); }
         }
-
+        
         /* === АДАПТИВНОСТЬ === */
         @media (max-width: 992px) {
             .events-grid {
                 grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             }
-
+            
             .slide-menu {
                 width: 280px;
                 left: -280px;
             }
         }
-
+        
         @media (max-width: 768px) {
             .top-dock {
                 padding: 0 15px;
                 gap: 15px;
             }
-
+            
             .logo h1 {
                 font-size: 1.4rem;
             }
-
+            
             .search-bar {
                 max-width: 400px;
             }
-
+            
             main {
                 padding: 1.5rem;
                 padding-top: 80px;
             }
-
+            
             .hero h2 {
                 font-size: 2rem;
             }
-
+            
             .hero p {
                 font-size: 1.1rem;
             }
-
+            
             .cta-buttons {
                 flex-direction: column;
                 align-items: center;
             }
-
+            
             .games-grid {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
                 gap: 1.5rem;
             }
-
+            
             .platform-icons {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-
+        
         @media (max-width: 576px) {
             .top-dock {
                 height: 65px;
             }
-
+            
             .menu-toggle {
                 width: 40px;
                 height: 40px;
             }
-
+            
             .search-bar input {
                 padding: 10px 15px;
                 font-size: 0.9rem;
             }
-
+            
             main {
                 padding: 1rem;
                 padding-top: 75px;
             }
-
+            
             .game-actions {
                 flex-direction: column;
             }
-
+            
             .slide-menu {
                 width: 250px;
                 left: -250px;
@@ -1359,7 +1303,7 @@
         <div class="menu-header">
             <h2>Dual Gaming Centre</h2>
         </div>
-
+        
         <!-- Профиль пользователя в меню -->
         <div class="user-profile-menu" id="user-profile-menu">
             <div id="user-logged-out" style="display: block;">
@@ -1386,7 +1330,7 @@
                 </div>
             </div>
         </div>
-
+        
         <div class="menu-section">
             <div class="menu-section-title">Навигация</div>
             <div class="menu-items">
@@ -1416,14 +1360,14 @@
                 </div>
             </div>
         </div>
-
+        
         <div class="menu-section">
             <div class="menu-section-title">Платформы</div>
             <div class="platform-icons" id="menu-platforms">
                 <!-- Платформы будут добавлены через JS -->
             </div>
         </div>
-
+        
         <div class="menu-section">
             <div class="menu-section-title">Настройки</div>
             <div class="theme-switcher-menu">
@@ -1438,7 +1382,7 @@
             </div>
         </div>
     </div>
-
+    
     <div class="menu-overlay" id="menu-overlay"></div>
 
     <!-- Верхний док с меню-бургер -->
@@ -1492,7 +1436,6 @@
             <section class="games">
                 <h2 class="section-title"><i class="fas fa-gamepad"></i> Популярные игры</h2>
                 <div class="games-grid" id="games-container"></div>
-                <div class="pagination" id="pagination-container"></div>
             </section>
         </div>
 
@@ -1635,7 +1578,7 @@
             },
             yandex: {
                 clientId: 'b46b6ff64d7747f8be640d3dbc921abe',
-                redirectUri: window.location.hostname === 'localhost'
+                redirectUri: window.location.hostname === 'localhost' 
                     ? 'https://kolyadual.github.io/dualgamingcentre/imba.html'
                     : 'https://kolyadual.github.io/dualgamingcentre/imba.html'
             }
@@ -1703,7 +1646,7 @@
                     })
                     .select()
                     .single();
-
+                    
                 if (error) throw error;
                 return data;
             }
@@ -1713,16 +1656,16 @@
                     const tokenData = await this.exchangeCodeForToken(code);
                     const yandexUser = await this.getUserInfo(tokenData.access_token);
                     const dbUser = await this.saveUserToSupabase(yandexUser);
-
+                    
                     localStorage.setItem('user', JSON.stringify({
                         id: dbUser.id,
                         name: dbUser.name,
                         email: dbUser.email,
                         avatar: dbUser.avatar
                     }));
-
+                    
                     localStorage.setItem('access_token', tokenData.access_token);
-
+                    
                     return { success: true, user: dbUser };
                 } catch (error) {
                     console.error('Auth error:', error);
@@ -1749,16 +1692,16 @@
             updateUI() {
                 const loggedOutDiv = document.getElementById('user-logged-out');
                 const loggedInDiv = document.getElementById('user-logged-in');
-
+                
                 if (this.isAuthenticated()) {
                     const user = this.getCurrentUser();
                     loggedOutDiv.style.display = 'none';
                     loggedInDiv.style.display = 'block';
-
+                    
                     document.getElementById('user-avatar-menu').src = user.avatar || 'https://via.placeholder.com/60';
                     document.getElementById('user-name-menu').textContent = user.name || 'Пользователь';
                     document.getElementById('user-email-menu').textContent = user.email || '';
-
+                    
                     document.getElementById('user-profile-menu').classList.add('logged-in');
                 } else {
                     loggedOutDiv.style.display = 'block';
@@ -1794,7 +1737,7 @@
                 rating: "4.7",
                 description: "Захватывающая аркада, где вы управляете героем с реактивным ранцем. Уворачивайтесь от лазеров, собирайте монеты и покупайте новые улучшения.",
                 cover: "https://avatars.mds.yandex.net/get-entity_search/5105005/1177591217/SUx182_2x",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/jetpackjoyride",
+                playUrl: "https://abinbins.github.io/a7/jetpack-joyride",
                 downloadUrl: "https://example.com/download/jetpack",
                 trending: true
             },
@@ -1836,7 +1779,7 @@
                 rating: "4.9",
                 description: "Игра, покорившая мир, последняя версия Майнкрафта уже доступна в Dual Gaming Centre!",
                 cover: "https://avatars.mds.yandex.net/i?id=467419ff2f5267342d84765d34b0f9eafc528c20-10385608-images-thumbs&n=13",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/mcbeta0.30",
+                playUrl: "https://minecraftforfree.org/play/?v=1.12.2-wasm",
                 downloadUrl: "https://example.com/download/minecraft",
                 trending: true
             },
@@ -1850,7 +1793,7 @@
                 rating: "4.6",
                 description: "Легендарная аркада, где вы управляете Пак-Мэном, который должен съесть все точки в лабиринте, избегая призраков.",
                 cover: "https://1gai.ru/uploads/posts/2022-06/1655811081_1.png",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/boxedwine",
+                playUrl: "https://www.retrogames.cc/embed/144-pac-man.html",
                 downloadUrl: "https://example.com/download/pacman",
                 trending: false
             },
@@ -2130,7 +2073,7 @@
                 rating: "4.5",
                 description: "Выживание в пиццерии Фредди против аниматроников. Часть 2 с читами!",
                 cover: "https://images.steamusercontent.com/ugc/2394319269769104317/8D519B3CD11A875CC6910A121BD76B6E2206E6EE/",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/fnaf2",
+                playUrl: "https://sussygamedeveloper.github.io/FNAF2/",
                 downloadUrl: "https://example.com/download/fnaf2",
                 trending: true
             },
@@ -2172,7 +2115,7 @@
                 rating: "4.6",
                 description: "Легендарная игра про Ам-Няма, который любит конфеты!",
                 cover: "https://tse3.mm.bing.net/th/id/OIP.zs8BlfLbU6VlyQuCtJ2W7wHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",
-                playUrl: "https://kolyadual.github.io/other-dgc-games3/cuttherope",
+                playUrl: "https://emupedia.net/emupedia-game-cut-the-rope/",
                 downloadUrl: "https://example.com/download/ctr",
                 trending: true
             },
@@ -2259,104 +2202,6 @@
                 playUrl: "https://emupedia.net/emupedia-game-temple-run2/",
                 downloadUrl: "https://example.com/download/temple2",
                 trending: true
-            },
-            {
-                id: 36,
-                title: "Five Nights at Freddy's",
-                genre: "Хоррор",
-                category: "horror",
-                platform: "pc",
-                year: "2014",
-                rating: "4.6",
-                description: "Сумеете ли вы выжить против четырех аниматроников в пиццерии?",
-                cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGb18lm_83o5Z0TJo0gW0jVd3_V8OOzh184Re6VrqpYCgHKxzgc2-XCWf0boY3vtxKYIKYHXDN9hbpBoQ-iovjUG9CQKoTUlhCaRbPxA&s=10",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/fnaf1/",
-                downloadUrl: "https://example.com/download/fnaf1",
-                trending: true
-            },
-            {
-                id: 37,
-                title: "Five Nights at Freddy's 3",
-                genre: "Хоррор",
-                category: "horror",
-                platform: "pc",
-                year: "2015",
-                rating: "4.6",
-                description: "Сумеете ли вы выжить против фантом-аниматроников в пиццерии Фредди?",
-                cover: "https://m.media-amazon.com/images/I/71Pib7x9NbL.jpg",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/fnaf3/",
-                downloadUrl: "https://example.com/download/fnaf3",
-                trending: true
-            },
-            {
-                id: 38,
-                title: "Five Nights at Freddy's 4",
-                genre: "Хоррор",
-                category: "horror",
-                platform: "pc",
-                year: "2015",
-                rating: "4.3",
-                description: "Сумеете ли вы выжить против кошмаров в собственном доме?",
-                cover: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/388090/header.jpg?t=1579635988",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/fnaf4/",
-                downloadUrl: "https://example.com/download/fnaf4",
-                trending: true
-            },
-            {
-                id: 39,
-                title: "Five Nights at Freddy's 5",
-                genre: "Хоррор",
-                category: "horror",
-                platform: "pc",
-                year: "2016",
-                rating: "4.2",
-                description: "Пять ночей у Фредди 5 уже на DGC!",
-                cover: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/506610/capsule_616x353.jpg?t=1579635985",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/fnaf5/",
-                downloadUrl: "https://example.com/download/fnaf5",
-                trending: false
-            },
-            {
-                id: 40,
-                title: "Five Nights at Freddy's 6",
-                genre: "Хоррор",
-                category: "horror",
-                platform: "pc",
-                year: "2016",
-                rating: "4.2",
-                description: "Пять ночей у Фредди 6 уже на DGC!",
-                cover: "https://play-lh.googleusercontent.com/rZTIKpGZ43beAMLicxgq4EmgJueO64XO2twMpsfXa4vBPwmc9JxXzp1YPog0KvOZObEwmrnitQhI0cbOFUpKWn8=w526-h296-rw",
-                playUrl: "https://kolyadual.github.io/other-dgc-games/fnaf6/",
-                downloadUrl: "https://example.com/download/fnaf6",
-                trending: false
-            },
-            {
-                id: 41,
-                title: "Five Nights at Freddy's 7",
-                genre: "Хоррор",
-                category: "horror",
-                platform: "pc",
-                year: "2017",
-                rating: "4.2",
-                description: "Пять ночей у Фредди 7 уже на DGC!",
-                cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJL3ZKp4po1dsirJLWJ0FO0iA_5ylX3vbhjw&s",
-                playUrl: "https://kolyadual.github.io/other-dgc-games/fnaf7/",
-                downloadUrl: "https://example.com/download/fnaf7",
-                trending: false
-            },
-            {
-                id: 42,
-                title: "Five Nights at Freddy's World",
-                genre: "Хоррор",
-                category: "horror",
-                platform: "pc",
-                year: "2016",
-                rating: "4.0",
-                description: "Пять ночей у Фредди в мире уже на DGC!",
-                cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiVhkg1HRiIX9VONpizndVcIZ6BIuBVSYBTg&s",
-                playUrl: "https://kolyadual.github.io/other-dgc-games/fnafworld/",
-                downloadUrl: "https://example.com/download/fnafworld",
-                trending: false
             }
         ];
 
@@ -2499,77 +2344,54 @@
         // Состояние
         let currentGameForDownload = null;
         let currentPlatformFilter = "all";
+        let currentFlipsterIndex = 0;
+        
+        // Инициализация авторизации
+        const auth = new YandexAuth();
 
-        // ПАГИНАЦИЯ
-        let currentPage = 1;
-        const gamesPerPage = 12;
-        let currentFilteredGames = [];
-
-        // Функция фильтрации
-        function filterGames() {
-            let filtered = [...games];
-            // Фильтр по категории
-            const activeCategory = document.querySelector('.category-btn.active')?.getAttribute('data-category') || 'all';
-            if (activeCategory !== 'all') {
-                filtered = filtered.filter(game => game.category === activeCategory);
-            }
-            // Фильтр по платформе
-            if (currentPlatformFilter !== 'all') {
-                filtered = filtered.filter(game => game.platform === currentPlatformFilter);
-            }
-            // Поиск
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            if (searchTerm !== '') {
-                filtered = filtered.filter(game =>
-                    game.title.toLowerCase().includes(searchTerm) ||
-                    game.description.toLowerCase().includes(searchTerm) ||
-                    game.genre.toLowerCase().includes(searchTerm)
-                );
-            }
-            return filtered;
-        }
-
-        function displayGames() {
-            currentFilteredGames = filterGames();
-            const totalPages = Math.ceil(currentFilteredGames.length / gamesPerPage);
-            if (currentPage > totalPages) currentPage = totalPages || 1;
-            const start = (currentPage - 1) * gamesPerPage;
-            const pageGames = currentFilteredGames.slice(start, start + gamesPerPage);
-
+        // === ФУНКЦИИ ДЛЯ ЗАПУСКА ИГР ===
+        function displayGames(filteredGames = games) {
             gamesContainer.innerHTML = '';
-            if (pageGames.length === 0) {
-                gamesContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: rgba(255,255,255,0.7);">Игры не найдены. Попробуйте изменить фильтры.</p>';
-            } else {
-                pageGames.forEach(game => {
-                    const gameCard = document.createElement('div');
-                    gameCard.className = 'game-card';
-                    gameCard.innerHTML = `
-                        <img src="${game.cover}" alt="${game.title}">
-                        <div class="game-info">
-                            <h3>${game.title}</h3>
-                            <span class="genre">${game.genre}</span>
-                            <p class="description">${game.description}</p>
-                            <div class="game-actions">
-                                <button class="play-btn" data-url="${game.playUrl}">
-                                    <i class="fas fa-play"></i> Играть
-                                </button>
-                                <button class="download-btn-card" data-url="${game.downloadUrl}">
-                                    <i class="fas fa-download"></i> Скачать
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    gamesContainer.appendChild(gameCard);
-                });
+            let gamesToShow = filteredGames;
+            
+            if (currentPlatformFilter !== "all") {
+                gamesToShow = filteredGames.filter(game => game.platform === currentPlatformFilter);
             }
-
-            // Обработчики кнопок
+            
+            if (gamesToShow.length === 0) {
+                gamesContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: rgba(255,255,255,0.7);">Игры не найдены. Попробуйте изменить фильтры.</p>';
+                return;
+            }
+            
+            gamesToShow.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.innerHTML = `
+                    <img src="${game.cover}" alt="${game.title}">
+                    <div class="game-info">
+                        <h3>${game.title}</h3>
+                        <span class="genre">${game.genre}</span>
+                        <p class="description">${game.description}</p>
+                        <div class="game-actions">
+                            <button class="play-btn" data-url="${game.playUrl}">
+                                <i class="fas fa-play"></i> Играть
+                            </button>
+                            <button class="download-btn-card" data-url="${game.downloadUrl}">
+                                <i class="fas fa-download"></i> Скачать
+                            </button>
+                        </div>
+                    </div>
+                `;
+                gamesContainer.appendChild(gameCard);
+            });
+            
             document.querySelectorAll('.play-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const url = e.target.closest('.play-btn').getAttribute('data-url');
                     window.open(url, '_blank');
                 });
             });
+            
             document.querySelectorAll('.download-btn-card').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const url = e.target.closest('.download-btn-card').getAttribute('data-url');
@@ -2577,56 +2399,6 @@
                     confirmModal.style.display = 'flex';
                 });
             });
-
-            renderPagination(totalPages);
-        }
-
-        function renderPagination(totalPages) {
-            const paginationDiv = document.getElementById('pagination-container');
-            paginationDiv.innerHTML = '';
-            if (totalPages <= 1) return;
-
-            const maxVisible = 7;
-            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
-            if (endPage - startPage + 1 < maxVisible) startPage = Math.max(1, endPage - maxVisible + 1);
-
-            if (startPage > 1) {
-                paginationDiv.appendChild(createPageButton(1));
-                if (startPage > 2) paginationDiv.appendChild(createDots());
-            }
-            for (let i = startPage; i <= endPage; i++) {
-                paginationDiv.appendChild(createPageButton(i, i === currentPage));
-            }
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) paginationDiv.appendChild(createDots());
-                paginationDiv.appendChild(createPageButton(totalPages));
-            }
-        }
-
-        function createPageButton(pageNum, isActive = false) {
-            const btn = document.createElement('button');
-            btn.textContent = pageNum;
-            if (isActive) btn.classList.add('active');
-            btn.addEventListener('click', () => {
-                if (pageNum === currentPage) return;
-                currentPage = pageNum;
-                displayGames();
-                window.scrollTo({ top: document.querySelector('.games').offsetTop - 100, behavior: 'smooth' });
-            });
-            return btn;
-        }
-
-        function createDots() {
-            const span = document.createElement('span');
-            span.className = 'dots';
-            span.textContent = '...';
-            return span;
-        }
-
-        function resetAndDisplay() {
-            currentPage = 1;
-            displayGames();
         }
 
         // === ФУНКЦИИ ДЛЯ СОБЫТИЙ ===
@@ -2658,6 +2430,7 @@
                     eventsContainer.appendChild(eventCard);
                 }
             });
+            
             document.querySelectorAll('.participate-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const eventId = parseInt(e.target.closest('.participate-btn').getAttribute('data-id'));
@@ -2677,15 +2450,16 @@
         }
 
         // === ФУНКЦИИ ДЛЯ ФЛИПСОВ ===
-        let currentFlipsterIndex = 0;
         function initializeFlipsters() {
             showRandomFlipster();
         }
+
         function showRandomFlipster() {
             if (flipsters.length === 0) return;
             currentFlipsterIndex = Math.floor(Math.random() * flipsters.length);
             showFlipster(currentFlipsterIndex);
         }
+
         function showFlipster(index) {
             if (index < 0 || index >= flipsters.length) return;
             const flipster = flipsters[index];
@@ -2698,10 +2472,12 @@
                 flipsterLoader.style.display = 'none';
             }, 1000);
         }
+
         function nextFlipster() {
             currentFlipsterIndex = (currentFlipsterIndex + 1) % flipsters.length;
             showFlipster(currentFlipsterIndex);
         }
+
         function prevFlipster() {
             currentFlipsterIndex = (currentFlipsterIndex - 1 + flipsters.length) % flipsters.length;
             showFlipster(currentFlipsterIndex);
@@ -2716,20 +2492,40 @@
                 if (platform.id === "all") {
                     platformIcon.classList.add('active');
                 }
+                
                 platformIcon.innerHTML = `
                     <img src="${platform.icon}" alt="${platform.name}">
                     <span>${platform.name}</span>
                 `;
+                
                 platformIcon.addEventListener('click', () => {
                     document.querySelectorAll('.platform-icon').forEach(icon => {
                         icon.classList.remove('active');
                     });
                     platformIcon.classList.add('active');
                     currentPlatformFilter = platform.id;
-                    resetAndDisplay();
+                    displayGames();
                     closeMenu();
                 });
+                
                 menuPlatforms.appendChild(platformIcon);
+            });
+            
+            menuItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const page = item.dataset.page;
+                    const action = item.dataset.action;
+                    
+                    if (page) {
+                        switchPage(page);
+                    } else if (action) {
+                        handleMenuAction(action);
+                    }
+                    
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    closeMenu();
+                });
             });
         }
 
@@ -2739,14 +2535,14 @@
                     searchInput.focus();
                     break;
                 case 'trending':
-                    // активируем популярное: убираем категории, показываем только trending
-                    const trendingGames = games.filter(game => game.trending);
-                    currentFilteredGames = trendingGames;
-                    currentPage = 1;
-                    displayGames();
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    const filteredGames = games.filter(game => game.trending);
+                    displayGames(filteredGames);
                     break;
                 case 'all-games':
-                    resetAndDisplay();
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    categoryButtons[0].classList.add('active');
+                    displayGames();
                     break;
             }
         }
@@ -2755,7 +2551,7 @@
             homePage.style.display = 'none';
             eventsPage.style.display = 'none';
             flipstersPage.style.display = 'none';
-
+            
             switch (page) {
                 case 'home':
                     homePage.style.display = 'block';
@@ -2775,7 +2571,12 @@
             menuToggle.classList.toggle('active');
             slideMenu.classList.toggle('active');
             menuOverlay.classList.toggle('active');
-            document.body.style.overflow = slideMenu.classList.contains('active') ? 'hidden' : 'auto';
+            
+            if (slideMenu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
         }
 
         function closeMenu() {
@@ -2812,16 +2613,18 @@
 
         // === ФУНКЦИИ АВТОРИЗАЦИИ ===
         function initAuth() {
-            const auth = new YandexAuth();
             loginBtnMenu.addEventListener('click', () => {
                 window.location.href = auth.getYandexAuthUrl();
             });
+            
             logoutBtnMenu.addEventListener('click', () => {
                 auth.logout();
             });
+            
             dashboardBtnMenu.addEventListener('click', () => {
                 window.location.href = '/dashboard.html';
             });
+            
             auth.updateUI();
         }
 
@@ -2830,98 +2633,90 @@
             loadTheme();
             initMenu();
             initAuth();
-
+            
             themeToggle.addEventListener('change', toggleTheme);
+            
             menuToggle.addEventListener('click', toggleMenu);
             menuOverlay.addEventListener('click', closeMenu);
-
+            
             enterBtn.addEventListener('click', () => {
                 welcomeScreen.style.opacity = '0';
                 setTimeout(() => {
                     welcomeScreen.style.display = 'none';
                 }, 500);
             });
-
+            
             confirmCancel.addEventListener('click', () => {
                 confirmModal.style.display = 'none';
             });
+            
             confirmProceed.addEventListener('click', () => {
                 if (currentGameForDownload && currentGameForDownload.downloadUrl) {
                     window.open(currentGameForDownload.downloadUrl, '_blank');
                 }
                 confirmModal.style.display = 'none';
             });
+            
             confirmModal.addEventListener('click', (e) => {
                 if (e.target === confirmModal) {
                     confirmModal.style.display = 'none';
                 }
             });
-
-            // Поиск
-            searchInput.addEventListener('input', () => {
-                resetAndDisplay();
+            
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                if (searchTerm.length < 2) {
+                    displayGames();
+                    return;
+                }
+                const filteredGames = games.filter(game => 
+                    game.title.toLowerCase().includes(searchTerm) || 
+                    game.description.toLowerCase().includes(searchTerm) ||
+                    game.genre.toLowerCase().includes(searchTerm)
+                );
+                displayGames(filteredGames);
             });
-
-            // Категории
+            
             categoryButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
                     categoryButtons.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    resetAndDisplay();
+                    const category = btn.getAttribute('data-category');
+                    if (category === 'all') {
+                        displayGames();
+                    } else {
+                        const filteredGames = games.filter(game => game.category.includes(category));
+                        displayGames(filteredGames);
+                    }
                 });
             });
-
+            
             allGamesBtn.addEventListener('click', () => {
                 categoryButtons.forEach(b => b.classList.remove('active'));
                 categoryButtons[0].classList.add('active');
-                resetAndDisplay();
-            });
-            trendingBtn.addEventListener('click', () => {
-                categoryButtons.forEach(b => b.classList.remove('active'));
-                const filtered = games.filter(g => g.trending);
-                currentFilteredGames = filtered;
-                currentPage = 1;
                 displayGames();
             });
-
-            // Меню навигация
-            menuItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const page = item.dataset.page;
-                    const action = item.dataset.action;
-                    if (page) {
-                        switchPage(page);
-                    } else if (action) {
-                        handleMenuAction(action);
-                    }
-                    menuItems.forEach(i => i.classList.remove('active'));
-                    item.classList.add('active');
-                    closeMenu();
-                });
+            
+            trendingBtn.addEventListener('click', () => {
+                categoryButtons.forEach(b => b.classList.remove('active'));
+                const filteredGames = games.filter(game => game.trending);
+                displayGames(filteredGames);
             });
-
-            // Футер
-            document.getElementById('footer-home').addEventListener('click', (e) => { e.preventDefault(); switchPage('home'); });
-            document.getElementById('footer-games').addEventListener('click', (e) => { e.preventDefault(); switchPage('home'); window.scrollTo(0, 0); });
-            document.getElementById('footer-events').addEventListener('click', (e) => { e.preventDefault(); switchPage('events'); });
-            document.getElementById('footer-flipsters').addEventListener('click', (e) => { e.preventDefault(); switchPage('flipsters'); });
-            document.getElementById('footer-categories').addEventListener('click', (e) => { e.preventDefault(); switchPage('home'); document.querySelector('.categories').scrollIntoView({ behavior: 'smooth' }); });
-            document.getElementById('footer-popular').addEventListener('click', (e) => { e.preventDefault(); switchPage('home'); trendingBtn.click(); });
-
-            // Флипсы
+            
             prevFlipsterBtn.addEventListener('click', prevFlipster);
             nextFlipsterBtn.addEventListener('click', nextFlipster);
+            
             likeBtn.addEventListener('click', () => {
                 likeBtn.innerHTML = '<i class="fas fa-heart" style="color: var(--accent);"></i>';
                 setTimeout(() => {
                     likeBtn.innerHTML = '<i class="fas fa-heart"></i>';
                 }, 1000);
             });
+            
             commentBtn.addEventListener('click', () => {
                 alert('Комментирование временно недоступно');
             });
-
-            // Клавиши для флипсов
+            
             document.addEventListener('keydown', (e) => {
                 if (flipstersPage.style.display === 'flex') {
                     if (e.key === 'ArrowUp') {
@@ -2931,8 +2726,45 @@
                     }
                 }
             });
-
-            // Particles
+            
+            // Ссылки в футере
+            document.getElementById('footer-home').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchPage('home');
+            });
+            
+            document.getElementById('footer-games').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchPage('home');
+                window.scrollTo(0, 0);
+            });
+            
+            document.getElementById('footer-events').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchPage('events');
+            });
+            
+            document.getElementById('footer-flipsters').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchPage('flipsters');
+            });
+            
+            document.getElementById('footer-categories').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchPage('home');
+                document.querySelector('.categories').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            document.getElementById('footer-popular').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchPage('home');
+                categoryButtons.forEach(b => b.classList.remove('active'));
+                const filteredGames = games.filter(game => game.trending);
+                displayGames(filteredGames);
+            });
+            
+            displayGames();
+            
             particlesJS("particles-js", {
                 "particles": {
                     "number": {"value":80,"density":{"enable":true,"value_area":800}},
@@ -2956,8 +2788,6 @@
                 },
                 "retina_detect": true
             });
-
-            resetAndDisplay();
         }
 
         document.addEventListener('DOMContentLoaded', init);

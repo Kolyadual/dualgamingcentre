@@ -363,30 +363,30 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 6px 12px;
+            padding: 6px 12px;          /* уменьшенные отступы */
             background: var(--card-bg);
-            border-radius: 8px;
+            border-radius: 8px;          /* чуть меньше радиус */
             margin-top: 5px;
             border: 1px solid var(--border-color);
         }
 
         .theme-label {
-            font-size: 0.85rem;
+            font-size: 0.85rem;          /* меньший шрифт */
             font-weight: 500;
             color: var(--light);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 6px;                    /* уменьшенный промежуток */
         }
 
         .theme-label i {
             color: var(--secondary);
-            font-size: 1rem;
+            font-size: 1rem;             /* меньшая иконка */
         }
 
         .theme-toggle-container {
             position: relative;
-            width: 44px;
+            width: 44px;                 /* уже, чем было 52px */
             height: 24px;
             flex-shrink: 0;
         }
@@ -406,18 +406,18 @@
             border-radius: 24px;
             cursor: pointer;
             position: relative;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border-color); /* более тонкая рамка */
             transition: all 0.3s ease;
         }
 
         .theme-toggle-label::after {
             content: '';
             position: absolute;
-            width: 20px;
+            width: 20px;                /* ручка поменьше */
             height: 20px;
             background: var(--toggle-handle);
             border-radius: 50%;
-            top: 2px;
+            top: 2px;                   /* центрирование внутри 24px высоты */
             left: 2px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
@@ -428,7 +428,7 @@
         }
 
         .theme-toggle-checkbox:checked + .theme-toggle-label::after {
-            left: calc(100% - 22px);
+            left: calc(100% - 22px);    /* 44 - 22 = 22, отступ 2px */
             background: white;
         }
 
@@ -770,44 +770,6 @@
             background: var(--secondary);
             transform: translateY(-2px);
             box-shadow: 0 5px 10px rgba(110, 69, 226, 0.3);
-        }
-
-        /* ПАГИНАЦИЯ */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .pagination button {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--light);
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .pagination button.active {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-
-        .pagination button:hover:not(.active) {
-            background: var(--hover-bg);
-            transform: translateY(-2px);
-        }
-
-        .pagination .dots {
-            padding: 8px 12px;
-            color: var(--text-secondary);
         }
 
         .confirm-modal {
@@ -1492,7 +1454,6 @@
             <section class="games">
                 <h2 class="section-title"><i class="fas fa-gamepad"></i> Популярные игры</h2>
                 <div class="games-grid" id="games-container"></div>
-                <div class="pagination" id="pagination-container"></div>
             </section>
         </div>
 
@@ -1794,7 +1755,7 @@
                 rating: "4.7",
                 description: "Захватывающая аркада, где вы управляете героем с реактивным ранцем. Уворачивайтесь от лазеров, собирайте монеты и покупайте новые улучшения.",
                 cover: "https://avatars.mds.yandex.net/get-entity_search/5105005/1177591217/SUx182_2x",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/jetpackjoyride",
+                playUrl: "https://abinbins.github.io/a7/jetpack-joyride",
                 downloadUrl: "https://example.com/download/jetpack",
                 trending: true
             },
@@ -1836,7 +1797,7 @@
                 rating: "4.9",
                 description: "Игра, покорившая мир, последняя версия Майнкрафта уже доступна в Dual Gaming Centre!",
                 cover: "https://avatars.mds.yandex.net/i?id=467419ff2f5267342d84765d34b0f9eafc528c20-10385608-images-thumbs&n=13",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/mcbeta0.30",
+                playUrl: "https://minecraftforfree.org/play/?v=1.12.2-wasm",
                 downloadUrl: "https://example.com/download/minecraft",
                 trending: true
             },
@@ -1850,7 +1811,7 @@
                 rating: "4.6",
                 description: "Легендарная аркада, где вы управляете Пак-Мэном, который должен съесть все точки в лабиринте, избегая призраков.",
                 cover: "https://1gai.ru/uploads/posts/2022-06/1655811081_1.png",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/boxedwine",
+                playUrl: "https://www.retrogames.cc/embed/144-pac-man.html",
                 downloadUrl: "https://example.com/download/pacman",
                 trending: false
             },
@@ -2130,7 +2091,7 @@
                 rating: "4.5",
                 description: "Выживание в пиццерии Фредди против аниматроников. Часть 2 с читами!",
                 cover: "https://images.steamusercontent.com/ugc/2394319269769104317/8D519B3CD11A875CC6910A121BD76B6E2206E6EE/",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/fnaf2",
+                playUrl: "https://sussygamedeveloper.github.io/FNAF2/",
                 downloadUrl: "https://example.com/download/fnaf2",
                 trending: true
             },
@@ -2172,7 +2133,7 @@
                 rating: "4.6",
                 description: "Легендарная игра про Ам-Няма, который любит конфеты!",
                 cover: "https://tse3.mm.bing.net/th/id/OIP.zs8BlfLbU6VlyQuCtJ2W7wHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",
-                playUrl: "https://kolyadual.github.io/other-dgc-games3/cuttherope",
+                playUrl: "https://emupedia.net/emupedia-game-cut-the-rope/",
                 downloadUrl: "https://example.com/download/ctr",
                 trending: true
             },
@@ -2259,104 +2220,6 @@
                 playUrl: "https://emupedia.net/emupedia-game-temple-run2/",
                 downloadUrl: "https://example.com/download/temple2",
                 trending: true
-            },
-            {
-                id: 36,
-                title: "Five Nights at Freddy's",
-                genre: "Хоррор",
-                category: "horror",
-                platform: "pc",
-                year: "2014",
-                rating: "4.6",
-                description: "Сумеете ли вы выжить против четырех аниматроников в пиццерии?",
-                cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGb18lm_83o5Z0TJo0gW0jVd3_V8OOzh184Re6VrqpYCgHKxzgc2-XCWf0boY3vtxKYIKYHXDN9hbpBoQ-iovjUG9CQKoTUlhCaRbPxA&s=10",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/fnaf1/",
-                downloadUrl: "https://example.com/download/fnaf1",
-                trending: true
-            },
-            {
-                id: 37,
-                title: "Five Nights at Freddy's 3",
-                genre: "Хоррор",
-                category: "horror",
-                platform: "pc",
-                year: "2015",
-                rating: "4.6",
-                description: "Сумеете ли вы выжить против фантом-аниматроников в пиццерии Фредди?",
-                cover: "https://m.media-amazon.com/images/I/71Pib7x9NbL.jpg",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/fnaf3/",
-                downloadUrl: "https://example.com/download/fnaf3",
-                trending: true
-            },
-            {
-                id: 38,
-                title: "Five Nights at Freddy's 4",
-                genre: "Хоррор",
-                category: "horror",
-                platform: "pc",
-                year: "2015",
-                rating: "4.3",
-                description: "Сумеете ли вы выжить против кошмаров в собственном доме?",
-                cover: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/388090/header.jpg?t=1579635988",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/fnaf4/",
-                downloadUrl: "https://example.com/download/fnaf4",
-                trending: true
-            },
-            {
-                id: 39,
-                title: "Five Nights at Freddy's 5",
-                genre: "Хоррор",
-                category: "horror",
-                platform: "pc",
-                year: "2016",
-                rating: "4.2",
-                description: "Пять ночей у Фредди 5 уже на DGC!",
-                cover: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/506610/capsule_616x353.jpg?t=1579635985",
-                playUrl: "https://kolyadual.github.io/dualgamingcentre/games/fnaf5/",
-                downloadUrl: "https://example.com/download/fnaf5",
-                trending: false
-            },
-            {
-                id: 40,
-                title: "Five Nights at Freddy's 6",
-                genre: "Хоррор",
-                category: "horror",
-                platform: "pc",
-                year: "2016",
-                rating: "4.2",
-                description: "Пять ночей у Фредди 6 уже на DGC!",
-                cover: "https://play-lh.googleusercontent.com/rZTIKpGZ43beAMLicxgq4EmgJueO64XO2twMpsfXa4vBPwmc9JxXzp1YPog0KvOZObEwmrnitQhI0cbOFUpKWn8=w526-h296-rw",
-                playUrl: "https://kolyadual.github.io/other-dgc-games/fnaf6/",
-                downloadUrl: "https://example.com/download/fnaf6",
-                trending: false
-            },
-            {
-                id: 41,
-                title: "Five Nights at Freddy's 7",
-                genre: "Хоррор",
-                category: "horror",
-                platform: "pc",
-                year: "2017",
-                rating: "4.2",
-                description: "Пять ночей у Фредди 7 уже на DGC!",
-                cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJL3ZKp4po1dsirJLWJ0FO0iA_5ylX3vbhjw&s",
-                playUrl: "https://kolyadual.github.io/other-dgc-games/fnaf7/",
-                downloadUrl: "https://example.com/download/fnaf7",
-                trending: false
-            },
-            {
-                id: 42,
-                title: "Five Nights at Freddy's World",
-                genre: "Хоррор",
-                category: "horror",
-                platform: "pc",
-                year: "2016",
-                rating: "4.0",
-                description: "Пять ночей у Фредди в мире уже на DGC!",
-                cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiVhkg1HRiIX9VONpizndVcIZ6BIuBVSYBTg&s",
-                playUrl: "https://kolyadual.github.io/other-dgc-games/fnafworld/",
-                downloadUrl: "https://example.com/download/fnafworld",
-                trending: false
             }
         ];
 
@@ -2499,77 +2362,54 @@
         // Состояние
         let currentGameForDownload = null;
         let currentPlatformFilter = "all";
+        let currentFlipsterIndex = 0;
 
-        // ПАГИНАЦИЯ
-        let currentPage = 1;
-        const gamesPerPage = 12;
-        let currentFilteredGames = [];
+        // Инициализация авторизации
+        const auth = new YandexAuth();
 
-        // Функция фильтрации
-        function filterGames() {
-            let filtered = [...games];
-            // Фильтр по категории
-            const activeCategory = document.querySelector('.category-btn.active')?.getAttribute('data-category') || 'all';
-            if (activeCategory !== 'all') {
-                filtered = filtered.filter(game => game.category === activeCategory);
-            }
-            // Фильтр по платформе
-            if (currentPlatformFilter !== 'all') {
-                filtered = filtered.filter(game => game.platform === currentPlatformFilter);
-            }
-            // Поиск
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            if (searchTerm !== '') {
-                filtered = filtered.filter(game =>
-                    game.title.toLowerCase().includes(searchTerm) ||
-                    game.description.toLowerCase().includes(searchTerm) ||
-                    game.genre.toLowerCase().includes(searchTerm)
-                );
-            }
-            return filtered;
-        }
-
-        function displayGames() {
-            currentFilteredGames = filterGames();
-            const totalPages = Math.ceil(currentFilteredGames.length / gamesPerPage);
-            if (currentPage > totalPages) currentPage = totalPages || 1;
-            const start = (currentPage - 1) * gamesPerPage;
-            const pageGames = currentFilteredGames.slice(start, start + gamesPerPage);
-
+        // === ФУНКЦИИ ДЛЯ ЗАПУСКА ИГР ===
+        function displayGames(filteredGames = games) {
             gamesContainer.innerHTML = '';
-            if (pageGames.length === 0) {
-                gamesContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: rgba(255,255,255,0.7);">Игры не найдены. Попробуйте изменить фильтры.</p>';
-            } else {
-                pageGames.forEach(game => {
-                    const gameCard = document.createElement('div');
-                    gameCard.className = 'game-card';
-                    gameCard.innerHTML = `
-                        <img src="${game.cover}" alt="${game.title}">
-                        <div class="game-info">
-                            <h3>${game.title}</h3>
-                            <span class="genre">${game.genre}</span>
-                            <p class="description">${game.description}</p>
-                            <div class="game-actions">
-                                <button class="play-btn" data-url="${game.playUrl}">
-                                    <i class="fas fa-play"></i> Играть
-                                </button>
-                                <button class="download-btn-card" data-url="${game.downloadUrl}">
-                                    <i class="fas fa-download"></i> Скачать
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    gamesContainer.appendChild(gameCard);
-                });
+            let gamesToShow = filteredGames;
+
+            if (currentPlatformFilter !== "all") {
+                gamesToShow = filteredGames.filter(game => game.platform === currentPlatformFilter);
             }
 
-            // Обработчики кнопок
+            if (gamesToShow.length === 0) {
+                gamesContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: rgba(255,255,255,0.7);">Игры не найдены. Попробуйте изменить фильтры.</p>';
+                return;
+            }
+
+            gamesToShow.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.innerHTML = `
+                    <img src="${game.cover}" alt="${game.title}">
+                    <div class="game-info">
+                        <h3>${game.title}</h3>
+                        <span class="genre">${game.genre}</span>
+                        <p class="description">${game.description}</p>
+                        <div class="game-actions">
+                            <button class="play-btn" data-url="${game.playUrl}">
+                                <i class="fas fa-play"></i> Играть
+                            </button>
+                            <button class="download-btn-card" data-url="${game.downloadUrl}">
+                                <i class="fas fa-download"></i> Скачать
+                            </button>
+                        </div>
+                    </div>
+                `;
+                gamesContainer.appendChild(gameCard);
+            });
+
             document.querySelectorAll('.play-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const url = e.target.closest('.play-btn').getAttribute('data-url');
                     window.open(url, '_blank');
                 });
             });
+
             document.querySelectorAll('.download-btn-card').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const url = e.target.closest('.download-btn-card').getAttribute('data-url');
@@ -2577,56 +2417,6 @@
                     confirmModal.style.display = 'flex';
                 });
             });
-
-            renderPagination(totalPages);
-        }
-
-        function renderPagination(totalPages) {
-            const paginationDiv = document.getElementById('pagination-container');
-            paginationDiv.innerHTML = '';
-            if (totalPages <= 1) return;
-
-            const maxVisible = 7;
-            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
-            if (endPage - startPage + 1 < maxVisible) startPage = Math.max(1, endPage - maxVisible + 1);
-
-            if (startPage > 1) {
-                paginationDiv.appendChild(createPageButton(1));
-                if (startPage > 2) paginationDiv.appendChild(createDots());
-            }
-            for (let i = startPage; i <= endPage; i++) {
-                paginationDiv.appendChild(createPageButton(i, i === currentPage));
-            }
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) paginationDiv.appendChild(createDots());
-                paginationDiv.appendChild(createPageButton(totalPages));
-            }
-        }
-
-        function createPageButton(pageNum, isActive = false) {
-            const btn = document.createElement('button');
-            btn.textContent = pageNum;
-            if (isActive) btn.classList.add('active');
-            btn.addEventListener('click', () => {
-                if (pageNum === currentPage) return;
-                currentPage = pageNum;
-                displayGames();
-                window.scrollTo({ top: document.querySelector('.games').offsetTop - 100, behavior: 'smooth' });
-            });
-            return btn;
-        }
-
-        function createDots() {
-            const span = document.createElement('span');
-            span.className = 'dots';
-            span.textContent = '...';
-            return span;
-        }
-
-        function resetAndDisplay() {
-            currentPage = 1;
-            displayGames();
         }
 
         // === ФУНКЦИИ ДЛЯ СОБЫТИЙ ===
@@ -2658,6 +2448,7 @@
                     eventsContainer.appendChild(eventCard);
                 }
             });
+
             document.querySelectorAll('.participate-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const eventId = parseInt(e.target.closest('.participate-btn').getAttribute('data-id'));
@@ -2677,15 +2468,16 @@
         }
 
         // === ФУНКЦИИ ДЛЯ ФЛИПСОВ ===
-        let currentFlipsterIndex = 0;
         function initializeFlipsters() {
             showRandomFlipster();
         }
+
         function showRandomFlipster() {
             if (flipsters.length === 0) return;
             currentFlipsterIndex = Math.floor(Math.random() * flipsters.length);
             showFlipster(currentFlipsterIndex);
         }
+
         function showFlipster(index) {
             if (index < 0 || index >= flipsters.length) return;
             const flipster = flipsters[index];
@@ -2698,10 +2490,12 @@
                 flipsterLoader.style.display = 'none';
             }, 1000);
         }
+
         function nextFlipster() {
             currentFlipsterIndex = (currentFlipsterIndex + 1) % flipsters.length;
             showFlipster(currentFlipsterIndex);
         }
+
         function prevFlipster() {
             currentFlipsterIndex = (currentFlipsterIndex - 1 + flipsters.length) % flipsters.length;
             showFlipster(currentFlipsterIndex);
@@ -2716,20 +2510,40 @@
                 if (platform.id === "all") {
                     platformIcon.classList.add('active');
                 }
+
                 platformIcon.innerHTML = `
                     <img src="${platform.icon}" alt="${platform.name}">
                     <span>${platform.name}</span>
                 `;
+
                 platformIcon.addEventListener('click', () => {
                     document.querySelectorAll('.platform-icon').forEach(icon => {
                         icon.classList.remove('active');
                     });
                     platformIcon.classList.add('active');
                     currentPlatformFilter = platform.id;
-                    resetAndDisplay();
+                    displayGames();
                     closeMenu();
                 });
+
                 menuPlatforms.appendChild(platformIcon);
+            });
+
+            menuItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const page = item.dataset.page;
+                    const action = item.dataset.action;
+
+                    if (page) {
+                        switchPage(page);
+                    } else if (action) {
+                        handleMenuAction(action);
+                    }
+
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    closeMenu();
+                });
             });
         }
 
@@ -2739,14 +2553,14 @@
                     searchInput.focus();
                     break;
                 case 'trending':
-                    // активируем популярное: убираем категории, показываем только trending
-                    const trendingGames = games.filter(game => game.trending);
-                    currentFilteredGames = trendingGames;
-                    currentPage = 1;
-                    displayGames();
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    const filteredGames = games.filter(game => game.trending);
+                    displayGames(filteredGames);
                     break;
                 case 'all-games':
-                    resetAndDisplay();
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    categoryButtons[0].classList.add('active');
+                    displayGames();
                     break;
             }
         }
@@ -2775,7 +2589,12 @@
             menuToggle.classList.toggle('active');
             slideMenu.classList.toggle('active');
             menuOverlay.classList.toggle('active');
-            document.body.style.overflow = slideMenu.classList.contains('active') ? 'hidden' : 'auto';
+
+            if (slideMenu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
         }
 
         function closeMenu() {
@@ -2812,16 +2631,18 @@
 
         // === ФУНКЦИИ АВТОРИЗАЦИИ ===
         function initAuth() {
-            const auth = new YandexAuth();
             loginBtnMenu.addEventListener('click', () => {
                 window.location.href = auth.getYandexAuthUrl();
             });
+
             logoutBtnMenu.addEventListener('click', () => {
                 auth.logout();
             });
+
             dashboardBtnMenu.addEventListener('click', () => {
                 window.location.href = '/dashboard.html';
             });
+
             auth.updateUI();
         }
 
@@ -2832,6 +2653,7 @@
             initAuth();
 
             themeToggle.addEventListener('change', toggleTheme);
+
             menuToggle.addEventListener('click', toggleMenu);
             menuOverlay.addEventListener('click', closeMenu);
 
@@ -2845,83 +2667,74 @@
             confirmCancel.addEventListener('click', () => {
                 confirmModal.style.display = 'none';
             });
+
             confirmProceed.addEventListener('click', () => {
                 if (currentGameForDownload && currentGameForDownload.downloadUrl) {
                     window.open(currentGameForDownload.downloadUrl, '_blank');
                 }
                 confirmModal.style.display = 'none';
             });
+
             confirmModal.addEventListener('click', (e) => {
                 if (e.target === confirmModal) {
                     confirmModal.style.display = 'none';
                 }
             });
 
-            // Поиск
-            searchInput.addEventListener('input', () => {
-                resetAndDisplay();
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                if (searchTerm.length < 2) {
+                    displayGames();
+                    return;
+                }
+                const filteredGames = games.filter(game =>
+                    game.title.toLowerCase().includes(searchTerm) ||
+                    game.description.toLowerCase().includes(searchTerm) ||
+                    game.genre.toLowerCase().includes(searchTerm)
+                );
+                displayGames(filteredGames);
             });
 
-            // Категории
             categoryButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
                     categoryButtons.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    resetAndDisplay();
+                    const category = btn.getAttribute('data-category');
+                    if (category === 'all') {
+                        displayGames();
+                    } else {
+                        const filteredGames = games.filter(game => game.category.includes(category));
+                        displayGames(filteredGames);
+                    }
                 });
             });
 
             allGamesBtn.addEventListener('click', () => {
                 categoryButtons.forEach(b => b.classList.remove('active'));
                 categoryButtons[0].classList.add('active');
-                resetAndDisplay();
-            });
-            trendingBtn.addEventListener('click', () => {
-                categoryButtons.forEach(b => b.classList.remove('active'));
-                const filtered = games.filter(g => g.trending);
-                currentFilteredGames = filtered;
-                currentPage = 1;
                 displayGames();
             });
 
-            // Меню навигация
-            menuItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const page = item.dataset.page;
-                    const action = item.dataset.action;
-                    if (page) {
-                        switchPage(page);
-                    } else if (action) {
-                        handleMenuAction(action);
-                    }
-                    menuItems.forEach(i => i.classList.remove('active'));
-                    item.classList.add('active');
-                    closeMenu();
-                });
+            trendingBtn.addEventListener('click', () => {
+                categoryButtons.forEach(b => b.classList.remove('active'));
+                const filteredGames = games.filter(game => game.trending);
+                displayGames(filteredGames);
             });
 
-            // Футер
-            document.getElementById('footer-home').addEventListener('click', (e) => { e.preventDefault(); switchPage('home'); });
-            document.getElementById('footer-games').addEventListener('click', (e) => { e.preventDefault(); switchPage('home'); window.scrollTo(0, 0); });
-            document.getElementById('footer-events').addEventListener('click', (e) => { e.preventDefault(); switchPage('events'); });
-            document.getElementById('footer-flipsters').addEventListener('click', (e) => { e.preventDefault(); switchPage('flipsters'); });
-            document.getElementById('footer-categories').addEventListener('click', (e) => { e.preventDefault(); switchPage('home'); document.querySelector('.categories').scrollIntoView({ behavior: 'smooth' }); });
-            document.getElementById('footer-popular').addEventListener('click', (e) => { e.preventDefault(); switchPage('home'); trendingBtn.click(); });
-
-            // Флипсы
             prevFlipsterBtn.addEventListener('click', prevFlipster);
             nextFlipsterBtn.addEventListener('click', nextFlipster);
+
             likeBtn.addEventListener('click', () => {
                 likeBtn.innerHTML = '<i class="fas fa-heart" style="color: var(--accent);"></i>';
                 setTimeout(() => {
                     likeBtn.innerHTML = '<i class="fas fa-heart"></i>';
                 }, 1000);
             });
+
             commentBtn.addEventListener('click', () => {
                 alert('Комментирование временно недоступно');
             });
 
-            // Клавиши для флипсов
             document.addEventListener('keydown', (e) => {
                 if (flipstersPage.style.display === 'flex') {
                     if (e.key === 'ArrowUp') {
@@ -2932,7 +2745,44 @@
                 }
             });
 
-            // Particles
+            // Ссылки в футере
+            document.getElementById('footer-home').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchPage('home');
+            });
+
+            document.getElementById('footer-games').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchPage('home');
+                window.scrollTo(0, 0);
+            });
+
+            document.getElementById('footer-events').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchPage('events');
+            });
+
+            document.getElementById('footer-flipsters').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchPage('flipsters');
+            });
+
+            document.getElementById('footer-categories').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchPage('home');
+                document.querySelector('.categories').scrollIntoView({ behavior: 'smooth' });
+            });
+
+            document.getElementById('footer-popular').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchPage('home');
+                categoryButtons.forEach(b => b.classList.remove('active'));
+                const filteredGames = games.filter(game => game.trending);
+                displayGames(filteredGames);
+            });
+
+            displayGames();
+
             particlesJS("particles-js", {
                 "particles": {
                     "number": {"value":80,"density":{"enable":true,"value_area":800}},
@@ -2956,8 +2806,6 @@
                 },
                 "retina_detect": true
             });
-
-            resetAndDisplay();
         }
 
         document.addEventListener('DOMContentLoaded', init);
