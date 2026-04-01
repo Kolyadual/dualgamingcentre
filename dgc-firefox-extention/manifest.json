@@ -1,0 +1,36 @@
+{
+  "manifest_version": 2,
+  "name": "Dual Gaming Centre",
+  "version": "1.0",
+  "description": "Быстрый доступ к бесплатным играм на Dual Gaming Centre",
+  "homepage_url": "https://kolyadual.github.io/dualgamingcentre",
+  "icons": {
+    "320": "logo.jpeg"
+  },
+  "permissions": [
+    "activeTab"
+  ],
+  "browser_action": {
+    "default_icon": {
+      "320": "logo.jpeg"
+    },
+    "default_title": "Dual Gaming Centre",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "dualgamingcentre@mail.ru",
+      "data_collection_permissions": {
+        "required": ["none"],
+        "collected_data": {
+          "none": {
+            "description": "Расширение не собирает никакие пользовательские данные. Оно только открывает сайт Dual Gaming Centre при нажатии на кнопку."
+          }
+        }
+      }
+    }
+  }
+}
