@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет | Dual Gaming Centre</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rubik', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #f1f1f1;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        /* Шапка */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26,26,46,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 70px;
+            z-index: 100;
+        }
+        .logo h2 {
+            background: linear-gradient(135deg, #6e45e2, #88d3ce);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .back-link {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .back-link:hover {
+            color: #6e45e2;
+        }
+        /* Контейнер профиля */
+        .profile-container {
+            max-width: 800px;
+            margin: 90px auto 40px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+        /* Шапка профиля с аватаром */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #6e45e2, #88d3ce);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+        .profile-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+        }
+        .profile-info .email {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+        .profile-info .member-since {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        /* Карточки статистики */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .stat-card i {
+            font-size: 2rem;
+            color: #6e45e2;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .stat-card .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+        }
+        /* Форма редактирования */
+        .edit-section {
+            margin-top: 1.5rem;
+        }
+        .edit-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+        }
+        input, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+        input:focus, textarea:focus {
+            border-color: #6e45e2;
+        }
+        button {
+            background: #6e45e2;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            font-size: 1rem;
+        }
+        button:hover {
+            background: #88d3ce;
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #ff6b6b;
+            color: #ff6b6b;
+            margin-top: 1rem;
+        }
+        .btn-outline:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+        .message {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #4caf50;
+        }
+        .error-message {
+            color: #ff6b6b;
+        }
+        hr {
+            margin: 1.5rem 0;
+            border-color: rgba(255,255,255,0.1);
+        }
+        /* Загрузчик */
+        .loader {
+            text-align: center;
+            padding: 2rem;
+        }
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @media (max-width: 600px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .profile-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="logo">
+            <h2>Dual Gaming Centre</h2>
+        </div>
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> На главную</a>
+    </div>
+
+    <div id="loader" class="loader" style="display: flex; justify-content: center; align-items: center; height: 60vh;">
+        <i class="fas fa-spinner fa-2x"></i> <span style="margin-left: 10px;">Загрузка профиля...</span>
+    </div>
+
+    <div id="profile-content" style="display: none;">
+        <!-- Контент будет подставлен через JS -->
+    </div>
+
+    <script>
+        // ========== ТВОЙ КОНФИГ FIREBASE ==========
+        const firebaseConfig = {
+            apiKey: "AIzaSyAeLz1HvPRQAGDeCiV25TBhR_C5fwHh9qw",
+            authDomain: "dualgamingcentre.firebaseapp.com",
+            databaseURL: "https://dualgamingcentre-default-rtdb.firebaseio.com",
+            projectId: "dualgamingcentre",
+            storageBucket: "dualgamingcentre.firebasestorage.app",
+            messagingSenderId: "291493391694",
+            appId: "1:291493391694:web:0c31b3bf773ad25af2021f",
+            measurementId: "G-1HZ0C1RGM9"
+        };
+        // ========================================
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Проверяем, авторизован ли пользователь
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                // Не авторизован — кидаем на страницу входа
+                window.location.href = "profile.html";
+                return;
+            }
+
+            // Загружаем данные профиля
+            try {
+                const docRef = db.collection("profiles").doc(user.uid);
+                const doc = await docRef.get();
+                const userData = doc.exists ? doc.data() : { username: user.email, favoriteGames: "", createdAt: null };
+
+                // Формируем HTML профиля
+                const profileHtml = `
+                    <div class="profile-container">
+                        <div class="profile-header">
+                            <div class="avatar">
+                                <i class="fas fa-user-astronaut"></i>
+                            </div>
+                            <div class="profile-info">
+                                <h2>${escapeHtml(userData.username || user.email.split('@')[0])}</h2>
+                                <div class="email">${escapeHtml(user.email)}</div>
+                                <div class="member-since">
+                                    <i class="far fa-calendar-alt"></i> 
+                                    ${userData.createdAt ? formatDate(userData.createdAt.toDate()) : 'Только что'}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <i class="fas fa-gamepad"></i>
+                                <div class="stat-value" id="games-count">0</div>
+                                <div class="stat-label">Любимых игр</div>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-calendar-check"></i>
+                                <div class="stat-value" id="days-count">0</div>
+                                <div class="stat-label">Дней в проекте</div>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-fire"></i>
+                                <div class="stat-value">🏆</div>
+                                <div class="stat-label">Статус</div>
+                            </div>
+                        </div>
+
+                        <div class="edit-section">
+                            <h3><i class="fas fa-heart"></i> Любимые игры</h3>
+                            <div class="form-group">
+                                <textarea id="fav-games-input" rows="4" placeholder="Введи свои любимые игры через запятую&#10;Пример: DOOM 2, GTA Vice City, Sonic, Minecraft">${escapeHtml(userData.favoriteGames || '')}</textarea>
+                            </div>
+                            <button id="save-btn"><i class="fas fa-save"></i> Сохранить изменения</button>
+                            <div id="save-message" class="message"></div>
+                        </div>
+
+                        <hr>
+
+                        <button id="logout-btn" class="btn-outline"><i class="fas fa-sign-out-alt"></i> Выйти из аккаунта</button>
+                    </div>
+                `;
+
+                document.getElementById("profile-content").innerHTML = profileHtml;
+                document.getElementById("loader").style.display = "none";
+                document.getElementById("profile-content").style.display = "block";
+
+                // Обновляем статистику
+                const favGames = userData.favoriteGames || "";
+                const gamesList = favGames.split(",").filter(g => g.trim().length > 0);
+                document.getElementById("games-count").innerText = gamesList.length;
+
+                if (userData.createdAt) {
+                    const days = Math.floor((Date.now() - userData.createdAt.toDate().getTime()) / (1000 * 60 * 60 * 24));
+                    document.getElementById("days-count").innerText = days;
+                } else {
+                    document.getElementById("days-count").innerText = "1";
+                }
+
+                // Сохранение любимых игр
+                document.getElementById("save-btn").addEventListener("click", async () => {
+                    const newFavGames = document.getElementById("fav-games-input").value;
+                    const messageDiv = document.getElementById("save-message");
+                    try {
+                        await db.collection("profiles").doc(user.uid).set({
+                            favoriteGames: newFavGames,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        }, { merge: true });
+                        messageDiv.innerText = "✅ Любимые игры сохранены!";
+                        setTimeout(() => messageDiv.innerText = "", 2000);
+                        // Обновляем счётчик
+                        const newGamesList = newFavGames.split(",").filter(g => g.trim().length > 0);
+                        document.getElementById("games-count").innerText = newGamesList.length;
+                    } catch (error) {
+                        messageDiv.innerText = "❌ Ошибка сохранения: " + error.message;
+                        messageDiv.classList.add("error-message");
+                    }
+                });
+
+                // Выход
+                document.getElementById("logout-btn").addEventListener("click", async () => {
+                    await auth.signOut();
+                    window.location.href = "profile.html";
+                });
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById("loader").innerHTML = `<div style="color: #ff6b6b; text-align: center;">Ошибка загрузки профиля: ${error.message}<br><a href="profile.html" style="color: #6e45e2;">Вернуться на страницу входа</a></div>`;
+            }
+        });
+
+        // Вспомогательные функции
+        function escapeHtml(str) {
+            if (!str) return "";
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        function formatDate(date) {
+            return date.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+    </script>
+</body>
+</html>

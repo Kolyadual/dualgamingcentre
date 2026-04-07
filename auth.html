@@ -3,1708 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script async src="https://yandex.ru/ads/system/context.js"></script>
-    <title>Dual Gaming Centre | Играй в лучшие игры и скачивай их без регистрации! | Dual Gaming Centre - сайт лучше VK Play и Яндекс Игры!</title>
-    <link rel="icon" href="./favicon.png" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
-    <link rel="apple-touch-icon" href="img/icon.png" />
-    <meta property="og:title" content="Dual Gaming Centre — Играйте или загружайте лучшие игры бесплатно и без регистрации!">
-    <meta property="og:description" content="Откройте для себя огромную коллекцию классических и современных игр. Никаких скачиваний, никаких подписок — просто наслаждайтесь игрой! Телеграм: https://t.me/DGC_off">
-    <meta property="og:image" content="https://kolyadual.github.io/dualgamingcentre/image.png">
-    <meta property="og:url" content="https://kolyadual.github.io/dualgamingcentre/">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <style>
-        :root {
-            --primary: #6e45e2;
-            --secondary: #88d3ce;
-            --dark: #1a1a2e;
-            --light: #f1f1f1;
-            --accent: #ff6b6b;
-            --dock-width: 80px;
-            --top-dock-height: 70px;
-            --theme-name: 'default';
-        }
-        :root[data-theme="brutal-dark"] {
-            --primary: #ff0000;
-            --secondary: #990000;
-            --dark: #0a0a0a;
-            --light: #cccccc;
-            --accent: #ff3300;
-            --theme-name: 'brutal-dark';
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Rubik', sans-serif;
-        }
-        body {
-            background: linear-gradient(135deg, var(--dark), #16213e);
-            color: var(--light);
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-            padding-left: var(--dock-width);
-            padding-top: var(--top-dock-height);
-            transition: background 0.5s ease;
-        }
-
-        /* === НИЖНЯЯ НАВИГАЦИЯ (вместо верхней) === */
-        .bottom-navigation {
-            position: fixed;
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 32px);
-            height: 50px;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            padding: 0 1.5rem;
-            z-index: 100;
-            border: 2px solid var(--primary);
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(110, 69, 226, 0.6);
-        }
-        :root[data-theme="brutal-dark"] .bottom-navigation {
-            border-color: #ff0000;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
-        }
-        .nav-btn {
-            padding: 0.6rem 1.2rem;
-            background: rgba(255, 255, 255, 0.15);
-            color: var(--light);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            margin: 0;
-            cursor: pointer;
-            transition: all 0.25s;
-            font-weight: 600;
-        }
-        .nav-btn:hover {
-            background: var(--primary);
-            border-color: var(--primary);
-            transform: scale(1.05);
-        }
-        :root[data-theme="brutal-dark"] .nav-btn:hover {
-            background: #ff0000;
-            border-color: #ff3300;
-        }
-
-        /* === Блок авторизации === */
-        .auth-section {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            margin-left: auto;
-            padding: 0 0.8rem;
-        }
-        .auth-label {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        .auth-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.25s;
-        }
-        .auth-btn:hover {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.25);
-        }
-        .auth-btn.active {
-            border-color: var(--primary);
-            box-shadow: 0 0 8px rgba(110, 69, 226, 0.6);
-        }
-        :root[data-theme="brutal-dark"] .auth-btn:hover {
-            background: rgba(255, 0, 0, 0.2);
-        }
-        :root[data-theme="brutal-dark"] .auth-btn.active {
-            border-color: #ff0000;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
-        }
-
-        .theme-switcher {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-left: 1rem;
-        }
-        .theme-label {
-            font-size: 0.8rem;
-            color: var(--light);
-        }
-        .theme-toggle {
-            position: relative;
-            width: 60px;
-            height: 24px;
-            background: rgba(110, 69, 226, 0.5);
-            border-radius: 12px;
-            cursor: pointer;
-        }
-        .theme-toggle::before {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: var(--primary);
-            border-radius: 50%;
-            top: 2px;
-            left: 2px;
-            transition: all 0.3s;
-        }
-        .theme-toggle.brutal::before {
-            left: 38px;
-            background: #ff0000;
-        }
-
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .top-dock {
-            position: fixed;
-            top: 0;
-            left: var(--dock-width);
-            right: 0;
-            height: var(--top-dock-height);
-            background: rgba(26, 26, 46, 0.9);
-            backdrop-filter: blur(5px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            padding: 0 2rem;
-            z-index: 90;
-            gap: 2rem;
-        }
-
-        .platform-dock {
-            position: fixed;
-            left: 0;
-            top: var(--top-dock-height);
-            bottom: 0;
-            width: var(--dock-width);
-            background: rgba(26, 26, 46, 0.9);
-            backdrop-filter: blur(5px);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 1rem 0;
-            z-index: 90;
-        }
-        .platform-icon {
-            width: 50px;
-            height: 50px;
-            margin: 0.5rem 0;
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-        .platform-icon img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            transition: all 0.3s;
-        }
-        .platform-icon:hover {
-            background: rgba(110, 69, 226, 0.3);
-        }
-        .platform-icon.active {
-            background: var(--primary);
-        }
-        .platform-icon .tooltip {
-            position: absolute;
-            left: calc(100% + 15px);
-            background: rgba(26, 26, 46, 0.9);
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s;
-            transform: translateX(-10px);
-        }
-        .platform-icon:hover .tooltip {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .logo img {
-            height: 40px;
-        }
-        .logo h1 {
-            font-size: 1.8rem;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 700;
-        }
-        .search-bar {
-            flex-grow: 1;
-            position: relative;
-        }
-        .search-bar input {
-            width: 100%;
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s;
-        }
-        .search-bar input:focus {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 10px rgba(110, 69, 226, 0.5);
-        }
-        .search-bar i {
-            position: absolute;
-            right: 1.5rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.7);
-        }
-        main {
-            padding: 2rem;
-            margin-left: calc(-1 * var(--dock-width));
-            padding-left: calc(var(--dock-width) + 2rem);
-            margin-top: calc(-1 * var(--top-dock-height));
-            padding-top: calc(var(--top-dock-height) + 2rem);
-        }
-        .hero {
-            text-align: center;
-            padding: 3rem 0;
-            margin-bottom: 2rem;
-        }
-        .hero h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-        .cta-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-        .cta-buttons button {
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1rem;
-        }
-        .browse-games {
-            background: var(--accent);
-            color: white;
-        }
-        .browse-games:hover {
-            background: #e05555;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
-        }
-        .trending {
-            background: transparent;
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-        .trending:hover {
-            background: rgba(136, 211, 206, 0.1);
-            transform: translateY(-3px);
-        }
-        .categories {
-            margin: 3rem 0;
-        }
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-        }
-        .section-title i {
-            margin-right: 1rem;
-            color: var(--primary);
-        }
-        .category-buttons {
-            display: flex;
-            gap: 1rem;
-            overflow-x: auto;
-            padding-bottom: 1rem;
-        }
-        .category-buttons::-webkit-scrollbar {
-            height: 5px;
-        }
-        .category-buttons::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-        .category-buttons::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 10px;
-        }
-        .category-btn {
-            padding: 0.6rem 1.5rem;
-            border-radius: 50px;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--light);
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            white-space: nowrap;
-        }
-        .category-btn:hover, .category-btn.active {
-            background: var(--primary);
-        }
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        .game-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s;
-            position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            border-color: var(--primary);
-        }
-        .game-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-        .game-info {
-            padding: 1.5rem;
-        }
-        .game-info h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-        .game-info .genre {
-            color: var(--secondary);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-        .game-info .description {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 1.5rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .game-actions {
-            display: flex;
-            justify-content: center;
-        }
-        .details-btn {
-            padding: 0.6rem 1.5rem;
-            border-radius: 50px;
-            border: none;
-            background: #4285F4;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .details-btn:hover {
-            background: #3367D6;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(66, 133, 244, 0.3);
-        }
-        .details-btn i {
-            font-size: 0.9rem;
-        }
-
-        /* ... остальные стили без изменений: game-page, events, footer, flipsters и т.д. ... */
-        .game-page, .events-page, .flipsters-page {
-            display: none;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            margin-left: calc(-1 * var(--dock-width));
-            padding-left: calc(var(--dock-width) + 2rem);
-            margin-top: calc(-1 * var(--top-dock-height));
-            padding-top: calc(var(--top-dock-height) + 2rem);
-        }
-        .back-btn {
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        .game-header {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        .game-cover {
-            flex: 0 0 300px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-        .game-cover img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        .game-details h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .game-meta {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        .game-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .game-meta i {
-            color: var(--secondary);
-        }
-        .game-description {
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-        .game-actions-page {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .download-btn {
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            border: 2px solid var(--secondary);
-            background: transparent;
-            color: var(--secondary);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .download-btn:hover {
-            background: rgba(136, 211, 206, 0.1);
-            transform: translateY(-2px);
-        }
-        .fullscreen-btn {
-            padding: 0.8rem;
-            border-radius: 50px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            background: transparent;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            aspect-ratio: 1/1;
-        }
-        .fullscreen-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .game-content {
-            display: flex;
-            gap: 2rem;
-        }
-        .game-player {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-        .game-frame-container {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-bottom: 75%;
-            background: #000;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .game-frame {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .game-loader {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            z-index: 10;
-        }
-        .game-loader i {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .game-sidebar {
-            flex: 0 0 300px;
-        }
-        .similar-games {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 1.5rem;
-        }
-        .similar-games h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            color: var(--secondary);
-        }
-        .similar-game {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-        }
-        .similar-game:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-        .similar-game img {
-            width: 80px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-        .similar-game-info h4 {
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-        .similar-game-info .genre {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.6);
-        }
-        .confirm-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        .confirm-content {
-            background: #1a1a2e;
-            padding: 2rem;
-            border-radius: 10px;
-            max-width: 500px;
-            width: 90%;
-            border: 1px solid #6e45e2;
-        }
-        .confirm-content h3 {
-            color: #ff6b6b;
-            margin-bottom: 1rem;
-        }
-        .confirm-content p {
-            margin-bottom: 1.5rem;
-            line-height: 1.5;
-        }
-        .confirm-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-        }
-        .confirm-btn {
-            padding: 0.5rem 1.5rem;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .confirm-cancel {
-            background: transparent;
-            border: 1px solid #6e45e2;
-            color: #6e45e2;
-        }
-        .confirm-proceed {
-            background: #ff6b6b;
-            border: 1px solid #ff6b6b;
-            color: white;
-        }
-        footer {
-            background: rgba(26, 26, 46, 0.8);
-            padding: 3rem 2rem 2rem;
-            margin-top: 3rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-left: calc(-1 * var(--dock-width));
-            padding-left: calc(var(--dock-width) + 2rem);
-        }
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .footer-column h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            color: var(--secondary);
-        }
-        .footer-column ul {
-            list-style: none;
-        }
-        .footer-column li {
-            margin-bottom: 0.8rem;
-        }
-        .footer-column a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        .footer-column a:hover {
-            color: var(--primary);
-        }
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            transition: all 0.3s;
-        }
-        .social-links a:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
-        }
-        .copyright {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
-        }
-        .yandex-ads {
-            margin: 20px auto;
-            max-width: 1200px;
-            padding: 0 20px;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 15px;
-            display: none;
-        }
-        .yandex-ads.show {
-            display: block;
-        }
-        :root[data-theme="brutal-dark"] body {
-            background: linear-gradient(135deg, #000000, #0a0a0a);
-        }
-        :root[data-theme="brutal-dark"] .top-dock,
-        :root[data-theme="brutal-dark"] .platform-dock,
-        :root[data-theme="brutal-dark"] .bottom-navigation {
-            background: rgba(10, 10, 10, 0.95);
-            border-color: #ff0000;
-        }
-        :root[data-theme="brutal-dark"] .game-card,
-        :root[data-theme="brutal-dark"] .similar-games,
-        :root[data-theme="brutal-dark"] .confirm-content {
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid #ff0000;
-        }
-        :root[data-theme="brutal-dark"] .game-card:hover {
-            box-shadow: 0 15px 30px rgba(255, 0, 0, 0.3);
-            border-color: #ff3300;
-        }
-        :root[data-theme="brutal-dark"] .category-btn:hover,
-        :root[data-theme="brutal-dark"] .category-btn.active {
-            background: #ff0000;
-        }
-        :root[data-theme="brutal-dark"] .nav-btn:hover {
-            background: #ff0000;
-        }
-        :root[data-theme="brutal-dark"] .platform-icon.active {
-            background: #ff0000;
-        }
-        :root[data-theme="brutal-dark"] .platform-icon:hover {
-            background: rgba(255, 0, 0, 0.3);
-        }
-        :root[data-theme="brutal-dark"] .browse-games {
-            background: #ff3300;
-        }
-        :root[data-theme="brutal-dark"] .browse-games:hover {
-            background: #cc2200;
-        }
-        :root[data-theme="brutal-dark"] .details-btn {
-            background: #990000;
-        }
-        :root[data-theme="brutal-dark"] .details-btn:hover {
-            background: #770000;
-        }
-        :root[data-theme="brutal-dark"] .search-bar input {
-            background: rgba(255, 0, 0, 0.1);
-        }
-        :root[data-theme="brutal-dark"] .search-bar input:focus {
-            background: rgba(255, 0, 0, 0.2);
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        }
-        @keyframes brutal-pulse {
-            0% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.7); }
-            50% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.9); }
-            100% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.7); }
-        }
-        :root[data-theme="brutal-dark"] .game-card:hover {
-            animation: brutal-pulse 2s infinite;
-        }
-
-        .events-page .events-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        .event-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s;
-            position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .event-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            border-color: var(--primary);
-        }
-        .event-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .event-info {
-            padding: 1.5rem;
-        }
-        .event-info h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-        }
-        .event-date {
-            color: var(--secondary);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-        .event-info .description {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 1.5rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .event-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .participate-btn {
-            padding: 0.6rem 1.5rem;
-            border-radius: 50px;
-            border: none;
-            background: var(--accent);
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .participate-btn:hover {
-            background: #e05555;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
-        }
-        .participants-count {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-        :root[data-theme="brutal-dark"] .event-card {
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid #ff0000;
-        }
-        :root[data-theme="brutal-dark"] .event-card:hover {
-            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
-            border-color: #ff3300;
-        }
-        :root[data-theme="brutal-dark"] .participate-btn {
-            background: #ff3300;
-        }
-        :root[data-theme="brutal-dark"] .participate-btn:hover {
-            background: #cc2200;
-        }
-
-        .flipsters-page {
-            display: none;
-            padding: 0;
-            margin: 0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            z-index: 1000;
-            flex-direction: column;
-        }
-        .flipster-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .flipster-frame {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .flipster-controls {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 1rem;
-            z-index: 10;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 1rem;
-            border-radius: 50px;
-            backdrop-filter: blur(5px);
-        }
-        .flipster-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s;
-        }
-        .flipster-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        .flipster-actions {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 10;
-        }
-        .flipster-action-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s;
-        }
-        .flipster-action-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        .flipster-info {
-            position: absolute;
-            left: 20px;
-            bottom: 100px;
-            color: white;
-            z-index: 10;
-            max-width: 70%;
-        }
-        .flipster-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        .flipster-genre {
-            color: var(--secondary);
-            font-size: 1rem;
-        }
-        .flipster-loader {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: #000;
-            color: white;
-            z-index: 20;
-        }
-        .flipster-loader i {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            animation: spin 1s linear infinite;
-        }
-
-        .welcome-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--dark), #16213e);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 200;
-            transition: opacity 0.5s ease;
-        }
-        .welcome-logo {
-            font-size: 3rem;
-            margin-bottom: 2rem;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-align: center;
-        }
-        .welcome-text {
-            font-size: 1.2rem;
-            max-width: 600px;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: var(--light);
-        }
-        .enter-btn {
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            border: none;
-            background: var(--accent);
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1rem;
-        }
-        .enter-btn:hover {
-            background: #e05555;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
-        }
-        :root[data-theme="brutal-dark"] .welcome-screen {
-            background: linear-gradient(135deg, #000000, #0a0a0a);
-        }
-        :root[data-theme="brutal-dark"] .enter-btn {
-            background: #ff3300;
-        }
-        :root[data-theme="brutal-dark"] .enter-btn:hover {
-            background: #cc2200;
-        }
-
-        /* === МОБИЛЬНАЯ АДАПТАЦИЯ ТОЛЬКО ДЛЯ ТЕЛЕФОНОВ === */
-        @media (hover: none) and (pointer: coarse) {
-            body {
-                padding-left: 0;
-                padding-top: 0;
-            }
-            .platform-dock,
-            .menu-toggle {
-                display: none !important;
-            }
-            main, footer, .game-page, .events-page {
-                margin-left: 0;
-                padding-left: 1.5rem;
-                padding-right: 1.5rem;
-                margin-top: 0;
-                padding-top: 100px;
-            }
-            .top-dock {
-                left: 0;
-                padding: 1rem;
-                height: auto;
-                flex-wrap: wrap;
-                gap: 0.8rem;
-            }
-            .search-bar {
-                width: 100%;
-            }
-            .bottom-navigation {
-                bottom: 12px;
-                height: auto;
-                padding: 0.6rem 1rem;
-                flex-wrap: wrap;
-                width: calc(100% - 24px);
-            }
-            .nav-btn {
-                padding: 0.5rem 1rem;
-                font-size: 0.95rem;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .game-header {
-                flex-direction: column;
-            }
-            .game-cover {
-                flex: 1;
-                max-width: 100%;
-            }
-            .game-content {
-                flex-direction: column;
-            }
-            .game-sidebar {
-                flex: 1;
-                margin-top: 2rem;
-            }
-            .events-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            }
-        }
-        @media (max-width: 576px) {
-            .game-actions-page {
-                flex-direction: column;
-            }
-            .game-meta {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            .hero h2 {
-                font-size: 2rem;
-            }
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-        .menu-toggle {
-            display: none;
-        }
-    </style>
+    <title>Профиль | Dual Gaming Centre</title>
+    <!-- Подключаем Firebase (совместимая версия для работы без сборки) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rubik', sans-serif; }
+        body { background: linear-gradient(135deg, #1a1a2e, #16213e); color: #f1f1f1; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 2rem; width: 100%; max-width: 500px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
+        h1 { font-size: 1.8rem; text-align: center; margin-bottom: 1rem; background: linear-gradient(135deg, #6e45e2, #88d3ce); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 0.5rem; }
+        .tab-btn { background: none; border: none; color: rgba(255,255,255,0.6); font-size: 1rem; font-weight: 600; cursor: pointer; padding: 0.5rem 1rem; transition: 0.3s; }
+        .tab-btn.active { color: #6e45e2; border-bottom: 2px solid #6e45e2; }
+        .form-group { margin-bottom: 1.2rem; }
+        label { display: block; margin-bottom: 0.3rem; font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+        input, textarea { width: 100%; padding: 0.8rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: white; font-size: 1rem; outline: none; transition: 0.2s; }
+        input:focus, textarea:focus { border-color: #6e45e2; }
+        button { background: #6e45e2; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.3s; width: 100%; font-size: 1rem; }
+        button:hover { background: #88d3ce; transform: translateY(-2px); }
+        .message { margin-top: 1rem; text-align: center; font-size: 0.85rem; color: #ff6b6b; }
+        hr { margin: 1rem 0; border-color: rgba(255,255,255,0.1); }
+        .action-buttons { display: flex; gap: 1rem; margin-top: 1rem; }
+        .action-buttons button { background: rgba(255,255,255,0.1); }
+        .action-buttons button:hover { background: rgba(110,69,226,0.6); }
+    </style>
 </head>
 <body>
-    <!-- Приветственный экран -->
-    <div class="welcome-screen" id="welcome-screen">
-        <h1 class="welcome-logo">Dual Gaming Centre</h1>
-        <p class="welcome-text">Добро пожаловать в лучший игровой центр! Играйте в классические и современные игры бесплатно и без регистрации.</p>
-        <button class="enter-btn" id="enter-btn">Войти в игровой центр</button>
+<div class="card" id="app">
+    <h1><i class="fas fa-user-astronaut"></i> DGC Profile</h1>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="login">Вход</button>
+        <button class="tab-btn" data-tab="register">Регистрация</button>
     </div>
 
-    <!-- Нижняя навигация -->
-    <div class="bottom-navigation">
-        <button class="nav-btn" id="home-btn">Главная</button>
-        <button class="nav-btn" id="events-btn">Эвенты</button>
-        <button class="nav-btn" id="flipsters-btn">Флипсы</button>
-        <div class="auth-section">
-            <div class="auth-label">Вход:</div>
-            <button class="auth-btn" id="google-login" title="Войти через Google"><i class="fab fa-google"></i></button>
-            <button class="auth-btn" id="yandex-login" title="Войти через Яндекс"><i class="fab fa-yandex-international"></i></button>
-            <button class="auth-btn" id="github-login" title="Войти через GitHub"><i class="fab fa-github"></i></button>
-            <div class="theme-switcher">
-                <span class="theme-label">Тема:</span>
-                <div class="theme-toggle" id="theme-toggle"></div>
-            </div>
+    <div id="login-panel">
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="login-email" placeholder="your@email.com">
         </div>
+        <div class="form-group">
+            <label>Пароль</label>
+            <input type="password" id="login-password" placeholder="Пароль">
+        </div>
+        <button id="login-btn">Войти</button>
+        <div id="login-message" class="message"></div>
     </div>
 
-    <!-- Верхний док -->
-    <div class="top-dock">
-        <div class="logo">
-            <h1>Dual Gaming Centre</h1>
+    <div id="register-panel" style="display:none;">
+        <div class="form-group">
+            <label>Логин (будет отображаться в профиле)</label>
+            <input type="text" id="reg-username" placeholder="Ваш игровой ник">
         </div>
-        <div class="search-bar">
-            <input type="text" placeholder="Поиск игр..." id="search-input">
-            <i class="fas fa-search"></i>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="reg-email" placeholder="your@email.com">
         </div>
+        <div class="form-group">
+            <label>Пароль</label>
+            <input type="password" id="reg-password" placeholder="Пароль">
+        </div>
+        <div class="form-group">
+            <label>Подтверждение пароля</label>
+            <input type="password" id="reg-password2" placeholder="Повторите пароль">
+        </div>
+        <button id="register-btn">Зарегистрироваться</button>
+        <div id="register-message" class="message"></div>
     </div>
 
-    <!-- Док платформ -->
-    <div class="platform-dock" id="platform-dock">
-        <div class="platform-icon active" data-platform="all">
-            <img src="./img/all.png" alt="Все платформы">
-            <span class="tooltip">Все платформы</span>
+    <div id="profile-panel" style="display:none;">
+        <div class="form-group">
+            <label>Ваш логин</label>
+            <input type="text" id="profile-username" readonly disabled>
         </div>
-        <div class="platform-icon" data-platform="web">
-            <img src="./img/web.png" alt="Web">
-            <span class="tooltip">Web-игры</span>
+        <div class="form-group">
+            <label>Любимые игры (через запятую)</label>
+            <textarea id="profile-fav-games" rows="3" placeholder="Пример: DOOM 2, GTA Vice City, Sonic"></textarea>
         </div>
-        <div class="platform-icon" data-platform="ps1">
-            <img src="./img/ps1.jpeg" alt="Play Station">
-            <span class="tooltip">PlayStation 1</span>
-        </div>
-        <div class="platform-icon" data-platform="nes">
-            <img src="./img/nes.png" alt="NES">
-            <span class="tooltip">Nintendo NES</span>
-        </div>
-        <div class="platform-icon" data-platform="snes">
-            <img src="./img/snes.jpeg" alt="SNES">
-            <span class="tooltip">Super Nintendo</span>
-        </div>
-        <div class="platform-icon" data-platform="gba">
-            <img src="./img/gba.jpeg" alt="GBA">
-            <span class="tooltip">Game Boy Advance</span>
-        </div>
-        <div class="platform-icon" data-platform="sega">
-            <img src="./img/sega.jpeg" alt="Sega">
-            <span class="tooltip">Sega Genesis</span>
-        </div>
-        <div class="platform-icon" data-platform="pc">
-            <img src="./img/pc.png" alt="PC">
-            <span class="tooltip">PC игры</span>
-        </div>
-        <div class="platform-icon" data-platform="n64">
-            <img src="./img/n64.png" alt="N64">
-            <span class="tooltip">Nintendo 64</span>
-        </div>
-        <div class="platform-icon" data-platform="ps2">
-            <img src="https://avatars.mds.yandex.net/i?id=4c83a995fd0bd562579ce0839b826e2a_l-5287703-images-thumbs&n=13" alt="Play Station 2">
-            <span class="tooltip">PlayStation 2</span>
+        <button id="save-profile-btn">Сохранить изменения</button>
+        <div id="profile-message" class="message"></div>
+        <hr>
+        <div class="action-buttons">
+            <button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Выйти</button>
         </div>
     </div>
+</div>
 
-    <div id="particles-js"></div>
+<script>
+    // ========== ТВОЙ КОНФИГ FIREBASE (уже вставлен) ==========
+    const firebaseConfig = {
+        apiKey: "AIzaSyAeLz1HvPRQAGDeCiV25TBhR_C5fwHh9qw",
+        authDomain: "dualgamingcentre.firebaseapp.com",
+        databaseURL: "https://dualgamingcentre-default-rtdb.firebaseio.com",
+        projectId: "dualgamingcentre",
+        storageBucket: "dualgamingcentre.firebasestorage.app",
+        messagingSenderId: "291493391694",
+        appId: "1:291493391694:web:0c31b3bf773ad25af2021f",
+        measurementId: "G-1HZ0C1RGM9"
+    };
+    // ========================================================
 
-    <!-- Основное содержимое (games, pages и т.д.) без изменений -->
-    <main>
-        <div id="home-page">
-            <!-- ... твой контент без изменений ... -->
-            <section class="hero">
-                <h2>Играйте в лучшие игры бесплатно</h2>
-                <p>Откройте для себя огромную коллекцию классических и современных игр. Никаких скачиваний, никаких подписок - просто наслаждайтесь игрой!</p>
-                <p></p>
-                <p>Dual Gaming Centre - сервис для бесплатной игры в онлайн игры или скачивания их. Пожалуй, Dual Gaming Centre - сервис лучше чем VK Play, Яндекс игры и Drova.io!</p>
-                <div class="cta-buttons">
-                    <button class="browse-games" id="all-games-btn"><i class="fas fa-gamepad"></i> Все игры</button>
-                    <button class="trending" id="trending-btn"><i class="fas fa-fire"></i> Популярное</button>
-                </div>
-            </section>
-            <section class="categories">
-                <h2 class="section-title"><i class="fas fa-tags"></i> Категории</h2>
-                <div class="category-buttons" id="category-buttons">
-                    <button class="category-btn active" data-category="all">Все</button>
-                    <button class="category-btn" data-category="shooter">Шутеры</button>
-                    <button class="category-btn" data-category="arcade">Аркады</button>
-                    <button class="category-btn" data-category="racing">Гонки</button>
-                    <button class="category-btn" data-category="puzzle">Головоломки</button>
-                    <button class="category-btn" data-category="platformer">Платформеры</button>
-                    <button class="category-btn" data-category="retro">Ретро</button>
-                    <button class="category-btn" data-category="strategy">Стратегии</button>
-                    <button class="category-btn" data-category="fighting">Файтинги</button>
-                    <button class="category-btn" data-category="rpg">RPG</button>
-                    <button class="category-btn" data-category="adventure">Приключения</button>
-                    <button class="category-btn" data-category="sports">Спортивные</button>
-                </div>
-            </section>
-            <section class="games">
-                <h2 class="section-title"><i class="fas fa-gamepad"></i> Популярные игры</h2>
-                <div class="games-grid" id="games-container"></div>
-            </section>
-        </div>
+    // Инициализация Firebase (совместимый способ для глобальных скриптов)
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-        <!-- Game page, events, flipsters — без изменений -->
-        <div class="game-page" id="game-page">
-            <button class="back-btn" id="back-btn"><i class="fas fa-arrow-left"></i> Назад</button>
-            <div class="game-header">
-                <div class="game-cover">
-                    <img id="game-cover-img" src="" alt="Обложка игры">
-                </div>
-                <div class="game-details">
-                    <h1 id="game-title">Название игры</h1>
-                    <div class="game-meta">
-                        <span><i class="fas fa-tag"></i> <span id="game-genre">Жанр</span></span>
-                        <span><i class="fas fa-calendar-alt"></i> <span id="game-year">Год</span></span>
-                        <span><i class="fas fa-star"></i> <span id="game-rating">Рейтинг</span></span>
-                        <span><i class="fas fa-gamepad"></i> <span id="game-platform">Платформа</span></span>
-                    </div>
-                    <p class="game-description" id="game-description">Описание игры будет здесь...</p>
-                    <div class="game-actions-page">
-                        <button class="download-btn" id="download-btn"><i class="fas fa-download"></i> Скачать</button>
-                        <button class="fullscreen-btn" id="fullscreen-btn"><i class="fas fa-expand"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="game-content">
-                <div class="game-player" id="game-player">
-                    <div class="game-frame-container">
-                        <div class="game-loader" id="game-loader">
-                            <i class="fas fa-spinner"></i>
-                            <p>Загрузка игры...</p>
-                        </div>
-                        <iframe id="game-frame" class="game-frame" onload="hideLoader()" allowfullscreen></iframe>
-                    </div>
-                </div>
-                <div class="game-sidebar">
-                    <div class="similar-games">
-                        <h3>Похожие игры</h3>
-                        <div id="similar-games-container"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    // --- Функции переключения панелей ---
+    function showPanel(panel) {
+        document.getElementById("login-panel").style.display = panel === "login" ? "block" : "none";
+        document.getElementById("register-panel").style.display = panel === "register" ? "block" : "none";
+        document.getElementById("profile-panel").style.display = panel === "profile" ? "block" : "none";
+    }
 
-        <div class="events-page" id="events-page">
-            <section class="hero">
-                <h2>Игровые события и турниры</h2>
-                <p>Участвуйте в захватывающих событиях, турнирах и соревнованиях. Выигрывайте призы и получайте уникальный игровой опыт!</p>
-            </section>
-            <section class="events">
-                <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Текущие события</h2>
-                <div class="events-grid" id="events-container"></div>
-            </section>
-            <section class="events">
-                <h2 class="section-title"><i class="fas fa-trophy"></i> Предстоящие турниры</h2>
-                <div class="events-grid" id="tournaments-container"></div>
-            </section>
-        </div>
-
-        <div class="flipsters-page" id="flipsters-page">
-            <div class="flipster-container">
-                <div class="flipster-loader" id="flipster-loader">
-                    <i class="fas fa-spinner"></i>
-                    <p>Загрузка Флипсов...</p>
-                </div>
-                <iframe id="flipster-frame" class="flipster-frame" allowfullscreen></iframe>
-                <div class="flipster-info">
-                    <h3 class="flipster-title" id="flipster-title">Заголовок Флипсы</h3>
-                    <p class="flipster-genre" id="flipster-genre">Жанр</p>
-                </div>
-                <div class="flipster-actions">
-                    <button class="flipster-action-btn" id="like-btn"><i class="fas fa-heart"></i></button>
-                    <button class="flipster-action-btn" id="comment-btn"><i class="fas fa-comment"></i></button>
-                </div>
-                <div class="flipster-controls">
-                    <button class="flipster-btn" id="prev-flipster"><i class="fas fa-arrow-up"></i></button>
-                    <button class="flipster-btn" id="next-flipster"><i class="fas fa-arrow-down"></i></button>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Реклама, модалки, футер — без изменений -->
-    <div class="yandex-ads" id="yandex-ads">
-        <div id="yandex_rtb_R-A-1234567-1"></div>
-        <script>
-            window.yaContextCb = window.yaContextCb || [];
-            window.yaContextCb.push(() => {
-                Ya.Context.AdvManager.render({
-                    renderTo: 'yandex_rtb_trkxiwqx7ycfhdis',
-                    blockId: 'trkxiwqx7ycfhdis'
-                });
-            });
-        </script>
-    </div>
-
-    <div class="confirm-modal" id="confirm-modal">
-        <div class="confirm-content">
-            <h3>Внимание!</h3>
-            <p>Вы переходите на внешнюю ссылку. Все несохраненные данные (прогресс игры и другие) будут утеряны.</p>
-            <p>Вы уверены, что хотите продолжить?</p>
-            <div class="confirm-buttons">
-                <button class="confirm-btn confirm-cancel" id="confirm-cancel">Отмена</button>
-                <button class="confirm-btn confirm-proceed" id="confirm-proceed">Продолжить</button>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>Dual Gaming Centre</h3>
-                <p style="color: rgba(255, 255, 255, 0.7); margin-top: 1rem; line-height: 1.6;">
-                    Лучшие бесплатные онлайн игры в одном месте. Играйте без скачивания и регистрации.
-                </p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-            <div class="footer-column">
-                <h3>Меню</h3>
-                <ul>
-                    <li><a href="#" id="footer-home">Главная</a></li>
-                    <li><a href="#" id="footer-games">Игры</a></li>
-                    <li><a href="#" id="footer-events">Эвенты</a></li>
-                    <li><a href="#" id="footer-flipsters">Флипсы</a></li>
-                    <li><a href="#" id="footer-categories">Категории</a></li>
-                    <li><a href="#" id="footer-popular">Популярное</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>Информация</h3>
-                <ul>
-                    <li><a href="https://github.com/Kolyadual">О Kolyadual</a></li>
-                    <li><a href="#">Контакты</a></li>
-                    <li><a href="#">Политика конфиденциальности</a></li>
-                    <li><a href="#">Условия использования</a></li>
-                    <li><a href="#">FAQ</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>Огромное спасибо</h3>
-                <ul>
-                    <li><a href="https://github.com/kirilldual">Kirilldual</a></li>
-                    <li><a href="https://t.me/fffbnx">Ivan pro Games</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>Другие проекты</h3>
-                <ul>
-                    <li><a href="https://github.com/Kolyadual/Runget-next_generating_operating_system?ysclid=mdwr9rsgs9223766028">Runget (Операционная система)</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>Поддержка</h3>
-                <ul>
-                    <li><a href="#">Помощь</a></li>
-                    <li><a href="mailto:dualgamingcentre@mail.ru">Сообщить о проблеме</a></li>
-                    <li><a href="mailto:dualgamingcentre@mail.ru">Предложить игру</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="copyright">
-            &copy; Dual Gaming Centre. Этот сайт был сделан Kolyadual в 2025 году. Все права защищены.
-        </div>
-    </footer>
-
-    <!-- === СКРИПТЫ === -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script>
-        const games = [/* ... твой массив games (без изменений) ... */];
-        const flipsters = [/* ... твой массив flipsters ... */];
-        const events = [/* ... твой массив events ... */];
-
-        // === DOM ===
-        const gamesContainer = document.getElementById('games-container');
-        const eventsContainer = document.getElementById('events-container');
-        const tournamentsContainer = document.getElementById('tournaments-container');
-        const homePage = document.getElementById('home-page');
-        const gamePage = document.getElementById('game-page');
-        const eventsPage = document.getElementById('events-page');
-        const flipstersPage = document.getElementById('flipsters-page');
-        const backBtn = document.getElementById('back-btn');
-        const gameTitle = document.getElementById('game-title');
-        const gameGenre = document.getElementById('game-genre');
-        const gameYear = document.getElementById('game-year');
-        const gameRating = document.getElementById('game-rating');
-        const gamePlatform = document.getElementById('game-platform');
-        const gameDescription = document.getElementById('game-description');
-        const gameCoverImg = document.getElementById('game-cover-img');
-        const gameFrame = document.getElementById('game-frame');
-        const gameLoader = document.getElementById('game-loader');
-        const downloadBtn = document.getElementById('download-btn');
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
-        const similarGamesContainer = document.getElementById('similar-games-container');
-        const searchInput = document.getElementById('search-input');
-        const categoryButtons = document.querySelectorAll('.category-btn');
-        const allGamesBtn = document.getElementById('all-games-btn');
-        const trendingBtn = document.getElementById('trending-btn');
-        const confirmModal = document.getElementById('confirm-modal');
-        const confirmCancel = document.getElementById('confirm-cancel');
-        const confirmProceed = document.getElementById('confirm-proceed');
-        const platformIcons = document.querySelectorAll('.platform-icon');
-        const welcomeScreen = document.getElementById('welcome-screen');
-        const enterBtn = document.getElementById('enter-btn');
-        const homeBtn = document.getElementById('home-btn');
-        const eventsBtn = document.getElementById('events-btn');
-        const flipstersBtn = document.getElementById('flipsters-btn');
-        const themeToggle = document.getElementById('theme-toggle');
-
-        // === НОВОЕ: кнопки входа ===
-        const googleLogin = document.getElementById('google-login');
-        const yandexLogin = document.getElementById('yandex-login');
-        const githubLogin = document.getElementById('github-login');
-        const authButtons = [googleLogin, yandexLogin, githubLogin];
-
-        let currentGameForDownload = null;
-        let currentPlatformFilter = "all";
-        let currentFlipsterIndex = 0;
-
-        // === Функции (displayGames и другие — без изменений) ===
-        function displayGames(filteredGames = games) {
-            gamesContainer.innerHTML = '';
-            let gamesToShow = filteredGames;
-            if (currentPlatformFilter !== "all") {
-                gamesToShow = filteredGames.filter(game => game.platform === currentPlatformFilter);
+    // --- Загрузка профиля из Firestore ---
+    async function loadProfile(user) {
+        if (!user) return;
+        // Показываем email как логин (можно улучшить, если добавить поле username)
+        document.getElementById("profile-username").value = user.email;
+        try {
+            const docRef = db.collection("profiles").doc(user.uid);
+            const doc = await docRef.get();
+            if (doc.exists) {
+                const data = doc.data();
+                if (data && data.favoriteGames) {
+                    document.getElementById("profile-fav-games").value = data.favoriteGames;
+                }
             }
-            if (gamesToShow.length === 0) {
-                gamesContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: rgba(255,255,255,0.7);">Игры не найдены. Попробуйте изменить фильтры.</p>';
-                return;
-            }
-            gamesToShow.forEach(game => {
-                const gameCard = document.createElement('div');
-                gameCard.className = 'game-card';
-                gameCard.innerHTML = `
-                    <img src="${game.cover}" alt="${game.title}">
-                    <div class="game-info">
-                        <h3>${game.title}</h3>
-                        <span class="genre">${game.genre}</span>
-                        <p class="description">${game.description}</p>
-                        <div class="game-actions">
-                            <button class="details-btn" data-id="${game.id}">
-                                <i class="fas fa-info-circle"></i> Подробнее
-                            </button>
-                        </div>
-                    </div>
-                `;
-                gamesContainer.appendChild(gameCard);
-            });
-            document.querySelectorAll('.details-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const gameId = parseInt(e.target.closest('.details-btn').getAttribute('data-id'));
-                    showGameDetails(gameId);
-                });
-            });
+        } catch (error) {
+            console.error("Ошибка загрузки профиля:", error);
+            document.getElementById("profile-message").innerText = "Не удалось загрузить данные.";
+        }
+    }
+
+    // --- Регистрация ---
+    async function signUp() {
+        const username = document.getElementById('reg-username').value;
+        const email = document.getElementById('reg-email').value;
+        const password = document.getElementById('reg-password').value;
+        const password2 = document.getElementById('reg-password2').value;
+        const messageEl = document.getElementById('register-message');
+
+        if (!username || !email || !password) {
+            messageEl.innerText = "Заполните все поля";
+            return;
+        }
+        if (password !== password2) {
+            messageEl.innerText = "Пароли не совпадают";
+            return;
         }
 
-        function displayEvents() { /* ... */ }
-        function participateInEvent(eventId) { /* ... */ }
-        function showGameDetails(gameId) { /* ... */ }
-        function getPlatformName(platformKey) { /* ... */ }
-        function hideLoader() { gameLoader.style.display = 'none'; }
-        function playGame(gameId) { /* ... */ }
-        function downloadGame(game) { confirmModal.style.display = 'flex'; }
-        function toggleFullscreen() { /* ... */ }
+        try {
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            const user = userCredential.user;
 
-        // === Обработчики (без изменений) ===
-        confirmCancel.addEventListener('click', () => confirmModal.style.display = 'none');
-        confirmProceed.addEventListener('click', () => {
-            if (currentGameForDownload && currentGameForDownload.downloadUrl) {
-                window.location.href = currentGameForDownload.downloadUrl;
-            }
-            confirmModal.style.display = 'none';
-        });
-        confirmModal.addEventListener('click', (e) => {
-            if (e.target === confirmModal) confirmModal.style.display = 'none';
-        });
-        backBtn.addEventListener('click', () => {
-            gamePage.style.display = 'none';
-            homePage.style.display = 'block';
-            gameFrame.src = '';
-            currentGameForDownload = null;
-        });
-        searchInput.addEventListener('input', (e) => { /* ... */ });
-        categoryButtons.forEach(btn => { /* ... */ });
-        platformIcons.forEach(icon => { /* ... */ });
-        allGamesBtn.addEventListener('click', () => { /* ... */ });
-        trendingBtn.addEventListener('click', () => { /* ... */ });
-        fullscreenBtn.addEventListener('click', toggleFullscreen);
-        enterBtn.addEventListener('click', () => {
-            welcomeScreen.style.opacity = '0';
-            setTimeout(() => welcomeScreen.style.display = 'none', 500);
-        });
-        homeBtn.addEventListener('click', () => {
-            welcomeScreen.style.display = 'none';
-            homePage.style.display = 'block';
-            gamePage.style.display = 'none';
-            eventsPage.style.display = 'none';
-            flipstersPage.style.display = 'none';
-        });
-        eventsBtn.addEventListener('click', () => {
-            welcomeScreen.style.display = 'none';
-            homePage.style.display = 'none';
-            gamePage.style.display = 'none';
-            eventsPage.style.display = 'block';
-            flipstersPage.style.display = 'none';
-            displayEvents();
-        });
-        themeToggle.addEventListener('click', () => {
-            const isBrutal = document.documentElement.getAttribute('data-theme') === 'brutal-dark';
-            if (isBrutal) {
-                document.documentElement.setAttribute('data-theme', 'default');
-                themeToggle.classList.remove('brutal');
-                localStorage.setItem('theme', 'default');
+            await db.collection("profiles").doc(user.uid).set({
+                username: username,
+                favoriteGames: "",
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            messageEl.innerText = "Регистрация успешна! Выполняется вход...";
+            // Пользователь автоматически войдёт, сработает onAuthStateChanged
+        } catch (error) {
+            console.error(error);
+            if (error.code === 'auth/email-already-in-use') {
+                messageEl.innerText = "Этот email уже зарегистрирован.";
             } else {
-                document.documentElement.setAttribute('data-theme', 'brutal-dark');
-                themeToggle.classList.add('brutal');
-                localStorage.setItem('theme', 'brutal-dark');
+                messageEl.innerText = error.message;
             }
-        });
-        function loadTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'default';
-            if (savedTheme === 'brutal-dark') {
-                document.documentElement.setAttribute('data-theme', 'brutal-dark');
-                themeToggle.classList.add('brutal');
+        }
+    }
+
+    // --- Вход ---
+    async function signIn() {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        const messageEl = document.getElementById('login-message');
+
+        if (!email || !password) {
+            messageEl.innerText = "Введите email и пароль";
+            return;
+        }
+
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+            messageEl.innerText = "Вход выполнен!";
+        } catch (error) {
+            console.error(error);
+            if (error.code === 'auth/user-not-found') {
+                messageEl.innerText = "Пользователь не найден.";
+            } else if (error.code === 'auth/wrong-password') {
+                messageEl.innerText = "Неверный пароль.";
             } else {
-                document.documentElement.setAttribute('data-theme', 'default');
-                themeToggle.classList.remove('brutal');
+                messageEl.innerText = error.message;
             }
         }
+    }
 
-        // === НОВОЕ: Социальный вход ===
-        function loadAuthState() {
-            const saved = localStorage.getItem('dgc-auth');
-            if (saved) {
-                const { provider } = JSON.parse(saved);
-                authButtons.forEach(btn => btn.classList.remove('active'));
-                document.getElementById(`${provider}-login`)?.classList.add('active');
-            }
+    // --- Сохранение любимых игр ---
+    async function saveProfile() {
+        const user = auth.currentUser;
+        if (!user) return;
+        const favoriteGames = document.getElementById('profile-fav-games').value;
+        const messageEl = document.getElementById('profile-message');
+
+        try {
+            await db.collection("profiles").doc(user.uid).set({
+                favoriteGames: favoriteGames,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+            messageEl.innerText = "Сохранено!";
+            setTimeout(() => messageEl.innerText = "", 2000);
+        } catch (error) {
+            console.error(error);
+            messageEl.innerText = "Ошибка сохранения.";
         }
-        function simulateLogin(provider) {
-            const info = {
-                google: "Google",
-                yandex: "Яндекс",
-                github: "GitHub"
-            }[provider];
-            if (!info) return;
-            localStorage.setItem('dgc-auth', JSON.stringify({ provider, timestamp: Date.now() }));
-            authButtons.forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`${provider}-login`).classList.add('active');
-            alert(`✅ Вы вошли через ${info}!\n(В реальном проекте здесь будет OAuth.)`);
+    }
+
+    // --- Выход ---
+    async function logout() {
+        try {
+            await auth.signOut();
+            showPanel("login");
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-password').value = '';
+        } catch (error) {
+            console.error(error);
         }
-        googleLogin.addEventListener('click', () => simulateLogin('google'));
-        yandexLogin.addEventListener('click', () => simulateLogin('yandex'));
-        githubLogin.addEventListener('click', () => simulateLogin('github'));
+    }
 
-        // === Flipsters ===
-        function initializeFlipsters() { /* ... */ }
-        function showRandomFlipster() { /* ... */ }
-        function showFlipster(index) { /* ... */ }
-        function nextFlipster() { /* ... */ }
-        function prevFlipster() { /* ... */ }
-        flipstersBtn.addEventListener('click', () => {
-            welcomeScreen.style.display = 'none';
-            homePage.style.display = 'none';
-            gamePage.style.display = 'none';
-            eventsPage.style.display = 'none';
-            flipstersPage.style.display = 'flex';
-            initializeFlipsters();
-        });
-        document.getElementById('prev-flipster')?.addEventListener('click', prevFlipster);
-        document.getElementById('next-flipster')?.addEventListener('click', nextFlipster);
-        document.getElementById('like-btn')?.addEventListener('click', () => {
-            const btn = document.getElementById('like-btn');
-            btn.innerHTML = '<i class="fas fa-heart" style="color: var(--accent);"></i>';
-            setTimeout(() => btn.innerHTML = '<i class="fas fa-heart"></i>', 1000);
-        });
-        document.getElementById('comment-btn')?.addEventListener('click', () => {
-            alert('Комментирование временно недоступно');
-        });
+    // --- Привязываем кнопки ---
+    document.getElementById("login-btn").addEventListener("click", signIn);
+    document.getElementById("register-btn").addEventListener("click", signUp);
+    document.getElementById("save-profile-btn").addEventListener("click", saveProfile);
+    document.getElementById("logout-btn").addEventListener("click", logout);
 
-        // === Инициализация ===
-        displayGames();
-        loadTheme();
-        loadAuthState();
+    // Переключение вкладок
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            let tab = btn.dataset.tab;
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            showPanel(tab);
+        });
+    });
 
-        particlesJS("particles-js", { /* ... */ });
-    </script>
+    // --- Следим за состоянием входа ---
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            showPanel("profile");
+            await loadProfile(user);
+        } else {
+            showPanel("login");
+        }
+    });
+</script>
 </body>
 </html>
