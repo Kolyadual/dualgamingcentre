@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fridiz | Эдиты с машинами | Dual Gaming Centre</title>
+    <link rel="icon" href="./favicon.png" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    
+    <meta name="description" content="Fridiz — создаёт жёсткие эдиты с машинами. Страница внутри Dual Gaming Centre. TikTok-канал с уникальными видеоработами.">
+    <meta name="keywords" content="Fridiz, TikTok, эдиты, машины, Dual Gaming Centre">
+    <meta name="author" content="Kolyadual">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:title" content="Fridiz | Эдиты с машинами | DGC">
+    <meta property="og:description" content="Страница TikTok-создателя Fridiz на платформе Dual Gaming Centre.">
+    <meta property="og:image" content="https://kolyadual.github.io/dualgamingcentre/preview.jpg">
+    <meta property="og:url" content="https://kolyadual.github.io/dualgamingcentre/fridiz.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Dual Gaming Centre">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff3366;
+            --secondary: #ff6633;
+            --dark: #1a1a2e;
+            --light: #f1f1f1;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rubik', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+        .top-dock {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .logo h1 {
+            font-size: 1.4rem;
+            background: linear-gradient(to right, #6e45e2, #88d3ce);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        .logo a {
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #6e45e2;
+        }
+        main {
+            padding-top: 90px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        .hero {
+            text-align: center;
+            padding: 2rem 0 3rem;
+        }
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+        }
+        .hero .tagline {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        .hero .badge {
+            display: inline-block;
+            background: rgba(255, 51, 102, 0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: var(--primary);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+        }
+        .section {
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        .section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #6e45e2;
+        }
+        .section p {
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        .stats-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: space-around;
+            margin: 2rem 0;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .project-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, border-color 0.3s;
+            text-align: center;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+        .project-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .project-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #88d3ce;
+        }
+        .project-card p {
+            font-size: 0.9rem;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 51, 102, 0.3);
+        }
+        .footer {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+        }
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        @media (max-width: 768px) {
+            .top-dock {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                padding: 10px;
+            }
+            .logo h1 {
+                text-align: center;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            main {
+                padding-top: 130px;
+            }
+            .hero h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="top-dock">
+        <div class="logo">
+            <a href="index.html"><h1>Dual Gaming Centre</h1></a>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Игры</a>
+            <a href="blog.html">Блог</a>
+            <a href="profile.html">Профиль</a>
+        </div>
+    </div>
+
+    <main>
+        <div class="hero">
+            <h2>FRIDIZ</h2>
+            <div class="tagline">TikTok-блогер. Эдиты. Автомобили. Black Russia.</div>
+            <div class="badge">TikTok-контент</div>
+        </div>
+
+        <div class="section">
+            <h2>О Fridiz</h2>
+            <p>Fridiz — молодой и амбициозный создатель контента, специализирующийся на эдитах с автомобилями. Каждая работа — это сочетание динамичного монтажа, энергичного саундтрека и любви к машинам. Несмотря на то, что популярность только набирает обороты, Fridiz уже получил признание среди ценителей качественного видеомонтажа.</p>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-item"><div class="stat-number">30+</div><div>эдитов</div></div>
+            <div class="stat-item"><div class="stat-number">10k+</div><div>просмотров</div></div>
+            <div class="stat-item"><div class="stat-number">2024</div><div>начало пути</div></div>
+        </div>
+
+        <div class="section">
+            <h2>Стиль и направление</h2>
+            <p>В центре внимания Fridiz — мощные автомобили, динамичный монтаж и энергетика. Эдиты строятся вокруг агрессивного звука, быстрой смены кадров и визуальных эффектов. Это не просто нарезка видео, а полноценное творческое высказывание.</p>
+        </div>
+
+        <div class="section">
+            <h2>Признание и планы</h2>
+            <p>Работы Fridiz были отмечены в небольших тикток-сообществах, посвящённых автомобилям и видеомонтажу. Fridiz продолжает развиваться, экспериментировать с форматами и готовит новые проекты, которые расширят границы привычных эдитов.</p>
+        </div>
+
+        <div class="section">
+            <h2>Контакты</h2>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 1rem;">
+                <a href="#" class="button" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
+                <a href="#" class="button" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="#" class="button" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+            </div>
+            <p style="margin-top: 1.5rem; text-align: center; color: var(--text-secondary);">Ссылки будут добавлены Fridiz после согласования.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="copyright">
+            2025-2026 Dual Gaming Centre. Страница создана для Fridiz.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 60, density: { enable: true, value_area: 800 } },
+                color: { value: "#ff3366" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#ff3366", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true },
+                modes: { grab: { distance: 140, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+    </script>
+</body>
+</html>

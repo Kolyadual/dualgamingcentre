@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О проекте | Dual Gaming Centre</title>
+    <link rel="icon" href="./favicon.png" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    
+    <meta name="description" content="Dual Gaming Centre — бесплатный игровой портал с классическими и современными играми. Играйте онлайн или скачивайте на ПК. Более 500 игр, эмуляторы PS1, NES, Sega, аркад. Автор — Kolyadual.">
+    <meta name="keywords" content="игры онлайн бесплатно, скачать игры, ретро игры, эмуляторы, игровой портал, Dual Gaming Centre, Kolyadual">
+    <meta name="author" content="Kolyadual">
+    <meta name="copyright" content="Kolyadual">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:title" content="О проекте Dual Gaming Centre | Бесплатные игры онлайн">
+    <meta property="og:description" content="Крупнейший игровой центр в браузере. 500+ игр, эмуляторы, турниры. Создано Kolyadual.">
+    <meta property="og:image" content="https://kolyadual.github.io/dualgamingcentre/preview.jpg">
+    <meta property="og:url" content="https://kolyadual.github.io/dualgamingcentre/about.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Dual Gaming Centre">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Dual Gaming Centre — О проекте">
+    <meta name="twitter:description" content="Бесплатные игры онлайн. 500+ классических и современных игр.">
+    <meta name="twitter:image" content="https://kolyadual.github.io/dualgamingcentre/preview.jpg">
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Dual Gaming Centre",
+      "alternateName": "DGC",
+      "url": "https://kolyadual.github.io/dualgamingcentre/",
+      "description": "Бесплатный игровой портал с классическими и современными играми. Играйте онлайн без регистрации или скачивайте на ПК.",
+      "inLanguage": "ru",
+      "author": {
+        "@type": "Person",
+        "name": "Kolyadual",
+        "url": "https://github.com/Kolyadual",
+        "sameAs": [
+          "https://github.com/Kolyadual",
+          "https://t.me/kolyadual"
+        ]
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://kolyadual.github.io/dualgamingcentre/index.html?search={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "gamers"
+      },
+      "keywords": "игры онлайн, ретро игры, эмуляторы, бесплатные игры, скачать игры"
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Dual Gaming Centre",
+      "description": "Коллекция из более чем 500 классических и современных игр. Эмуляторы PlayStation 1, Nintendo NES, Sega Genesis, аркадных автоматов.",
+      "applicationCategory": "Game",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "RUB",
+        "availability": "https://schema.org/InStock"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "Kolyadual",
+        "url": "https://github.com/Kolyadual"
+      },
+      "gamePlatform": [
+        "PC",
+        "Web Browser",
+        "PlayStation 1",
+        "Nintendo NES",
+        "Sega Genesis",
+        "Arcade"
+      ],
+      "gameGenre": [
+        "Shooter",
+        "Arcade",
+        "Platformer",
+        "Racing",
+        "Puzzle",
+        "RPG",
+        "Fighting",
+        "Strategy",
+        "Adventure",
+        "Horror"
+      ]
+    }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --dark: #1a1a2e;
+            --light: #f1f1f1;
+            --accent: #ff6b6b;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rubik', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+        .top-dock {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .logo h1 {
+            font-size: 1.4rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        .logo a {
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        main {
+            padding-top: 90px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        .hero {
+            text-align: center;
+            padding: 2rem 0 3rem;
+        }
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--text-secondary);
+        }
+        .section {
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        .section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        .section h3 {
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem;
+            color: var(--secondary);
+        }
+        .section p {
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        .stats-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: space-around;
+            margin: 2rem 0;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .footer {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+        }
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        @media (max-width: 768px) {
+            .top-dock {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                padding: 10px;
+            }
+            .logo h1 {
+                text-align: center;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            main {
+                padding-top: 130px;
+            }
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="top-dock">
+        <div class="logo">
+            <a href="index.html"><h1>Dual Gaming Centre</h1></a>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Игры</a>
+            <a href="blog.html">Блог</a>
+            <a href="profile.html">Профиль</a>
+        </div>
+    </div>
+
+    <main>
+        <div class="hero">
+            <h2>О проекте Dual Gaming Centre</h2>
+            <p>Бесплатный игровой портал для ценителей классики и современных браузерных игр</p>
+        </div>
+
+        <div class="section">
+            <h2>Что такое Dual Gaming Centre?</h2>
+            <p><strong>Dual Gaming Centre</strong> (DGC) — игровой портал, созданный разработчиком Kolyadual в 2025 году. Платформа объединяет более 500 классических и современных игр, доступных для игры прямо в браузере или для скачивания на компьютер.</p>
+            <p>Проект включает эмуляторы PlayStation 1, Nintendo NES, Sega Genesis, аркадных автоматов, а также современные HTML5-игры. Все возможности предоставляются бесплатно, без регистрации и скрытых платежей.</p>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-item"><div class="stat-number" id="gamesCount">500+</div><div>игр в коллекции</div></div>
+            <div class="stat-item"><div class="stat-number">15+</div><div>жанров</div></div>
+            <div class="stat-item"><div class="stat-number">10+</div><div>эмуляторов</div></div>
+            <div class="stat-item"><div class="stat-number">2025</div><div>год основания</div></div>
+        </div>
+
+        <div class="section">
+            <h2>Что представлено на портале?</h2>
+            <p>На DGC представлены игры на любой вкус:</p>
+            <ul style="margin-top: 1rem; margin-left: 1.5rem; color: var(--text-secondary); line-height: 1.8;">
+                <li>Классические шутеры — DOOM, DOOM 2, Quake</li>
+                <li>Ретро-платформеры — Super Mario Bros, Sonic, Crash Bandicoot</li>
+                <li>Гонки — Gran Turismo 2, Need for Speed</li>
+                <li>Файтинги — Tekken 3, Street Fighter II</li>
+                <li>RPG и приключения — Final Fantasy VII, The Legend of Zelda</li>
+                <li>Аркады и головоломки — Pac-Man, Tetris, Angry Birds</li>
+                <li>Современные хиты — Minecraft, Geometry Dash, Subway Surfers</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Технологии и эмуляция</h2>
+            <p>Для запуска игр используются современные веб-технологии:</p>
+            <ul style="margin-top: 1rem; margin-left: 1.5rem; color: var(--text-secondary); line-height: 1.8;">
+                <li>WebAssembly (WASM) — эмуляция консолей в браузере</li>
+                <li>BoxedWine — запуск Windows-игр</li>
+                <li>HTML5 и JavaScript — современные браузерные игры</li>
+                <li>Эмуляторы PS1, NES, SNES, Sega Genesis, N64, GBA, аркад</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Об авторе</h2>
+            <p>Проект создан и поддерживается Kolyadual — разработчиком из России, специализирующимся на веб-технологиях и ретро-гейминге. Основная цель — сделать классические игры доступными для широкой аудитории без необходимости установки эмуляторов и поиска ПЗУ-файлов.</p>
+            <p style="margin-top: 1rem;">Контакты:</p>
+            <ul style="margin-top: 0.5rem; margin-left: 1.5rem; color: var(--text-secondary); line-height: 1.8;">
+                <li>Email: <a href="mailto:dualgamingcentre@mail.ru" style="color: var(--primary);">dualgamingcentre@mail.ru</a></li>
+                <li>Telegram: <a href="https://t.me/DGC_off" style="color: var(--primary);" target="_blank">DGC_off</a></li>
+                <li>GitHub: <a href="https://github.com/Kolyadual" style="color: var(--primary);" target="_blank">Kolyadual</a></li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Лицензия и права</h2>
+            <p>Dual Gaming Centre является некоммерческим проектом. Все игры являются собственностью их законных правообладателей. Портал не хранит файлы игр на своих серверах, а предоставляет ссылки на общедоступные эмуляторы и демоверсии.</p>
+            <p style="margin-top: 1rem;">Если вы являетесь правообладателем и считаете, что ваш контент используется неправомерно, свяжитесь с администрацией для удаления ссылок.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="copyright">
+            2025-2026 Dual Gaming Centre. Создано Kolyadual.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 60, density: { enable: true, value_area: 800 } },
+                color: { value: "#6e45e2" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#6e45e2", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true },
+                modes: { grab: { distance: 140, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+
+        async function fetchGamesCount() {
+            try {
+                const response = await fetch('api.json');
+                const data = await response.json();
+                const count = data.games?.length || 0;
+                document.getElementById("gamesCount").innerHTML = count;
+            } catch(e) {}
+        }
+        fetchGamesCount();
+    </script>
+</body>
+</html>

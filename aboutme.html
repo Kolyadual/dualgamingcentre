@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О проекте | Dual Gaming Centre | Kolyadual</title>
+    <link rel="icon" href="./favicon.png" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    
+    <meta name="description" content="Dual Gaming Centre — бесплатный игровой портал. Runget OS, Newton Bot, Andryemu. Экосистема проектов разработчика Kolyadual.">
+    <meta name="keywords" content="Kolyadual, Dual Gaming Centre, Runget OS, Newton Bot, Andryemu, игры онлайн, операционная система, нейросети">
+    <meta name="author" content="Kolyadual">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:title" content="Экосистема проектов Kolyadual">
+    <meta property="og:description" content="Dual Gaming Centre, Runget OS, Newton Bot, Andryemu — бесплатные проекты для игр, работы и творчества.">
+    <meta property="og:image" content="https://kolyadual.github.io/dualgamingcentre/preview.jpg">
+    <meta property="og:url" content="https://kolyadual.github.io/dualgamingcentre/about.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Dual Gaming Centre">
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Kolyadual",
+      "description": "Разработчик экосистемы игровых и технологических проектов. Создатель Dual Gaming Centre, Runget OS, Newton Bot, Andryemu.",
+      "url": "https://kolyadual.github.io/dualgamingcentre/",
+      "sameAs": [
+        "https://github.com/Kolyadual",
+        "https://t.me/runget_rt"
+      ]
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Dual Gaming Centre",
+      "alternateName": "DGC",
+      "url": "https://kolyadual.github.io/dualgamingcentre/",
+      "description": "Бесплатный игровой портал с классическими и современными играми. Более 50 игр, эмуляторы консолей, поддержка всех устройств.",
+      "inLanguage": "ru"
+    }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --dark: #1a1a2e;
+            --light: #f1f1f1;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rubik', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+        .top-dock {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .logo h1 {
+            font-size: 1.4rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        .logo a {
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        main {
+            padding-top: 90px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        .hero {
+            text-align: center;
+            padding: 2rem 0 3rem;
+        }
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--text-secondary);
+        }
+        .section {
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        .section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        .section h3 {
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem;
+            color: var(--secondary);
+        }
+        .section p {
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        .section ul {
+            margin-top: 1rem;
+            margin-left: 1.5rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .project-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+        .project-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+        .project-card p {
+            font-size: 0.9rem;
+        }
+        .stats-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: space-around;
+            margin: 2rem 0;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .footer {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+        }
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        @media (max-width: 768px) {
+            .top-dock {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                padding: 10px;
+            }
+            .logo h1 {
+                text-align: center;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            main {
+                padding-top: 130px;
+            }
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="top-dock">
+        <div class="logo">
+            <a href="index.html"><h1>Dual Gaming Centre</h1></a>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Игры</a>
+            <a href="blog.html">Блог</a>
+            <a href="profile.html">Профиль</a>
+        </div>
+    </div>
+
+    <main>
+        <div class="hero">
+            <h2>Экосистема проектов</h2>
+            <p>Игровые и технологические проекты, созданные разработчиком Kolyadual</p>
+        </div>
+
+        <div class="section">
+            <h2>О разработчике</h2>
+            <p>Kolyadual — начинающий разработчик, создающий сложные и полезные проекты в одиночку, или же со своей командой зачастую из четырех человек. Основные принципы работы:</p>
+            <ul>
+                <li>Сложные технологии должны быть доступными и бесплатными.</li>
+                <li>Игры разных поколений и платформ не должны иметь границ.</li>
+                <li>Качественный проект не требует большого бюджета или команды.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Dual Gaming Centre (DGC)</h2>
+            <p>Флагманский проект — бесплатный игровой портал, где доступно более 50 культовых игр. Работает прямо в браузере без скачиваний, регистрации и рекламы.</p>
+            <h3>Ключевые особенности</h3>
+            <ul>
+                <li>Коллекция включает FNAF 1–7, Minecraft (бета-версии), GTA: Vice City, DOOM, Half-Life, Cut The Rope, Geometry Dash и другие.</li>
+                <li>Встроенный эмулятор (Virtual Emulator) позволяет запускать игры с PSP, PS1, N64, SEGA после загрузки ROM-файлов.</li>
+                <li>Платформа работает на телефонах, планшетах и старых ПК (до Pentium 4). Требуется интернет от 32 Мбит/с.</li>
+                <li>Библиотека пополняется ежедневно.</li>
+            </ul>
+            <p style="margin-top: 1rem;"><strong>Ссылка:</strong> <a href="https://kolyadual.github.io/dualgamingcentre" style="color: var(--primary);">kolyadual.github.io/dualgamingcentre</a></p>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-item"><div class="stat-number" id="gamesCount">50+</div><div>игр в DGC</div></div>
+            <div class="stat-item"><div class="stat-number">7+</div><div>платформ</div></div>
+            <div class="stat-item"><div class="stat-number">10+</div><div>эмуляторов</div></div>
+            <div class="stat-item"><div class="stat-number">2025</div><div>год основания</div></div>
+        </div>
+
+        <div class="section">
+            <h2>Другие проекты</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <h3>Runget OS</h3>
+                    <p>Лёгкая операционная система для компьютеров начиная с 2006 года. Поддерживает приложения из различных экосистем (кроме macOS/iOS). Включает встроенный локальный ИИ для голосового и текстового управления.</p>
+                </div>
+                <div class="project-card">
+                    <h3>Newton Bot</h3>
+                    <p>Семейство из более чем 30 моделей нейросетей. Показывает высокие результаты в логике, математике и креативности. Генерирует текст, изображения и видео.</p>
+                </div>
+                <div class="project-card">
+                    <h3>Andryemu</h3>
+                    <p>Android-эмулятор для запуска мобильных приложений на других платформах.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Цели проектов</h2>
+            <ul>
+                <li>Сделать DGC ведущей браузерной игровой платформой.</li>
+                <li>Сформировать активное сообщество вокруг всех проектов.</li>
+                <li>Показать возможности независимого разработчика.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Контакты и открытость</h2>
+            <ul>
+                <li>Исходный код DGC доступен на GitHub.</li>
+                <li>Новости и обсуждения — в Telegram-канале <a href="https://t.me/runget_rt" style="color: var(--primary);" target="_blank">@runget_rt</a>.</li>
+                <li>Разработчик открыт к диалогу, обратной связи и сотрудничеству.</li>
+            </ul>
+            <p style="margin-top: 1rem;"><strong>GitHub:</strong> <a href="https://github.com/Kolyadual" style="color: var(--primary);" target="_blank">github.com/Kolyadual</a><br>
+            <strong>Telegram:</strong> <a href="https://t.me/runget_rt" style="color: var(--primary);" target="_blank">t.me/runget_rt</a></p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="copyright">
+            2025-2026 Kolyadual. Все проекты бесплатны и открыты.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 60, density: { enable: true, value_area: 800 } },
+                color: { value: "#6e45e2" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#6e45e2", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true },
+                modes: { grab: { distance: 140, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+
+        async function fetchGamesCount() {
+            try {
+                const response = await fetch('api.json');
+                const data = await response.json();
+                const count = data.games?.length || 0;
+                document.getElementById("gamesCount").innerHTML = count + '+';
+            } catch(e) {
+                document.getElementById("gamesCount").innerHTML = '50+';
+            }
+        }
+        fetchGamesCount();
+    </script>
+</body>
+</html>
