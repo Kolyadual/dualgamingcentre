@@ -219,7 +219,7 @@
         <div class="logo">
             <h2>Dual Gaming Centre</h2>
         </div>
-        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> На главную</a>
+        <a href="https://kolyadual.github.io/dualgamingcentre" class="back-link"><i class="fas fa-arrow-left"></i> На главную</a>
     </div>
 
     <div id="loader" class="loader" style="display: flex; justify-content: center; align-items: center; height: 60vh;">
@@ -251,8 +251,7 @@
         // Проверяем, авторизован ли пользователь
         auth.onAuthStateChanged(async (user) => {
             if (!user) {
-                // Не авторизован — кидаем на страницу входа
-                window.location.href = "profile.html";
+                window.location.href = "yourprofile.html";
                 return;
             }
 
