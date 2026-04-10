@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль | Dual Gaming Centre</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rubik', sans-serif; }
+        body { background: linear-gradient(135deg, #1a1a2e, #16213e); color: #f1f1f1; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 2rem; width: 100%; max-width: 550px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
+        h1 { font-size: 1.8rem; text-align: center; margin-bottom: 1rem; background: linear-gradient(135deg, #6e45e2, #88d3ce); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 0.5rem; }
+        .tab-btn { background: none; border: none; color: rgba(255,255,255,0.6); font-size: 1rem; font-weight: 600; cursor: pointer; padding: 0.5rem 1rem; transition: 0.3s; }
+        .tab-btn.active { color: #6e45e2; border-bottom: 2px solid #6e45e2; }
+        .form-group { margin-bottom: 1.2rem; }
+        label { display: block; margin-bottom: 0.3rem; font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+        input, textarea { width: 100%; padding: 0.8rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: white; font-size: 1rem; outline: none; transition: 0.2s; }
+        input:focus, textarea:focus { border-color: #6e45e2; }
+        button { background: #6e45e2; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.3s; width: 100%; font-size: 1rem; margin-bottom: 0.5rem; }
+        button:hover { background: #88d3ce; transform: translateY(-2px); }
+        .social-buttons { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+        .google-btn { background: #db4437; }
+        .github-btn { background: #333; }
+        .microsoft-btn { background: #2f2f2f; }
+        .google-btn:hover, .github-btn:hover, .microsoft-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        .message { margin-top: 1rem; text-align: center; font-size: 0.85rem; color: #ff6b6b; }
+        .divider { display: flex; align-items: center; text-align: center; margin: 1rem 0; color: rgba(255,255,255,0.5); }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.2); }
+        .divider span { margin: 0 10px; font-size: 0.8rem; }
+        hr { margin: 1rem 0; border-color: rgba(255,255,255,0.1); }
+        .action-buttons { display: flex; gap: 1rem; margin-top: 1rem; }
+        .action-buttons button { background: rgba(255,255,255,0.1); margin-bottom: 0; }
+        .action-buttons button:hover { background: rgba(110,69,226,0.6); }
+    </style>
+</head>
+<body>
+<div class="card" id="app">
+    <h1><i class="fas fa-user-astronaut"></i> DGC Profile</h1>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="login">Вход</button>
+        <button class="tab-btn" data-tab="register">Регистрация</button>
+    </div>
+
+    <!-- Панель входа -->
+    <div id="login-panel">
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="login-email" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+            <label>Пароль</label>
+            <input type="password" id="login-password" placeholder="Пароль">
+        </div>
+        <button id="login-btn">Войти</button>
+        <div class="divider"><span>или войти через</span></div>
+        <div class="social-buttons">
+            <button id="google-login-btn" class="google-btn"><i class="fab fa-google"></i> Google</button>
+            <button id="github-login-btn" class="github-btn"><i class="fab fa-github"></i> GitHub</button>
+            <button id="microsoft-login-btn" class="microsoft-btn"><i class="fab fa-microsoft"></i> Microsoft</button>
+        </div>
+        <div id="login-message" class="message"></div>
+    </div>
+
+    <!-- Панель регистрации -->
+    <div id="register-panel" style="display:none;">
+        <div class="form-group">
+            <label>Логин (будет отображаться в профиле)</label>
+            <input type="text" id="reg-username" placeholder="Ваш игровой ник">
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="reg-email" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+            <label>Пароль</label>
+            <input type="password" id="reg-password" placeholder="Пароль">
+        </div>
+        <div class="form-group">
+            <label>Подтверждение пароля</label>
+            <input type="password" id="reg-password2" placeholder="Повторите пароль">
+        </div>
+        <button id="register-btn">Зарегистрироваться</button>
+        <div id="register-message" class="message"></div>
+    </div>
+
+    <!-- Панель профиля -->
+    <div id="profile-panel" style="display:none;">
+        <div class="form-group">
+            <label>Ваш логин</label>
+            <input type="text" id="profile-username" readonly disabled>
+        </div>
+        <div class="form-group">
+            <label>Любимые игры (через запятую)</label>
+            <textarea id="profile-fav-games" rows="3" placeholder="Пример: DOOM 2, GTA Vice City, Sonic"></textarea>
+        </div>
+        <button id="save-profile-btn">Сохранить изменения</button>
+        <div id="profile-message" class="message"></div>
+        <hr>
+        <div class="action-buttons">
+            <button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ========== КОНФИГ FIREBASE (твой) ==========
+    const firebaseConfig = {
+        apiKey: "AIzaSyAeLz1HvPRQAGDeCiV25TBhR_C5fwHh9qw",
+        authDomain: "dualgamingcentre.firebaseapp.com",
+        databaseURL: "https://dualgamingcentre-default-rtdb.firebaseio.com",
+        projectId: "dualgamingcentre",
+        storageBucket: "dualgamingcentre.firebasestorage.app",
+        messagingSenderId: "291493391694",
+        appId: "1:291493391694:web:0c31b3bf773ad25af2021f",
+        measurementId: "G-1HZ0C1RGM9"
+    };
+    // ==========================================
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Провайдеры
+    const googleProvider = new firebase.auth.GoogleAuthProvider();
+    const githubProvider = new firebase.auth.GithubAuthProvider();
+    const microsoftProvider = new firebase.auth.OAuthProvider('microsoft.com');
+
+    // --- Переключение панелей ---
+    function showPanel(panel) {
+        document.getElementById("login-panel").style.display = panel === "login" ? "block" : "none";
+        document.getElementById("register-panel").style.display = panel === "register" ? "block" : "none";
+        document.getElementById("profile-panel").style.display = panel === "profile" ? "block" : "none";
+    }
+
+    // --- Загрузка профиля из Firestore ---
+    async function loadProfile(user) {
+        if (!user) return;
+        const docRef = db.collection("profiles").doc(user.uid);
+        try {
+            const doc = await docRef.get();
+            if (doc.exists) {
+                const data = doc.data();
+                document.getElementById("profile-username").value = data.username || user.email || "Пользователь";
+                if (data.favoriteGames) {
+                    document.getElementById("profile-fav-games").value = data.favoriteGames;
+                }
+            } else {
+                let defaultUsername = user.displayName || (user.email ? user.email.split('@')[0] : "Игрок");
+                await docRef.set({
+                    username: defaultUsername,
+                    favoriteGames: "",
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                document.getElementById("profile-username").value = defaultUsername;
+            }
+        } catch (error) {
+            console.error("Ошибка загрузки профиля:", error);
+            document.getElementById("profile-message").innerText = "Не удалось загрузить данные.";
+        }
+    }
+
+    // --- Регистрация email/пароль ---
+    async function signUp() {
+        const username = document.getElementById('reg-username').value;
+        const email = document.getElementById('reg-email').value;
+        const password = document.getElementById('reg-password').value;
+        const password2 = document.getElementById('reg-password2').value;
+        const messageEl = document.getElementById('register-message');
+
+        if (!username || !email || !password) {
+            messageEl.innerText = "Заполните все поля";
+            return;
+        }
+        if (password !== password2) {
+            messageEl.innerText = "Пароли не совпадают";
+            return;
+        }
+
+        try {
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            const user = userCredential.user;
+            await db.collection("profiles").doc(user.uid).set({
+                username: username,
+                favoriteGames: "",
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            messageEl.innerText = "Регистрация успешна!";
+        } catch (error) {
+            console.error(error);
+            if (error.code === 'auth/email-already-in-use') {
+                messageEl.innerText = "Этот email уже зарегистрирован.";
+            } else {
+                messageEl.innerText = error.message;
+            }
+        }
+    }
+
+    // --- Вход email/пароль ---
+    async function signIn() {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        const messageEl = document.getElementById('login-message');
+
+        if (!email || !password) {
+            messageEl.innerText = "Введите email и пароль";
+            return;
+        }
+
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+            messageEl.innerText = "Вход выполнен!";
+        } catch (error) {
+            console.error(error);
+            if (error.code === 'auth/user-not-found') {
+                messageEl.innerText = "Пользователь не найден.";
+            } else if (error.code === 'auth/wrong-password') {
+                messageEl.innerText = "Неверный пароль.";
+            } else {
+                messageEl.innerText = error.message;
+            }
+        }
+    }
+
+    // --- Общая функция для OAuth через редирект (без попапов) ---
+    async function signInWithProvider(provider) {
+        const messageEl = document.getElementById('login-message');
+        messageEl.innerText = "Перенаправление на страницу авторизации...";
+        try {
+            await auth.signInWithRedirect(provider);
+            // После редиректа страница перезагрузится, и onAuthStateChanged сам подхватит пользователя
+        } catch (error) {
+            console.error("Ошибка:", error);
+            messageEl.innerText = "Ошибка: " + error.message;
+        }
+    }
+
+    // Обработчики OAuth-кнопок
+    document.getElementById("google-login-btn").addEventListener("click", () => signInWithProvider(googleProvider));
+    document.getElementById("github-login-btn").addEventListener("click", () => signInWithProvider(githubProvider));
+    document.getElementById("microsoft-login-btn").addEventListener("click", () => signInWithProvider(microsoftProvider));
+
+    // --- Сохранение любимых игр ---
+    async function saveProfile() {
+        const user = auth.currentUser;
+        if (!user) return;
+        const favoriteGames = document.getElementById('profile-fav-games').value;
+        const messageEl = document.getElementById('profile-message');
+        try {
+            await db.collection("profiles").doc(user.uid).set({
+                favoriteGames: favoriteGames,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+            messageEl.innerText = "Сохранено!";
+            setTimeout(() => messageEl.innerText = "", 2000);
+        } catch (error) {
+            console.error(error);
+            messageEl.innerText = "Ошибка сохранения.";
+        }
+    }
+
+    // --- Выход ---
+    async function logout() {
+        try {
+            await auth.signOut();
+            showPanel("login");
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-password').value = '';
+            document.getElementById('login-message').innerText = '';
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // --- Привязываем кнопки ---
+    document.getElementById("login-btn").addEventListener("click", signIn);
+    document.getElementById("register-btn").addEventListener("click", signUp);
+    document.getElementById("save-profile-btn").addEventListener("click", saveProfile);
+    document.getElementById("logout-btn").addEventListener("click", logout);
+
+    // Переключение вкладок
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            let tab = btn.dataset.tab;
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            showPanel(tab);
+            document.getElementById('login-message').innerText = '';
+            document.getElementById('register-message').innerText = '';
+        });
+    });
+
+    // --- Следим за состоянием входа (важно для редиректа) ---
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            showPanel("profile");
+            await loadProfile(user);
+        } else {
+            showPanel("login");
+        }
+    });
+
+    // Дополнительно: обработка результата редиректа при загрузке страницы
+    // (signInWithRedirect уже сам вызывает onAuthStateChanged, но на всякий случай)
+    auth.getRedirectResult().catch((error) => {
+        console.error("Ошибка редиректа:", error);
+        const messageEl = document.getElementById('login-message');
+        if (messageEl) messageEl.innerText = "Не удалось войти: " + error.message;
+    });
+</script>
+</body>
+</html>
