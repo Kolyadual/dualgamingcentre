@@ -2,42 +2,88 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Dual Gaming Centre</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>404 — Dual Gaming Centre</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('fonts.googleapis.com');
-
-        body, html {
+        * {
             margin: 0;
             padding: 0;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            box-sizing: border-box;
+        }
+
+        body {
             background-color: #0b0e14;
-            color: #ffffff;
             font-family: 'Roboto', sans-serif;
-            overflow: hidden;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.9); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            100% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.9); }
         }
 
         .container {
-            text-align: center;
             position: relative;
-            z-index: 1;
+            z-index: 2;
+            max-width: 700px;
+            width: 100%;
+            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .logo-placeholder {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px;
-            background: #1a1f29; 
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 25px;
+            background: #12161f;
             border: 3px solid #00f2ff;
-            border-radius: 15px;
+            border-radius: 20px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+            justify-content: center;
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.4), inset 0 0 8px rgba(0,242,255,0.2);
+            transition: all 0.3s ease;
             overflow: hidden;
+        }
+
+        .logo-placeholder:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 35px rgba(0, 242, 255, 0.7);
+            border-color: #5efffc;
         }
 
         .logo-placeholder img {
@@ -46,83 +92,304 @@
             object-fit: cover;
         }
 
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
         h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 8rem;
+            font-family: 'Orbitron', monospace;
+            font-size: 9rem;
+            font-weight: 900;
             margin: 0;
             line-height: 1;
-            background: linear-gradient(180deg, #fff 30%, #00f2ff 100%);
+            background: linear-gradient(145deg, #ffffff 20%, #00f2ff 80%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 20px rgba(0, 242, 255, 0.2);
+            text-shadow: 0 0 12px rgba(0,242,255,0.3);
+            letter-spacing: 6px;
+        }
+
+        .glitch-effect {
+            animation: glitch-skew 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94) both !important;
+        }
+
+        @keyframes glitch-skew {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 1px) skew(1deg); }
+            40% { transform: translate(2px, -1px) skew(-0.5deg); }
+            60% { transform: translate(-1px, 2px) skew(0.8deg); }
+            80% { transform: translate(1px, -2px) skew(-0.3deg); }
+            100% { transform: translate(0); }
         }
 
         h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.7rem;
             text-transform: uppercase;
             letter-spacing: 5px;
-            margin: 10px 0 30px;
+            margin: 10px 0 20px;
             color: #00f2ff;
+            text-shadow: 0 0 6px rgba(0,242,255,0.5);
+            font-weight: 600;
         }
 
-        .btn-home {
+        .description {
+            font-size: 1.05rem;
+            color: #b0bbd4;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            background: rgba(10, 14, 23, 0.6);
+            backdrop-filter: blur(2px);
+            padding: 0.8rem 1.5rem;
+            border-radius: 40px;
             display: inline-block;
-            padding: 15px 40px;
-            font-family: 'Orbitron', sans-serif;
+            border: 1px solid rgba(0,242,255,0.2);
+        }
+
+        .error-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 32px;
+            font-family: 'Orbitron', monospace;
             font-weight: bold;
-            text-decoration: none;
-            color: #0b0e14;
-            background-color: #00f2ff;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
             text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            border-radius: 60px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            border: none;
         }
 
-        .btn-home:hover {
+        .btn-primary {
+            background: #00f2ff;
+            color: #0b0e14;
+            box-shadow: 0 0 12px rgba(0, 242, 255, 0.5);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            background: #a5faff;
+            box-shadow: 0 0 28px rgba(0, 242, 255, 0.9);
+            color: #010101;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1.5px solid #00f2ff;
+            color: #00f2ff;
+            box-shadow: 0 0 6px rgba(0,242,255,0.3);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(0, 242, 255, 0.1);
             transform: translateY(-3px);
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.8);
-            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0,242,255,0.5);
+            color: #ffffff;
+            border-color: #6efffc;
         }
 
-        .glitch-wrapper {
-            position: relative;
+        .error-hint {
+            margin-top: 2rem;
+            padding: 1rem 1.8rem;
+            background: rgba(18, 22, 31, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            border: 1px solid rgba(0, 242, 255, 0.25);
+            color: #b8c7ff;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.2s;
         }
 
-        .bg-glow {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: -1;
+        .error-hint i {
+            color: #00f2ff;
+            margin-right: 8px;
+        }
+
+        .error-hint a {
+            color: #00f2ff;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dashed rgba(0,242,255,0.4);
+            transition: 0.2s;
+        }
+
+        .error-hint a:hover {
+            color: #aaf4ff;
+            border-bottom-color: #00f2ff;
+        }
+
+        .copyright {
+            margin-top: 2.2rem;
+            font-size: 0.7rem;
+            opacity: 0.65;
+            color: #9aa9c7;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 5rem; letter-spacing: 2px; }
+            h2 { font-size: 1.2rem; letter-spacing: 3px; }
+            .logo-placeholder { width: 95px; height: 95px; }
+            .btn { padding: 8px 20px; font-size: 0.75rem; gap: 6px; }
+            .description { font-size: 0.9rem; }
+            .error-hint { font-size: 0.7rem; padding: 0.8rem 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
+<div class="bg-glow"></div>
 
-    <div class="container">
-        <!-- Вставьте путь к логотипу в src -->
-        <div class="logo-placeholder">
-            <img src="https://kolyadual.github.io/dualgamingcentre/img/logo-light.png" alt="DGC Logo"> 
-        </div>
-
-        <div class="glitch-wrapper">
-            <h1>404</h1>
-        </div>
-        
-        <h2>Упс! Ошибка!</h2>
-        
-        <p style="color: #888; margin-bottom: 30px;">Кажется, эта игра была удалена или сайт просто недоступен! Приносим все извинения.</p>
-
-        <a href="https://kolyadual.github.io/dualgamingcentre" class="btn-home">На главную</a>
+<div class="container">
+    <div class="logo-placeholder">
+        <img src="https://kolyadual.github.io/dualgamingcentre/img/logo-light.png" alt="Dual Gaming Centre">
     </div>
 
+    <div class="glitch-wrapper">
+        <h1 class="glitchable">404</h1>
+    </div>
+
+    <h2 class="glitchable">СТРАНИЦА ПОТЕРЯНА В КИБЕРПРОСТРАНСТВЕ</h2>
+    
+    <div class="description glitchable">
+        <i class="fas fa-gamepad" style="margin-right: 8px; color:#00f2ff;"></i> 
+        Эта страница ещё не создана или была перемещена. Мы активно работаем над контентом!
+    </div>
+
+    <div class="error-actions">
+        <a href="https://kolyadual.github.io/dualgamingcentre" class="btn btn-primary glitchable">
+            <i class="fas fa-home"></i> НА ГЛАВНУЮ
+        </a>
+        <a href="https://t.me/DGC_off" class="btn btn-ghost glitchable" target="_blank" rel="noopener">
+            <i class="fab fa-telegram"></i> TELEGRAM
+        </a>
+    </div>
+
+    <div class="error-hint lag-text">
+        <i class="fas fa-microchip"></i>
+        Если вы считаете, что это ошибка — сообщите нам в 
+        <a href="https://t.me/DGC_off" target="_blank">@DGC_off</a>.
+    </div>
+
+    <p class="copyright lag-text">
+        <i class="far fa-copyright"></i> 2026 Kolyadual & kirilldual — Dual Gaming Centre. Все права защищены.
+    </p>
+</div>
+
+<script>
+    (function() {
+        // --- ГЛИТЧ-ЭФФЕКТ (случайное моргание элементов .glitchable) ---
+        const glitchElements = document.querySelectorAll('.glitchable');
+        const triggerRandomGlitch = () => {
+            if (!glitchElements.length) return;
+            const randomIndex = Math.floor(Math.random() * glitchElements.length);
+            const target = glitchElements[randomIndex];
+            target.classList.add('glitch-effect');
+            setTimeout(() => {
+                target.classList.remove('glitch-effect');
+            }, 160);
+        };
+        setInterval(() => {
+            triggerRandomGlitch();
+        }, Math.random() * 1500 + 800);
+
+        // --- ЭФФЕКТ ЛАГА (коррупция текста) БЕЗ ПОТЕРИ СТИЛЕЙ И РАМОК ---
+        const lagElements = document.querySelectorAll('.lag-text');
+        
+        // Для каждого элемента сохраняем его исходное HTML-содержимое (чтобы потом восстановить)
+        const originalHtmlMap = new Map();
+        lagElements.forEach(el => {
+            originalHtmlMap.set(el, el.innerHTML);
+        });
+        
+        // Функция временного искажения текста внутри элемента, не затрагивая сам элемент
+        const applyLag = (element) => {
+            // Сохраняем ссылку на родителя и сам элемент (не заменяем его)
+            const originalHtml = originalHtmlMap.get(element);
+            if (!originalHtml) return;
+            
+            // Создаём временный div, чтобы работать с DOM-узлами
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = originalHtml;
+            
+            // Проходим по всем текстовым узлам внутри tempDiv и искажаем их
+            const walker = document.createTreeWalker(tempDiv, NodeFilter.SHOW_TEXT, null, false);
+            const textNodes = [];
+            while (walker.nextNode()) textNodes.push(walker.currentNode);
+            
+            const corruptionChars = '!@#$%&?*+{}[]<>/\\|~`░▒▓█§±';
+            textNodes.forEach(node => {
+                let text = node.nodeValue;
+                if (!text.trim()) return;
+                let corrupted = '';
+                for (let i = 0; i < text.length; i++) {
+                    const ch = text[i];
+                    // Сохраняем пробелы, знаки препинания, ссылки не трогаем
+                    if (ch === ' ' || ch === '.' || ch === ',' || ch === ';' || ch === ':' || ch === '\n' || Math.random() > 0.65) {
+                        corrupted += ch;
+                    } else {
+                        const randChar = corruptionChars[Math.floor(Math.random() * corruptionChars.length)];
+                        corrupted += randChar;
+                    }
+                }
+                node.nodeValue = corrupted;
+            });
+            
+            // Сохраняем искажённый HTML
+            const corruptedHtml = tempDiv.innerHTML;
+            
+            // Временно заменяем содержимое элемента на искажённое
+            element.innerHTML = corruptedHtml;
+            
+            // Через 800 мс возвращаем оригинальное содержимое
+            setTimeout(() => {
+                if (element && element.parentNode) {
+                    element.innerHTML = originalHtml;
+                }
+            }, 800);
+        };
+        
+        // Запускаем лаг на случайных элементах с классом .lag-text
+        setInterval(() => {
+            if (!lagElements.length) return;
+            const randomIndex = Math.floor(Math.random() * lagElements.length);
+            const target = lagElements[randomIndex];
+            if (target && target.parentNode) {
+                applyLag(target);
+            }
+        }, Math.random() * 4000 + 2800);
+        
+        // Дополнительный эффект пульсации для 404
+        const titleH1 = document.querySelector('h1');
+        if (titleH1) {
+            setInterval(() => {
+                if (Math.random() > 0.85) {
+                    titleH1.style.textShadow = '0 0 18px rgba(0,242,255,0.9)';
+                    setTimeout(() => {
+                        titleH1.style.textShadow = '0 0 12px rgba(0,242,255,0.3)';
+                    }, 120);
+                }
+            }, 2100);
+        }
+    })();
+</script>
 </body>
 </html>
-
