@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dual Gaming Centre | Играй в лучшие игры и скачивай их без регистрации!</title>
+<link rel="icon" href="./favicon.png" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+<link rel="apple-touch-icon" href="img/icon.png">
+<meta name="description" content="Огромная коллекция классических и современных игр. Играйте онлайн без скачивания или скачивайте на ПК. Ежедневные обновления, эвенты, турниры.">
+<meta name="keywords" content="игры онлайн, скачать игры бесплатно, ретро игры, эмуляторы, DOOM, Sonic, играть без регистрации, DGC, fnaf в браузере, марио в браузере">
+<link rel="canonical" href="https://kolyadual.github.io/dualgamingcentre/">
+<meta property="og:title" content="Dual Gaming Centre — Играйте или загружайте лучшие игры бесплатно и без регистрации!">
+<meta property="og:description" content="Откройте для себя огромную коллекцию классических и современных игр. Никаких скачиваний, никаких подписок — просто наслаждайтесь игрой! Телеграм: https://t.me/DGC_off">
+<meta property="og:image" content="https://kolyadual.github.io/dualgamingcentre/image.png">
+<meta property="og:url" content="https://kolyadual.github.io/dualgamingcentre/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag_js?id=110422500', 'ym');
+    ym(110422500, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/110422500" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Dual Gaming Centre",
+    "url": "https://kolyadual.github.io/dualgamingcentre/",
+    "description": "Бесплатные онлайн-игры и загрузка классических игр. Эмуляторы PS1, NES, Sega, аркады.",
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://kolyadual.github.io/dualgamingcentre/?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+    }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+:root {
+    --primary: #6e45e2; --secondary: #88d3ce; --dark: #1a1a2e; --light: #f1f1f1;
+    --accent: #ff6b6b; --success: #4caf50; --warning: #ff9800;
+    --toggle-bg: #2a2a3a; --toggle-active: #6e45e2; --toggle-handle: #ffffff;
+    --border-color: rgba(255,255,255,0.1); --card-bg: rgba(255,255,255,0.05);
+    --hover-bg: rgba(110,69,226,0.2); --text-secondary: rgba(255,255,255,0.7);
+}
+:root[data-theme="brutal-dark"] {
+    --primary: #ff0000; --secondary: #ff4444; --dark: #0a0a0a; --light: #cccccc;
+    --accent: #ff3300; --success: #00ff00; --warning: #ffaa00;
+    --toggle-bg: #330000; --toggle-active: #ff0000; --toggle-handle: #ff6666;
+    --border-color: #ff0000; --card-bg: #1a0000; --hover-bg: rgba(255,0,0,0.2);
+    --text-secondary: #ff9999;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rubik', sans-serif; }
+body { background: linear-gradient(135deg, var(--dark), #16213e); color: var(--light); min-height: 100vh; position: relative; overflow-x: hidden; transition: background 0.5s ease; }
+
+/* Lenis: корректный скролл вложенных блоков */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: inherit !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* === ЛОАДЕР === */
+#loader { position: fixed; inset: 0; z-index: 300; background: linear-gradient(135deg, var(--dark), #16213e); display: flex; align-items: center; justify-content: center; }
+.loader-inner { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.loader-logo { display: flex; overflow: hidden; font-weight: 600; font-size: 14px; letter-spacing: 6px; text-transform: uppercase; color: var(--light); }
+.loader-logo span { display: inline-block; }
+.loader-bar-wrap { width: 220px; height: 2px; background: var(--card-bg); border-radius: 2px; overflow: hidden; }
+.loader-bar { height: 100%; width: 100%; background: linear-gradient(to right, var(--primary), var(--secondary)); transform: scaleX(0); transform-origin: left; }
+.loader-counter { font-family: monospace; font-size: 12px; color: var(--text-secondary); }
+
+/* === СЛАЙД-МЕНЮ === */
+.slide-menu {
+    position: fixed; top: 0; left: -320px; width: 320px; height: 100%;
+    background: rgba(26,26,46,0.98); backdrop-filter: blur(10px); z-index: 1000;
+    transition: left 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+    border-right: 1px solid var(--border-color);
+    box-shadow: 5px 0 25px rgba(0,0,0,0.3);
+    overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+    display: flex; flex-direction: column;
+}
+.slide-menu.active { left: 0; }
+.menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+.menu-overlay.active { opacity: 1; visibility: visible; }
+.menu-header { padding: 25px 20px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-bottom: 1px solid var(--border-color); }
+.menu-header h2 { font-size: 1.5rem; background: rgba(255,255,255,0.95); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700; }
+.menu-section { padding: 20px; border-bottom: 1px solid var(--border-color); }
+.menu-section-title { font-size: 0.9rem; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; font-weight: 600; }
+.menu-items { display: flex; flex-direction: column; gap: 10px; }
+.menu-item { display: flex; align-items: center; gap: 15px; padding: 12px 15px; background: var(--card-bg); border-radius: 10px; cursor: pointer; transition: all 0.3s; border: 1px solid transparent; }
+.menu-item:hover { background: var(--hover-bg); border-color: var(--primary); transform: translateX(5px); }
+.menu-item.active { background: var(--hover-bg); border-color: var(--primary); }
+.menu-item i { width: 24px; text-align: center; font-size: 1.2rem; color: var(--secondary); }
+.menu-item span { font-size: 1rem; font-weight: 500; }
+.platform-icons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+.platform-icon { width: 100%; height: 80px; background: var(--card-bg); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; border: 1px solid transparent; padding: 10px; }
+.platform-icon:hover { background: var(--hover-bg); border-color: var(--primary); transform: scale(1.05); }
+.platform-icon.active { background: var(--hover-bg); border-color: var(--primary); }
+.platform-icon img { width: 32px; height: 32px; object-fit: contain; margin-bottom: 5px; }
+.platform-icon span { font-size: 0.7rem; text-align: center; line-height: 1.2; }
+
+/* === ТОГГЛ ТЕМЫ === */
+.theme-switcher-menu { display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; background: var(--card-bg); border-radius: 8px; margin-top: 5px; border: 1px solid var(--border-color); }
+.theme-label { font-size: 0.85rem; font-weight: 500; color: var(--light); display: flex; align-items: center; gap: 6px; }
+.theme-label i { color: var(--secondary); font-size: 1rem; }
+.theme-toggle-container { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+.theme-toggle-checkbox { opacity: 0; width: 0; height: 0; position: absolute; }
+.theme-toggle-label { display: block; width: 100%; height: 100%; background: var(--toggle-bg); border-radius: 24px; cursor: pointer; position: relative; border: 1px solid var(--border-color); transition: all 0.3s ease; }
+.theme-toggle-label::after { content: ''; position: absolute; width: 20px; height: 20px; background: var(--toggle-handle); border-radius: 50%; top: 2px; left: 2px; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+.theme-toggle-checkbox:checked + .theme-toggle-label { background: var(--toggle-active); }
+.theme-toggle-checkbox:checked + .theme-toggle-label::after { left: calc(100% - 22px); background: white; }
+.theme-toggle-checkbox:checked + .theme-toggle-label.brutal-theme::after { background: #ff6666; }
+
+/* === ВЕРХНИЙ ДОК === */
+.top-dock { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(26,26,46,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 20px; z-index: 100; gap: 20px; }
+.menu-toggle { width: 45px; height: 45px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; transition: all 0.3s; }
+.menu-toggle:hover { background: var(--hover-bg); transform: scale(1.05); }
+.menu-toggle span { width: 20px; height: 2px; background: var(--secondary); border-radius: 2px; transition: all 0.3s; }
+.menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.menu-toggle.active span:nth-child(2) { opacity: 0; }
+.menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+.logo { display: flex; align-items: center; gap: 15px; }
+.logo h1 { font-size: 1.6rem; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700; }
+.search-bar { flex-grow: 1; position: relative; max-width: 600px; }
+.search-bar input { width: 100%; padding: 12px 20px; border-radius: 50px; border: 1px solid var(--border-color); background: var(--card-bg); color: white; font-size: 1rem; outline: none; transition: all 0.3s; }
+.search-bar input:focus { background: var(--hover-bg); border-color: var(--primary); box-shadow: 0 0 15px rgba(110,69,226,0.4); }
+.search-bar i { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
+#particles-js { position: fixed; width: 100%; height: 100%; z-index: -1; }
+
+main { padding: 2rem; padding-top: 90px; }
+.hero { text-align: center; padding: 3rem 0; margin-bottom: 2rem; }
+.hero h2 { font-size: 2.5rem; margin-bottom: 1rem; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero p { font-size: 1.2rem; max-width: 800px; margin: 0 auto 2rem; color: var(--text-secondary); }
+.cta-buttons { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+.cta-buttons button { padding: 0.8rem 2rem; border-radius: 50px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+.browse-games { background: var(--accent); color: white; }
+.browse-games:hover { background: #e05555; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255,107,107,0.3); }
+.trending { background: transparent; color: var(--light); border: 2px solid var(--secondary); }
+.trending:hover { background: var(--hover-bg); transform: translateY(-3px); }
+
+.categories { margin: 3rem 0; }
+.section-title { font-size: 1.8rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+.section-title i { color: var(--primary); }
+.category-buttons { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem; }
+.category-buttons::-webkit-scrollbar { height: 5px; }
+.category-buttons::-webkit-scrollbar-track { background: var(--card-bg); border-radius: 10px; }
+.category-buttons::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+.category-btn { padding: 0.6rem 1.5rem; border-radius: 50px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--light); font-weight: 500; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
+.category-btn:hover, .category-btn.active { background: var(--primary); border-color: var(--primary); }
+
+.games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 2rem; margin-top: 2rem; }
+.game-card { background: var(--card-bg); border-radius: 15px; overflow: hidden; transition: all 0.3s; position: relative; border: 1px solid var(--border-color); display: flex; flex-direction: column; }
+.game-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.3); border-color: var(--primary); }
+.game-card img { width: 100%; height: 180px; object-fit: cover; }
+.game-info { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+.game-info h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+.game-info .genre { color: var(--secondary); font-size: 0.9rem; margin-bottom: 1rem; display: block; }
+.game-info .description { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
+.game-actions { display: flex; gap: 0.8rem; margin-top: auto; }
+.play-btn, .download-btn-card { flex: 1; padding: 0.6rem 0; border-radius: 50px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.3rem; font-size: 0.9rem; }
+.play-btn { background: var(--success); color: white; }
+.play-btn:hover { background: #3d9c40; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(76,175,80,0.3); }
+.download-btn-card { background: var(--primary); color: white; }
+.download-btn-card:hover { background: var(--secondary); transform: translateY(-2px); box-shadow: 0 5px 10px rgba(110,69,226,0.3); }
+
+.pagination { display: flex; justify-content: center; gap: 8px; margin-top: 40px; margin-bottom: 20px; flex-wrap: wrap; }
+.pagination button { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--light); padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; font-weight: 500; }
+.pagination button.active { background: var(--primary); border-color: var(--primary); color: white; }
+.pagination button:hover:not(.active) { background: var(--hover-bg); transform: translateY(-2px); }
+
+.confirm-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
+.confirm-content { background: var(--dark); padding: 2rem; border-radius: 10px; max-width: 500px; width: 90%; border: 1px solid var(--primary); }
+.confirm-content h3 { color: var(--accent); margin-bottom: 1rem; }
+.confirm-content p { margin-bottom: 1.5rem; line-height: 1.5; color: var(--text-secondary); }
+.confirm-buttons { display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap; }
+.confirm-btn { padding: 0.5rem 1.5rem; border-radius: 5px; cursor: pointer; font-weight: 600; }
+.confirm-cancel { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+.confirm-proceed { background: var(--accent); border: 1px solid var(--accent); color: white; }
+
+.events-page { display: none; padding: 2rem; max-width: 1200px; margin: 0 auto; padding-top: 90px; }
+.events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(350px, 100%), 1fr)); gap: 2rem; margin-top: 2rem; }
+.event-card { background: var(--card-bg); border-radius: 15px; overflow: hidden; transition: all 0.3s; position: relative; border: 1px solid var(--border-color); }
+.event-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); border-color: var(--primary); }
+.event-card img { width: 100%; height: 200px; object-fit: cover; }
+.event-info { padding: 1.5rem; }
+.event-info h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+.event-date { color: var(--secondary); font-size: 0.9rem; margin-bottom: 1rem; display: block; }
+.event-info .description { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.event-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.participate-btn { padding: 0.6rem 1.5rem; border-radius: 50px; border: none; background: var(--accent); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 0.5rem; }
+.participate-btn:hover { background: #e05555; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,107,107,0.3); }
+.participants-count { font-size: 0.9rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.3rem; }
+
+.flipsters-page { display: none; position: fixed; inset: 0; background: #000; z-index: 1000; flex-direction: column; }
+.flipster-container { position: relative; width: 100%; height: 100%; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+.flipster-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+.flipster-controls { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 1rem; z-index: 10; background: rgba(0,0,0,0.7); padding: 1rem; border-radius: 50px; backdrop-filter: blur(5px); }
+.flipster-btn { width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white; font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.3s; }
+.flipster-btn:hover { background: rgba(255,255,255,0.2); }
+.flipster-actions { position: absolute; right: 20px; top: 20px; display: flex; flex-direction: column; gap: 1rem; z-index: 10; }
+.flipster-action-btn { width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,0.5); border: 2px solid rgba(255,255,255,0.3); color: white; font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.3s; }
+.flipster-action-btn:hover { background: rgba(255,255,255,0.2); }
+.flipster-info { position: absolute; left: 20px; bottom: 100px; color: white; z-index: 10; max-width: 70%; }
+.flipster-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; }
+.flipster-genre { color: var(--secondary); font-size: 1rem; }
+.flipster-loader { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; color: white; z-index: 20; }
+.flipster-loader i { font-size: 2rem; margin-bottom: 1rem; animation: spin 1s linear infinite; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.welcome-screen { position: fixed; inset: 0; background: linear-gradient(135deg, var(--dark), #16213e); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 200; transition: opacity 0.5s ease; padding: 20px; }
+.welcome-logo { font-size: 3rem; margin-bottom: 2rem; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; text-align: center; }
+.welcome-text { font-size: 1.2rem; max-width: 600px; text-align: center; margin-bottom: 2rem; color: var(--light); }
+.enter-btn { padding: 1rem 2rem; border-radius: 50px; border: none; background: var(--accent); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 1rem; }
+.enter-btn:hover { background: #e05555; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255,107,107,0.3); }
+
+footer { background: rgba(26,26,46,0.8); padding: 3rem 2rem 2rem; margin-top: 3rem; border-top: 1px solid var(--border-color); }
+.footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+.footer-column h3 { font-size: 1.2rem; margin-bottom: 1.5rem; color: var(--secondary); }
+.footer-column ul { list-style: none; }
+.footer-column li { margin-bottom: 0.8rem; }
+.footer-column a { color: var(--text-secondary); text-decoration: none; transition: all 0.3s; }
+.footer-column a:hover { color: var(--primary); }
+.social-links { display: flex; gap: 1rem; margin-top: 1rem; }
+.social-links a { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: var(--card-bg); color: white; transition: all 0.3s; }
+.social-links a:hover { background: var(--primary); transform: translateY(-3px); }
+.copyright { text-align: center; margin-top: 3rem; color: var(--text-secondary); font-size: 0.9rem; }
+
+/* === 📱 МОБИЛЬНАЯ ОПТИМИЗАЦИЯ === */
+@media (max-width: 768px) {
+    .top-dock { height: 60px; padding: 0 12px; gap: 10px; }
+    .menu-toggle { width: 40px; height: 40px; }
+    .logo h1 { font-size: 1.1rem; }
+    .search-bar input { padding: 10px 16px; font-size: 0.95rem; }
+    .search-bar i { right: 14px; }
+    main { padding: 1rem; padding-top: 75px; }
+    .events-page { padding: 1rem; padding-top: 75px; }
+    .hero { padding: 2rem 0; margin-bottom: 1rem; }
+    .hero h2 { font-size: 1.7rem; }
+    .hero p { font-size: 1rem; }
+    .cta-buttons { flex-direction: column; align-items: stretch; gap: 0.7rem; }
+    .cta-buttons button { width: 100%; justify-content: center; }
+    .section-title { font-size: 1.4rem; }
+    .category-buttons { gap: 0.6rem; }
+    .category-btn { padding: 0.5rem 1.1rem; font-size: 0.9rem; }
+    .games-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .events-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .game-info, .event-info { padding: 1rem; }
+    .slide-menu { width: min(320px, 85%); }
+    .welcome-logo { font-size: 2rem; padding: 0 1rem; }
+    .welcome-text { font-size: 1rem; padding: 0 1.2rem; }
+    .flipster-controls { bottom: 12px; padding: 0.7rem; gap: 0.7rem; }
+    .flipster-btn, .flipster-action-btn { width: 44px; height: 44px; font-size: 1rem; }
+    .flipster-actions { right: 12px; top: 12px; gap: 0.7rem; }
+    .flipster-info { left: 12px; bottom: 90px; max-width: 60%; }
+    .flipster-title { font-size: 1.2rem; }
+    footer { padding: 2rem 1.2rem 1.5rem; }
+    .footer-content { grid-template-columns: 1fr; gap: 1.5rem; }
+    .confirm-content { padding: 1.2rem; }
+}
+@media (max-width: 480px) {
+    .logo h1 { display: none; }
+    .game-actions { flex-direction: column; }
+}
+button, .menu-item, .category-btn, .platform-icon { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+</style>
+</head>
+<body>
+
+<!-- ЛОАДЕР -->
+<div id="loader">
+    <div class="loader-inner">
+        <div class="loader-logo" id="loader-logo"></div>
+        <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
+        <div class="loader-counter" id="loader-counter">0%</div>
+    </div>
+</div>
+
+<div id="particles-js"></div>
+
+<!-- ПРИВЕТСТВИЕ -->
+<div class="welcome-screen" id="welcome-screen">
+    <h1 class="welcome-logo">Dual Gaming Centre</h1>
+    <p class="welcome-text">Добро пожаловать в лучший игровой центр! Играйте в классические и современные игры бесплатно и без регистрации.</p>
+    <button class="enter-btn" id="enter-btn">Войти в игровой центр</button>
+</div>
+
+<!-- ВЕРХНИЙ ДОК -->
+<header class="top-dock">
+    <button class="menu-toggle" id="menu-toggle" aria-label="Меню"><span></span><span></span><span></span></button>
+    <div class="logo"><h1>Dual Gaming Centre</h1></div>
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Поиск игр...">
+        <i class="fas fa-search"></i>
+    </div>
+</header>
+
+<!-- СЛАЙД-МЕНЮ (data-lenis-prevent — чтобы меню скроллилось само) -->
+<nav class="slide-menu" id="slide-menu" data-lenis-prevent>
+    <div class="menu-header"><h2>Dual Gaming Centre</h2></div>
+    <div class="menu-section">
+        <div class="menu-section-title">Навигация</div>
+        <div class="menu-items">
+            <div class="menu-item active" data-page="home"><i class="fas fa-home"></i><span>Главная</span></div>
+            <div class="menu-item" data-page="events"><i class="fas fa-trophy"></i><span>Эвенты</span></div>
+            <div class="menu-item" data-page="flipsters"><i class="fas fa-random"></i><span>Флипсы</span></div>
+            <div class="menu-item" data-action="search"><i class="fas fa-search"></i><span>Поиск игр</span></div>
+            <div class="menu-item" data-action="trending"><i class="fas fa-fire"></i><span>Популярное</span></div>
+            <div class="menu-item" data-action="all-games"><i class="fas fa-gamepad"></i><span>Все игры</span></div>
+        </div>
+    </div>
+    <div class="menu-section">
+        <div class="menu-section-title">Платформы</div>
+        <div class="platform-icons" id="menu-platforms"></div>
+    </div>
+    <div class="menu-section">
+        <div class="menu-section-title">Настройки</div>
+        <div class="theme-switcher-menu">
+            <span class="theme-label"><i class="fas fa-moon"></i> Тёмная тема</span>
+            <div class="theme-toggle-container">
+                <input type="checkbox" id="theme-toggle-checkbox" class="theme-toggle-checkbox">
+                <label for="theme-toggle-checkbox" id="theme-toggle-label" class="theme-toggle-label"></label>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="menu-overlay" id="menu-overlay"></div>
+
+<!-- ГЛАВНАЯ -->
+<main id="home-page">
+    <section class="hero">
+        <h2>Играйте в лучшие игры бесплатно</h2>
+        <p>Откройте для себя огромную коллекцию классических и современных игр. Никаких скачиваний, никаких подписок - просто наслаждайтесь игрой!</p>
+        <p>Dual Gaming Centre - сервис для бесплатной игры в онлайн игры или скачивания их. Пожалуй, Dual Gaming Centre - сервис лучше чем VK Play, Яндекс игры и Drova.io!</p>
+        <div class="cta-buttons">
+            <button class="browse-games" id="all-games-btn"><i class="fas fa-gamepad"></i> Все игры</button>
+            <button class="trending" id="trending-btn"><i class="fas fa-fire"></i> Популярное</button>
+        </div>
+    </section>
+    <section class="categories">
+        <h2 class="section-title"><i class="fas fa-th-large"></i> Категории</h2>
+        <div class="category-buttons">
+            <button class="category-btn active" data-category="all">Все</button>
+            <button class="category-btn" data-category="shooter">Шутеры</button>
+            <button class="category-btn" data-category="arcade">Аркады</button>
+            <button class="category-btn" data-category="racing">Гонки</button>
+            <button class="category-btn" data-category="puzzle">Головоломки</button>
+            <button class="category-btn" data-category="platform">Платформеры</button>
+            <button class="category-btn" data-category="retro">Ретро</button>
+            <button class="category-btn" data-category="strategy">Стратегии</button>
+            <button class="category-btn" data-category="fighting">Файтинги</button>
+            <button class="category-btn" data-category="rpg">RPG</button>
+            <button class="category-btn" data-category="adventure">Приключения</button>
+            <button class="category-btn" data-category="sports">Спортивные</button>
+            <button class="category-btn" data-category="horror">Хоррор</button>
+            <button class="category-btn" data-category="sandbox">Песочницы</button>
+        </div>
+    </section>
+    <section class="games">
+        <h2 class="section-title"><i class="fas fa-star"></i> Популярные игры</h2>
+        <div class="games-grid" id="games-container"></div>
+        <div class="pagination" id="pagination-container"></div>
+    </section>
+</main>
+
+<!-- ЭВЕНТЫ -->
+<section class="events-page" id="events-page">
+    <h2 class="section-title"><i class="fas fa-trophy"></i> Игровые события и турниры</h2>
+    <p style="color: var(--text-secondary);">Участвуйте в захватывающих событиях, турнирах и соревнованиях. Выигрывайте призы и получайте уникальный игровой опыт!</p>
+    <h3 style="margin-top: 2rem;">Текущие события</h3>
+    <div class="events-grid" id="events-container"></div>
+    <h3 style="margin-top: 2rem;">Предстоящие турниры</h3>
+    <div class="events-grid" id="tournaments-container"></div>
+</section>
+
+<!-- ФЛИПСЫ -->
+<section class="flipsters-page" id="flipsters-page">
+    <div class="flipster-container">
+        <iframe class="flipster-frame" id="flipster-frame" title="Флипсы"></iframe>
+        <div class="flipster-loader" id="flipster-loader"><i class="fas fa-spinner"></i><p>Загрузка Флипсов...</p></div>
+        <div class="flipster-info">
+            <div class="flipster-title" id="flipster-title">Заголовок Флипсы</div>
+            <div class="flipster-genre" id="flipster-genre">Жанр</div>
+        </div>
+        <div class="flipster-actions">
+            <button class="flipster-action-btn" id="like-btn"><i class="fas fa-heart"></i></button>
+            <button class="flipster-action-btn" id="comment-btn"><i class="fas fa-comment"></i></button>
+        </div>
+        <div class="flipster-controls">
+            <button class="flipster-btn" id="prev-flipster"><i class="fas fa-chevron-up"></i></button>
+            <button class="flipster-btn" id="next-flipster"><i class="fas fa-chevron-down"></i></button>
+        </div>
+    </div>
+</section>
+
+<!-- МОДАЛКА -->
+<div class="confirm-modal" id="confirm-modal">
+    <div class="confirm-content">
+        <h3><i class="fas fa-exclamation-triangle"></i> Внимание!</h3>
+        <p>Вы переходите на внешнюю ссылку. Все несохраненные данные (прогресс игры и другие) будут утеряны.<br><br>Вы уверены, что хотите продолжить?</p>
+        <div class="confirm-buttons">
+            <button class="confirm-btn confirm-cancel" id="confirm-cancel">Отмена</button>
+            <button class="confirm-btn confirm-proceed" id="confirm-proceed">Продолжить</button>
+        </div>
+    </div>
+</div>
+
+<!-- ФУТЕР -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>Dual Gaming Centre</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Лучшие бесплатные онлайн игры в одном месте. Играйте без скачивания и регистрации.</p>
+            <div class="social-links">
+                <a href="https://t.me/DGC_off" target="_blank" aria-label="Телеграм"><i class="fab fa-telegram-plane"></i></a>
+                <a href="https://github.com/Kolyadual" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="mailto:dualgamingcentre@mail.ru" aria-label="Почта"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+        <div class="footer-column">
+            <h3>Меню</h3>
+            <ul>
+                <li><a href="#" id="footer-home">Главная</a></li>
+                <li><a href="#" id="footer-games">Игры</a></li>
+                <li><a href="#" id="footer-events">Эвенты</a></li>
+                <li><a href="#" id="footer-flipsters">Флипсы</a></li>
+                <li><a href="#" id="footer-categories">Категории</a></li>
+                <li><a href="#" id="footer-popular">Популярное</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Информация</h3>
+            <ul>
+                <li><a href="https://github.com/Kolyadual" target="_blank">О Kolyadual</a></li>
+                <li><a href="#">Контакты</a></li>
+                <li><a href="#">Политика конфиденциальности</a></li>
+                <li><a href="#">Условия использования</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Огромное спасибо</h3>
+            <ul>
+                <li><a href="https://github.com/kirilldual" target="_blank">Kirilldual</a></li>
+                <li><a href="https://t.me/fffbnx" target="_blank">Ivan pro Games</a></li>
+            </ul>
+            <h3 style="margin-top: 1.5rem;">Другие проекты</h3>
+            <ul><li><a href="https://github.com/Kolyadual/Runget-next_generating_operating_system" target="_blank">Runget (Операционная система)</a></li></ul>
+            <h3 style="margin-top: 1.5rem;">Поддержка</h3>
+            <ul>
+                <li><a href="#">Помощь</a></li>
+                <li><a href="mailto:dualgamingcentre@mail.ru">Сообщить о проблеме</a></li>
+                <li><a href="mailto:dualgamingcentre@mail.ru">Предложить игру</a></li>
+            </ul>
+        </div>
+    </div>
+    <p class="copyright">© Dual Gaming Centre. Этот сайт был сделан Kolyadual в 2025 году. Все права защищены.</p>
+</footer>
+
+<!-- БИБЛИОТЕКИ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://unpkg.com/lenis@1/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+<script>
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = id => document.getElementById(id);
+const on = (id, ev, fn) => { const el = $(id); if (el) el.addEventListener(ev, fn); };
+
+// === ДАННЫЕ: вставь сюда свой полный массив игр (id 1–42) ===
+const games = [
+    { id: 1, title: "Geometry Dash", genre: "Аркада", category: "arcade", platform: "web", description: "Легендарная ритм-игра, где вы прыгаете под музыку!", cover: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/322170/ss_05cb182b93131a5faf0516232a7ad27c83f2c0e8.1920x1080.jpg?t=1703006148", playUrl: "https://genetrydash.github.io/", downloadUrl: "#", trending: true },
+    { id: 2, title: "Cut The Rope", genre: "Головоломка", category: "puzzle", platform: "web", description: "Легендарная игра про Ам-Няма, который любит конфеты!", cover: "https://tse3.mm.bing.net/th/id/OIP.zs8BlfLbU6VlyQuCtJ2W7wHaEK", playUrl: "https://kolyadual.github.io/other-dgc-games3/cuttherope", downloadUrl: "#", trending: true },
+    { id: 3, title: "Cut The Rope 2", genre: "Головоломка", category: "puzzle", platform: "web", description: "Часть 2 с новыми уровнями!", cover: "https://pic.rutubelist.ru/video/06/c3/06c32819e14a20cc241e1d647a16508b.jpg", playUrl: "https://emupedia.net/emupedia-game-cut-the-rope2/", downloadUrl: "#", trending: true },
+    { id: 4, title: "Cut The Rope: Time Travel", genre: "Головоломка", category: "puzzle", platform: "web", description: "Ам-Ням путешествует по разным временным промежуткам.", cover: "https://greatgamer.ru/images/games_cover/cover_22936.jpg", playUrl: "https://emupedia.net/emupedia-game-cut-the-rope-time-travel/", downloadUrl: "#", trending: true },
+    { id: 5, title: "Cut The Rope: Magic", genre: "Головоломка", category: "puzzle", platform: "web", description: "Легендарная игра с магическими элементами!", cover: "https://img.gamepix.com/games/cut-the-rope-magic/cover/cut-the-rope-magic.png?w=1200&ar=16:10", playUrl: "https://games.cdn.famobi.com/html5games/c/cut-the-rope-magic/v030/", downloadUrl: "#", trending: true },
+    { id: 6, title: "Angry Birds", genre: "Головоломка", category: "puzzle", platform: "web", description: "Классическая игра про злых птичек и зелёных свиней!", cover: "https://th.bing.com/th/id/R.2f1c360eca9fcc768d4e99bf2c8863e3", playUrl: "#", downloadUrl: "#", trending: true },
+    { id: 7, title: "Subway Surfers", genre: "Аркада", category: "arcade", platform: "web", description: "Бесконечный раннер по путям метро!", cover: "https://play-lh.googleusercontent.com/5fVwRjTmV_H7r8ZITzB-OA8P7CgXzQaZ4ZQZ4ZQZ4ZQZ4Z4ZQZ4ZQZ4ZQZ4", playUrl: "https://emupedia.net/emupedia-game-subway-surfers/", downloadUrl: "#", trending: true },
+    { id: 8, title: "Temple Run 2", genre: "Аркада", category: "arcade", platform: "web", description: "Бегите по храму, избегая ловушек и собирая монеты.", cover: "https://play-lh.googleusercontent.com/7sJLHE4qNH4D1Vf4KZQq9JHfZQ5Z6J5Z6J5Z6J5Z6J5Z6J5Z6J5Z6J5Z6J5Z6J5Z6J5Z", playUrl: "https://emupedia.net/emupedia-game-temple-run2/", downloadUrl: "#", trending: true },
+    { id: 9, title: "DOOM 2", genre: "Шутер", category: "shooter", platform: "web", description: "Легендарный шутер от первого лица, полчища демонов из ада.", cover: "https://upload.wikimedia.org/wikipedia/en/6/66/Doom_II_cover_art.jpg", playUrl: "https://playdoom.com/", downloadUrl: "#", trending: true },
+    { id: 10, title: "Super Mario Bros", genre: "Платформер", category: "platform", platform: "nes", description: "Классическая игра про водопроводчика Марио.", cover: "https://upload.wikimedia.org/wikipedia/en/a/a0/Super_Mario_Bros._box.png", playUrl: "https://supermarioplay.com/", downloadUrl: "#", trending: true },
+    { id: 11, title: "Tetris", genre: "Головоломка", category: "puzzle", platform: "web", description: "Самая известная головоломка в мире.", cover: "https://upload.wikimedia.org/wikipedia/en/f/f1/Tetris_NES_cover_art.jpg", playUrl: "https://tetris.com/play-tetris", downloadUrl: "#", trending: true },
+    { id: 12, title: "Minecraft", genre: "Песочница", category: "sandbox", platform: "web", description: "Игра, покорившая мир, последняя версия доступна в DGC!", cover: "https://www.minecraft.net/content/dam/games/minecraft/key-art/MC_The-Wild-Update_540x300.jpg", playUrl: "https://eaglercraft.com/", downloadUrl: "#", trending: true },
+    { id: 13, title: "Pac-Man", genre: "Аркада", category: "arcade", platform: "web", description: "Легендарная аркада с призраками в лабиринте.", cover: "https://upload.wikimedia.org/wikipedia/en/5/59/Pac-man.png", playUrl: "https://www.google.com/logos/2010/pacman10-i.html", downloadUrl: "#", trending: false },
+    { id: 14, title: "Street Fighter II", genre: "Файтинг", category: "fighting", platform: "arcade", description: "Культовая игра в жанре файтинг.", cover: "https://upload.wikimedia.org/wikipedia/en/5/56/Street_Fighter_II_arcade_flyer.jpg", playUrl: "#", downloadUrl: "#", trending: false },
+    { id: 15, title: "Sonic the Hedgehog", genre: "Платформер", category: "platform", platform: "sega", description: "Знаменитый синий ёжик Соник бежит на высокой скорости.", cover: "https://upload.wikimedia.org/wikipedia/en/b/b9/Sonic_the_Hedgehog_1991.png", playUrl: "#", downloadUrl: "#", trending: false },
+    { id: 16, title: "Crash Bandicoot", genre: "3D Платформер", category: "platform", platform: "ps1", description: "Крэшем управляет игрок — генетически модифицированный бандикут.", cover: "https://upload.wikimedia.org/wikipedia/en/f/f8/Crash_Bandicoot_-_PS1_Cover.jpg", playUrl: "#", downloadUrl: "#", trending: false },
+    { id: 17, title: "Pokémon Emerald", genre: "RPG", category: "rpg", platform: "gba", description: "Классическая RPG, ловите покемонов и становитесь чемпионом.", cover: "https://upload.wikimedia.org/wikipedia/en/9/9a/Pokemon_Emerald.jpg", playUrl: "#", downloadUrl: "#", trending: false },
+    { id: 18, title: "DOOM [Sega]", genre: "Шутер", category: "shooter", platform: "sega", description: "Легендарный DOOM добавлен Kolyadual в DGC!", cover: "https://habrastorage.org/r/w1560/getpro/habr/upload_files/9d1/4d4/f75/9d14d4f75d5699a45fd8b7fc13b568ea.png", playUrl: "#", downloadUrl: "#", trending: false },
+    { id: 19, title: "Tekken 3", genre: "Файтинг", category: "fighting", platform: "ps1", description: "Топовая PS1 игра в жанре файтинг!", cover: "https://upload.wikimedia.org/wikipedia/en/0/0a/Tekken_3_arcade_flyer.png", playUrl: "#", downloadUrl: "#", trending: false },
+    { id: 20, title: "Five Nights at Freddy's", genre: "Хоррор", category: "horror", platform: "pc", description: "Сумеете ли вы выжить против четырёх аниматроников?", cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGb18lm_83o5Z0TJo0gW0jVd3_V8OOzh184Re6VrqpYCgHKxzgc2-XCWf0boY3vtxKYIKYHXDN9hbpBoQ-iovjUG9CQKoTUlhCaRbPxA&s=10", playUrl: "https://kolyadual.github.io/dualgamingcentre/games/fnaf1/", downloadUrl: "#", trending: true },
+    { id: 21, title: "Five Nights at Freddy's 3", genre: "Хоррор", category: "horror", platform: "pc", description: "Выживание против фантом-аниматроников.", cover: "https://m.media-amazon.com/images/I/71Pib7x9NbL.jpg", playUrl: "https://kolyadual.github.io/dualgamingcentre/games/fnaf3/", downloadUrl: "#", trending: true },
+    { id: 22, title: "Five Nights at Freddy's 4", genre: "Хоррор", category: "horror", platform: "pc", description: "Выживание против кошмаров в собственном доме.", cover: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/388090/header.jpg?t=1579635988", playUrl: "https://kolyadual.github.io/dualgamingcentre/games/fnaf4/", downloadUrl: "#", trending: true },
+    { id: 23, title: "Five Nights at Freddy's 5", genre: "Хоррор", category: "horror", platform: "pc", description: "Пять ночей у Фредди 5 уже на DGC!", cover: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/506610/capsule_616x353.jpg?t=1579635985", playUrl: "https://kolyadual.github.io/dualgamingcentre/games/fnaf5/", downloadUrl: "#", trending: false },
+    { id: 24, title: "Five Nights at Freddy's 6", genre: "Хоррор", category: "horror", platform: "pc", description: "Пять ночей у Фредди 6 уже на DGC!", cover: "https://play-lh.googleusercontent.com/rZTIKpGZ43beAMLicxgq4EmgJueO64XO2twMpsfXa4vBPwmc9JxXzp1YPog0KvOZObEwmrnitQhI0cbOFUpKWn8=w526-h296-rw", playUrl: "https://kolyadual.github.io/other-dgc-games/fnaf6/", downloadUrl: "#", trending: false },
+    { id: 25, title: "Five Nights at Freddy's 7", genre: "Хоррор", category: "horror", platform: "pc", description: "Пять ночей у Фредди 7 уже на DGC!", cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJL3ZKp4po1dsirJLWJ0FO0iA_5ylX3vbhjw&s", playUrl: "https://kolyadual.github.io/other-dgc-games/fnaf7/", downloadUrl: "#", trending: false },
+    { id: 26, title: "Five Nights at Freddy's World", genre: "Хоррор", category: "horror", platform: "pc", description: "Пять ночей у Фредди в мире!", cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiVhkg1HRiIX9VONpizndVcIZ6BIuBVSYBTg&s", playUrl: "https://kolyadual.github.io/other-dgc-games/fnafworld/", downloadUrl: "#", trending: false }
+];
+
+const flipsters = [
+    { title: "Astray", genre: "Аркада", frame: "https://wwwtyro.github.io/Astray/" },
+    { title: "Evil Glitch", genre: "Хоррор платформер", frame: "https://kolyadual.github.io/dualgamingcentre/games/evilglitch/" },
+    { title: "Doodle Jump", genre: "Аркада", frame: "https://kolyadual.github.io/dualgamingcentre/games/dodle-jump/" },
+    { title: "Flappy Bird", genre: "Аркада", frame: "https://emupedia.net/emupedia-game-flappy-bird/" }
+];
+
+const events = [
+    { id: 1, title: "Выход Runget 1.0!", date: "22 октября 2025 года", description: "Примите участие в тестировании первой версии нашей операционной системы Runget!", image: "https://via.placeholder.com/300x200/6e45e2/ffffff?text=Runget+1.0", participants: 24, maxParticipants: 32, type: "tournament" },
+    { id: 2, title: "Забег в Need for Speed", date: "20 декабря 2025", description: "Соревнование на лучший результат в гоночном заезде. Победитель получит эксклюзивный скин.", image: "https://www.giantbomb.com/a/uploads/scale_super/0/27/585117-aq_master_000019.jpg", participants: 56, maxParticipants: 100, type: "event" },
+    { id: 3, title: "Фестиваль ретро-игр", date: "25-27 декабря 2025", description: "Трехдневный марафон классических игр 80-х и 90-х. Ностальгируйте и соревнуйтесь!", image: "https://media.istockphoto.com/id/458259491/ru/%D1%84%D0%BE%D1%82%D0%BE/%D1%81%D1%82%D0%B0%D1%80%D1%8B%D0%B9-%D0%B8-%D0%BD%D0%BE%D0%B2%D1%8B%D0%B9-%D0%B2-%D0%B8%D0%B3%D1%80%D0%BE%D0%B2%D1%8B%D0%B5-%D0%BA%D0%BE%D0%BD%D1%81%D0%BE%D0%BB%D0%B8.jpg?s=612x612&w=612&k=20&c=VBQAU9agm_hYSPpi9zkdsrO9acqx_yrYD6NfRIjyAag=", participants: 120, maxParticipants: 200, type: "festival" },
+    { id: 4, title: "Киберспортивный чемпионат", date: "5-7 января 2024", description: "Крупный киберспортивный эвент с участием профессиональных команд.", image: "https://www.esports.net/wp-content/uploads/2021/02/cs-go-tournaments.jpg", participants: 78, maxParticipants: 128, type: "championship" }
+];
+
+const platforms = [
+    { id: "all", name: "Все платформы", icon: "./img/all.png" },
+    { id: "web", name: "Web-игры", icon: "./img/web.png" },
+    { id: "ps1", name: "PlayStation 1", icon: "./img/ps1.jpeg" },
+    { id: "ps2", name: "PlayStation 2", icon: "./img/ps2.png" },
+    { id: "nes", name: "Nintendo NES", icon: "./img/nes.png" },
+    { id: "snes", name: "Super Nintendo", icon: "./img/snes.jpeg" },
+    { id: "n64", name: "Nintendo 64", icon: "./img/n64.png" },
+    { id: "gba", name: "Game Boy Advance", icon: "./img/gba.jpeg" },
+    { id: "sega", name: "Sega Genesis", icon: "./img/sega.jpeg" },
+    { id: "arcade", name: "Аркадные", icon: "./img/arcade.png" },
+    { id: "pc", name: "PC игры", icon: "./img/pc.png" }
+];
+
+// === ЭЛЕМЕНТЫ ===
+const gamesContainer = $('games-container');
+const eventsContainer = $('events-container');
+const tournamentsContainer = $('tournaments-container');
+const homePage = $('home-page');
+const eventsPage = $('events-page');
+const flipstersPage = $('flipsters-page');
+const searchInput = $('search-input');
+const confirmModal = $('confirm-modal');
+const welcomeScreen = $('welcome-screen');
+const slideMenu = $('slide-menu');
+const menuOverlay = $('menu-overlay');
+const menuToggle = $('menu-toggle');
+const menuPlatforms = $('menu-platforms');
+const themeToggle = $('theme-toggle-checkbox');
+const themeLabel = $('theme-toggle-label');
+const categoryButtons = document.querySelectorAll('.category-btn');
+const menuItems = document.querySelectorAll('.menu-item');
+
+let currentPlatformFilter = "all";
+let currentGameForDownload = null;
+let currentPage = 1;
+let currentFilteredGames = [];
+let currentFlipsterIndex = 0;
+let lenis = null;
+const gamesPerPage = 12;
+
+// === ЛОАДЕР ===
+function initLoader(done) {
+    const loader = $('loader');
+    if (!loader) return done();
+    if (REDUCED || !window.gsap) { loader.remove(); return done(); }
+    $('loader-logo').innerHTML = [...'DUAL GAMING CENTRE']
+        .map(ch => `<span>${ch === ' ' ? '&nbsp;' : ch}</span>`).join('');
+    const state = { p: 0 };
+    gsap.timeline({ onComplete: () => { loader.remove(); done(); } })
+        .from('#loader-logo span', { yPercent: 130, opacity: 0, stagger: 0.04, duration: 0.6, ease: 'power3.out' })
+        .to(state, { p: 100, duration: 1.6, ease: 'power2.inOut',
+            onUpdate: () => $('loader-counter').textContent = Math.round(state.p) + '%' }, '-=0.3')
+        .fromTo('#loader-bar', { scaleX: 0 }, { scaleX: 1, duration: 1.6, ease: 'power2.inOut' }, '<')
+        .to('.loader-inner', { opacity: 0, y: -24, duration: 0.35 }, '+=0.15')
+        .to(loader, { yPercent: -100, duration: 0.7, ease: 'power4.inOut' });
+}
+
+function revealWelcome() {
+    if (REDUCED || !window.gsap) return;
+    gsap.fromTo('.welcome-logo', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' });
+    gsap.fromTo('.welcome-text', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.15 });
+    gsap.fromTo('.enter-btn', { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.5, delay: 0.3, ease: 'back.out(1.7)' });
+}
+
+// === ПЛАВНЫЙ СКРОЛЛ (Lenis) ===
+function initLenis() {
+    if (REDUCED || !window.Lenis) return;
+    lenis = new Lenis({ duration: 1.1 });
+    (function raf(t) { lenis.raf(t); requestAnimationFrame(raf); })(0);
+}
+function scrollToY(y) {
+    if (lenis) lenis.scrollTo(y, { duration: 0.8 });
+    else window.scrollTo({ top: y, behavior: 'smooth' });
+}
+
+// === ЧАСТИЦЫ ===
+function initParticles() {
+    if (REDUCED || !window.particlesJS) return;
+    window.particlesJS("particles-js", {
+        "particles": {
+            "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#6e45e2" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.5, "random": false },
+            "size": { "value": 3, "random": true },
+            "line_linked": { "enable": true, "distance": 150, "color": "#6e45e2", "opacity": 0.4, "width": 1 },
+            "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out" }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+                "onhover": { "enable": true, "mode": "grab" },
+                "onclick": { "enable": true, "mode": "push" },
+                "resize": true
+            },
+            "modes": {
+                "grab": { "distance": 140, "line_linked": { "opacity": 1 } },
+                "push": { "particles_nb": 4 }
+            }
+        },
+        "retina_detect": true
+    });
+}
+
+// === ТЕМА ===
+function loadTheme() {
+    if ((localStorage.getItem('theme') || 'default') === 'brutal-dark') {
+        document.documentElement.setAttribute('data-theme', 'brutal-dark');
+        themeToggle.checked = true;
+        themeLabel.classList.add('brutal-theme');
+    }
+}
+function toggleTheme() {
+    const dark = themeToggle.checked;
+    document.documentElement.setAttribute('data-theme', dark ? 'brutal-dark' : 'default');
+    themeLabel.classList.toggle('brutal-theme', dark);
+    localStorage.setItem('theme', dark ? 'brutal-dark' : 'default');
+}
+
+// === МЕНЮ (платформы) ===
+function initMenu() {
+    if (!menuPlatforms) return;
+    platforms.forEach(p => {
+        const icon = document.createElement('div');
+        icon.className = 'platform-icon' + (p.id === 'all' ? ' active' : '');
+        icon.innerHTML = `<img src="${p.icon}" alt="${p.name}" loading="lazy"><span>${p.name}</span>`;
+        icon.addEventListener('click', () => {
+            document.querySelectorAll('.platform-icon').forEach(i => i.classList.remove('active'));
+            icon.classList.add('active');
+            currentPlatformFilter = p.id;
+            resetAndDisplay();
+            closeMenu();
+        });
+        menuPlatforms.appendChild(icon);
+    });
+}
+function toggleMenu() {
+    menuToggle.classList.toggle('active');
+    slideMenu.classList.toggle('active');
+    menuOverlay.classList.toggle('active');
+    const open = slideMenu.classList.contains('active');
+    document.body.style.overflow = open ? 'hidden' : 'auto';
+    if (lenis) { if (open) lenis.stop(); else lenis.start(); }
+}
+function closeMenu() {
+    menuToggle.classList.remove('active');
+    slideMenu.classList.remove('active');
+    menuOverlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+    if (lenis) lenis.start();
+}
+
+// === КАТАЛОГ ===
+function filterGames() {
+    let filtered = [...games];
+    const activeCategory = document.querySelector('.category-btn.active')?.getAttribute('data-category') || 'all';
+    if (activeCategory !== 'all') filtered = filtered.filter(g => g.category === activeCategory);
+    if (currentPlatformFilter !== 'all') filtered = filtered.filter(g => g.platform === currentPlatformFilter);
+    const term = (searchInput?.value || '').toLowerCase().trim();
+    if (term) filtered = filtered.filter(g =>
+        g.title.toLowerCase().includes(term) ||
+        g.description.toLowerCase().includes(term) ||
+        g.genre.toLowerCase().includes(term));
+    return filtered;
+}
+
+function makeGameCard(game) {
+    const card = document.createElement('div');
+    card.className = 'game-card';
+    card.innerHTML = `
+        <img src="${game.cover}" alt="${game.title}" loading="lazy">
+        <div class="game-info">
+            <h3>${game.title}</h3>
+            <span class="genre">${game.genre}</span>
+            <p class="description">${game.description}</p>
+            <div class="game-actions">
+                <button class="play-btn" data-url="${game.playUrl}"><i class="fas fa-play"></i> Играть</button>
+                <button class="download-btn-card" data-url="${game.downloadUrl}"><i class="fas fa-download"></i> Скачать</button>
+            </div>
+        </div>`;
+    return card;
+}
+
+function bindCardButtons(box) {
+    box.querySelectorAll('.play-btn').forEach(btn =>
+        btn.addEventListener('click', () => window.open(btn.getAttribute('data-url'), '_blank')));
+    box.querySelectorAll('.download-btn-card').forEach(btn =>
+        btn.addEventListener('click', () => {
+            currentGameForDownload = btn.getAttribute('data-url');
+            confirmModal.style.display = 'flex';
+        }));
+}
+
+function animateCards(box) {
+    if (REDUCED || !window.gsap) return;
+    gsap.fromTo(box.querySelectorAll('.game-card'),
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, stagger: 0.05, duration: 0.45, ease: 'power2.out', clearProps: 'opacity,transform' });
+}
+
+function displayGames() {
+    if (!gamesContainer) return;
+    currentFilteredGames = filterGames();
+    const totalPages = Math.ceil(currentFilteredGames.length / gamesPerPage);
+    if (currentPage > totalPages) currentPage = totalPages || 1;
+    const pageGames = currentFilteredGames.slice((currentPage - 1) * gamesPerPage, currentPage * gamesPerPage);
+    gamesContainer.innerHTML = '';
+    if (!pageGames.length) {
+        gamesContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: rgba(255,255,255,0.7);">Игры не найдены. Попробуйте изменить фильтры.</p>';
+    } else {
+        pageGames.forEach(game => gamesContainer.appendChild(makeGameCard(game)));
+        bindCardButtons(gamesContainer);
+        animateCards(gamesContainer);
+    }
+    renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+    const box = $('pagination-container');
+    if (!box) return;
+    box.innerHTML = '';
+    if (totalPages <= 1) return;
+    for (let i = 1; i <= totalPages; i++) {
+        const b = document.createElement('button');
+        b.textContent = i;
+        if (i === currentPage) b.classList.add('active');
+        b.addEventListener('click', () => {
+            if (i === currentPage) return;
+            currentPage = i;
+            displayGames();
+            const gamesSection = document.querySelector('.games');
+            if (gamesSection) scrollToY(gamesSection.offsetTop - 100);
+        });
+        box.appendChild(b);
+    }
+}
+
+function resetAndDisplay() { currentPage = 1; displayGames(); }
+
+function showTrending() {
+    if (!gamesContainer) return;
+    categoryButtons.forEach(b => b.classList.remove('active'));
+    currentFilteredGames = games.filter(g => g.trending);
+    currentPage = 1;
+    gamesContainer.innerHTML = '';
+    currentFilteredGames.slice(0, gamesPerPage).forEach(game => gamesContainer.appendChild(makeGameCard(game)));
+    bindCardButtons(gamesContainer);
+    animateCards(gamesContainer);
+    const pag = $('pagination-container');
+    if (pag) pag.innerHTML = '';
+}
+
+// === ЭВЕНТЫ ===
+function displayEvents() {
+    if (!eventsContainer || !tournamentsContainer) return;
+    eventsContainer.innerHTML = '';
+    tournamentsContainer.innerHTML = '';
+    events.forEach(event => {
+        const card = document.createElement('div');
+        card.className = 'event-card';
+        card.innerHTML = `
+            <img src="${event.image}" alt="${event.title}" loading="lazy">
+            <div class="event-info">
+                <h3>${event.title}</h3>
+                <span class="event-date"><i class="fas fa-calendar"></i> ${event.date}</span>
+                <p class="description">${event.description}</p>
+                <div class="event-actions">
+                    <button class="participate-btn" data-id="${event.id}"><i class="fas fa-plus"></i> Участвовать</button>
+                    <span class="participants-count"><i class="fas fa-users"></i> ${event.participants}/${event.maxParticipants}</span>
+                </div>
+            </div>`;
+        (event.type === 'tournament' || event.type === 'championship' ? tournamentsContainer : eventsContainer).appendChild(card);
+    });
+    document.querySelectorAll('.participate-btn').forEach(btn =>
+        btn.addEventListener('click', () => {
+            const ev = events.find(e => e.id === +btn.getAttribute('data-id'));
+            if (!ev) return;
+            if (ev.participants < ev.maxParticipants) {
+                alert(`Чтобы зарегистрироваться на "${ev.title}", вам надо подписаться на наш Телеграм канал https://t.me/DGC_off а потом выбрать событие и прокомментировать его добавив свой ник и то, что вы готовы участвовать.`);
+            } else {
+                alert(`К сожалению, все места на событие "${ev.title}" уже заняты.`);
+            }
+        }));
+}
+
+// === ФЛИПСЫ ===
+function showFlipster(index) {
+    if (index < 0 || index >= flipsters.length) return;
+    currentFlipsterIndex = index;
+    const f = flipsters[index];
+    $('flipster-title').textContent = f.title;
+    $('flipster-genre').textContent = f.genre;
+    const frame = $('flipster-frame');
+    const loaderEl = $('flipster-loader');
+    frame.src = '';
+    loaderEl.style.display = 'flex';
+    setTimeout(() => { frame.src = f.frame; loaderEl.style.display = 'none'; }, 800);
+}
+function nextFlipster() { showFlipster((currentFlipsterIndex + 1) % flipsters.length); }
+function prevFlipster() { showFlipster((currentFlipsterIndex - 1 + flipsters.length) % flipsters.length); }
+
+// === СТРАНИЦЫ ===
+function switchPage(page) {
+    if (homePage) homePage.style.display = 'none';
+    if (eventsPage) eventsPage.style.display = 'none';
+    if (flipstersPage) flipstersPage.style.display = 'none';
+    if (page === 'home' && homePage) homePage.style.display = 'block';
+    if (page === 'events' && eventsPage) { eventsPage.style.display = 'block'; displayEvents(); }
+    if (page === 'flipsters' && flipstersPage) {
+        flipstersPage.style.display = 'flex';
+        showFlipster(Math.floor(Math.random() * flipsters.length));
+    }
+    if (page !== 'flipsters') scrollToY(0);
+}
+
+// === СТАРТ ===
+function init() {
+    loadTheme();
+    initMenu();
+    initLenis();
+    initParticles();
+
+    // Лоадер → приветствие
+    initLoader(revealWelcome);
+
+    if (themeToggle) themeToggle.addEventListener('change', toggleTheme);
+    if (menuToggle) menuToggle.addEventListener('click', toggleMenu);
+    if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
+
+    on('enter-btn', 'click', () => {
+        welcomeScreen.style.opacity = '0';
+        setTimeout(() => { welcomeScreen.style.display = 'none'; }, 500);
+    });
+
+    on('confirm-cancel', 'click', () => { confirmModal.style.display = 'none'; });
+    on('confirm-proceed', 'click', () => {
+        if (currentGameForDownload) window.open(currentGameForDownload, '_blank');
+        confirmModal.style.display = 'none';
+    });
+    if (confirmModal) confirmModal.addEventListener('click', e => {
+        if (e.target === confirmModal) confirmModal.style.display = 'none';
+    });
+
+    if (searchInput) searchInput.addEventListener('input', resetAndDisplay);
+    categoryButtons.forEach(btn => btn.addEventListener('click', () => {
+        categoryButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        resetAndDisplay();
+    }));
+    on('all-games-btn', 'click', () => {
+        categoryButtons.forEach(b => b.classList.remove('active'));
+        categoryButtons[0]?.classList.add('active');
+        resetAndDisplay();
+    });
+    on('trending-btn', 'click', showTrending);
+
+    menuItems.forEach(item => item.addEventListener('click', () => {
+        const page = item.dataset.page;
+        const action = item.dataset.action;
+        if (page) switchPage(page);
+        else if (action === 'search') searchInput?.focus();
+        else if (action === 'trending') showTrending();
+        else if (action === 'all-games') resetAndDisplay();
+        menuItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        closeMenu();
+    }));
+
+    on('footer-home', 'click', e => { e.preventDefault(); switchPage('home'); });
+    on('footer-games', 'click', e => { e.preventDefault(); switchPage('home'); scrollToY(0); });
+    on('footer-events', 'click', e => { e.preventDefault(); switchPage('events'); });
+    on('footer-flipsters', 'click', e => { e.preventDefault(); switchPage('flipsters'); });
+    on('footer-categories', 'click', e => {
+        e.preventDefault(); switchPage('home');
+        const cat = document.querySelector('.categories');
+        if (cat) scrollToY(cat.offsetTop - 100);
+    });
+    on('footer-popular', 'click', e => { e.preventDefault(); switchPage('home'); showTrending(); });
+
+    on('prev-flipster', 'click', prevFlipster);
+    on('next-flipster', 'click', nextFlipster);
+    on('like-btn', 'click', () => {
+        const like = $('like-btn');
+        like.innerHTML = '<i class="fas fa-heart" style="color: var(--accent);"></i>';
+        setTimeout(() => { like.innerHTML = '<i class="fas fa-heart"></i>'; }, 1000);
+    });
+    on('comment-btn', 'click', () => alert('Комментирование временно недоступно'));
+
+    document.addEventListener('keydown', e => {
+        if (flipstersPage && flipstersPage.style.display === 'flex') {
+            if (e.key === 'ArrowUp') prevFlipster();
+            else if (e.key === 'ArrowDown') nextFlipster();
+        }
+    });
+
+    resetAndDisplay();
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
+</script>
+</body>
+</html>
